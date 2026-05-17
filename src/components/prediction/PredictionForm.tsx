@@ -237,6 +237,20 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const totalMatches = matches.length || 104;
   const completedMatches = completedMatchIds.size;
 
+  const groupStats = useMemo(() => {
+    if (!selectedFilter.startsWith("Grupo ")) return null;
+    const letter = selectedFilter.replace("Grupo ", "").trim();
+    const groupMatches = matches.filter(m => m.group_letter === letter);
+    const total = groupMatches.length;
+    const completed = groupMatches.filter(m => completedMatchIds.has(m.id)).length;
+    return {
+      name: selectedFilter,
+      total,
+      completed,
+      remaining: total - completed
+    };
+  }, [matches, selectedFilter, completedMatchIds]);
+
   // Derived filters
   const groups = useMemo(() => {
     const g = new Set<string>();
@@ -408,25 +422,54 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
       
       {/* Progress Panel */}
-      <PremiumCard className="!p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-        <div className="flex flex-col">
-          <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Partidos Completados</span>
-          <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">{completedMatches} <span className="text-lg text-[#aeaeb2] font-semibold">/ {totalMatches}</span></span>
-          <span className="mt-1 text-[12px] font-bold text-[#6e6e73]">Partidos completados globales: {completedMatches} / {totalMatches}</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Grupos Cargados</span>
-          <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">
-            {completedMatches >= totalMatches ? "12" : "0"} <span className="text-lg text-[#aeaeb2] font-semibold">/ 12</span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-[980px] mx-auto text-center animate-fade-in">
+        <div className="bg-white border border-[rgba(0,0,0,0.06)] rounded-[20px] p-4 shadow-sm flex flex-col justify-center items-center">
+          <span className="text-[10px] text-[#aeaeb2] font-black uppercase tracking-wider mb-1">Partidos Completados</span>
+          <span className="text-[24px] font-black text-[#1d1d1f] leading-none">
+            {completedMatches} <span className="text-[16px] text-[#aeaeb2] font-extrabold">/ {totalMatches}</span>
           </span>
         </div>
-        <div className="flex flex-col">
-          <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Estado</span>
-          <span className="text-sm font-bold" style={{ color: getStatusColor(saveStatus) }}>
+
+        <div className="bg-white border border-[rgba(0,0,0,0.06)] rounded-[20px] p-4 shadow-sm flex flex-col justify-center items-center">
+          <span className="text-[10px] text-[#aeaeb2] font-black uppercase tracking-wider mb-1">Faltan</span>
+          <span className="text-[24px] font-black text-[#1d1d1f] leading-none">
+            {totalMatches - completedMatches} <span className="text-[14px] text-[#6e6e73] font-semibold">partidos</span>
+          </span>
+        </div>
+
+        <div className="bg-white border border-[rgba(0,0,0,0.06)] rounded-[20px] p-4 shadow-sm flex flex-col justify-center items-center">
+          <span className="text-[10px] text-[#aeaeb2] font-black uppercase tracking-wider mb-1">Progreso</span>
+          <span className="text-[24px] font-black text-[#0071e3] leading-none">
+            {Math.round((completedMatches / totalMatches) * 100)}%
+          </span>
+        </div>
+
+        <div className="bg-white border border-[rgba(0,0,0,0.06)] rounded-[20px] p-4 shadow-sm flex flex-col justify-center items-center">
+          <span className="text-[10px] text-[#aeaeb2] font-black uppercase tracking-wider mb-1">Estado</span>
+          <span className="text-[14px] font-black leading-none" style={{ color: getStatusColor(saveStatus) }}>
             {saveStatus}
           </span>
         </div>
-      </PremiumCard>
+
+        {/* Human friendly global alert */}
+        <div className="col-span-full mt-2 text-[14px] font-bold text-[#6e6e73]">
+          {totalMatches - completedMatches > 0 
+            ? `Faltan ${totalMatches - completedMatches} partidos para completar tu predicción.`
+            : "¡Felicitaciones! Completaste todas tus predicciones del Mundial."
+          }
+        </div>
+
+        {/* Group-specific active filter stats */}
+        {groupStats && (
+          <div className="col-span-full bg-[rgba(0,113,227,0.06)] border border-[rgba(0,113,227,0.12)] rounded-[14px] py-2.5 px-4 text-[13px] font-bold text-[#0071e3] mt-1 inline-flex items-center justify-center gap-1.5 mx-auto">
+            <span>{groupStats.name}</span>
+            <span className="text-[#8e8e93] font-medium">•</span>
+            <span>{groupStats.completed} / {groupStats.total} cargados</span>
+            <span className="text-[#8e8e93] font-medium">•</span>
+            <span>{groupStats.remaining > 0 ? `Faltan ${groupStats.remaining} del grupo` : "Grupo completado"}</span>
+          </div>
+        )}
+      </div>
 
       {/* Tabs */}
       <div className="w-full flex justify-center mt-6">

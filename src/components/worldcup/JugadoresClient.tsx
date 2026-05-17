@@ -177,8 +177,37 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
   const statusLabel = isRosterConfirmed ? "Plantel en revisión" : "Plantel por confirmar";
 
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="playersPageContent flex flex-col gap-8">
       
+      {/* SECCIÓN EXPLICATIVA MUNDIAL 2026 */}
+      <section className="historical2026Block max-w-[980px] mx-auto w-full mb-6 text-center animate-fade-in">
+        <h2 className="text-[24px] md:text-[28px] font-black text-[#1d1d1f] tracking-tight">
+          Mundial 2026: una edición histórica.
+        </h2>
+        <p className="mt-3 text-[14px] md:text-[15px] text-[#6e6e73] font-medium max-w-[760px] mx-auto leading-relaxed">
+          Por primera vez, el torneo reúne 48 selecciones, distribuidas en 12 grupos de 4 equipos. Clasifican los dos primeros de cada grupo y también los 8 mejores terceros, formando una ronda eliminatoria de 32 equipos.
+        </p>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
+            <span className="text-[32px] font-black text-[#0071e3] block leading-none">48</span>
+            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Selecciones</span>
+          </div>
+          <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
+            <span className="text-[32px] font-black text-[#0071e3] block leading-none">12</span>
+            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Grupos</span>
+          </div>
+          <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
+            <span className="text-[32px] font-black text-[#0071e3] block leading-none">104</span>
+            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Partidos</span>
+          </div>
+          <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
+            <span className="text-[32px] font-black text-[#0071e3] block leading-none">32</span>
+            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Equipos en fase final</span>
+          </div>
+        </div>
+      </section>
+
       {/* SECTION: ELEGÍ UNA SELECCIÓN (Only if no query param) */}
       {!isPreselected && (
         <section className="space-y-6">
@@ -234,7 +263,7 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
 
       {/* SECTION: PANEL DE JUGADORES */}
       {activeTeam && (
-        <section id="players-panel" className="scroll-mt-24 space-y-6">
+        <section id="players-panel" className="selectedTeamPanel scroll-mt-24 space-y-6">
           {isPreselected && (
             <Link 
               href="/jugadores" 
@@ -279,10 +308,43 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                     </span>
                     <p className="squadStatusText">
                       {isRosterConfirmed 
-                        ? `${totalCargados} jugadores cargados.` 
+                        ? `${totalCargados} jugadores cargados. La lista oficial todavía está pendiente de confirmación.` 
                         : "La lista de jugadores todavía no está cargada para esta selección."
                       }
                     </p>
+                  </div>
+
+                  {/* ESTADO DEL EQUIPO PANEL */}
+                  <div className="mt-4 p-4 rounded-[20px] bg-[#f5f5f7] border border-[rgba(0,0,0,0.05)] w-full max-w-[380px] text-left">
+                    <h4 className="text-[11px] font-black uppercase tracking-wider text-[#8e8e93] mb-2">
+                      Estado del equipo
+                    </h4>
+                    <div className="flex flex-col gap-1.5 text-[13px] font-bold text-[#6e6e73]">
+                      <div className="flex justify-between">
+                        <span>Historia FIFA:</span>
+                        <span className={isImported ? "text-[#0071e3]" : "text-[#8e8e93] italic font-medium"}>
+                          {isImported ? "Cargada" : "En revisión"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Plantel:</span>
+                        <span className="text-[#1d1d1f]">
+                          {isRosterConfirmed ? `${totalCargados} jugadores en revisión` : "0 jugadores cargados"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Fotos:</span>
+                        <span className="text-[#1d1d1f]">
+                          {isRosterConfirmed ? "Parciales" : "Pendientes"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Lista oficial:</span>
+                        <span className="text-[#df3a30] font-black uppercase tracking-tight text-[11px] bg-[rgba(223,58,48,0.08)] px-1.5 py-0.5 rounded">
+                          Pendiente
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -339,11 +401,19 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
               <p className="emptySquadText">
                 La lista de jugadores todavía no está cargada para esta selección. Cuando la lista esté disponible, vas a poder ver el plantel completo acá.
               </p>
+              <div className="mt-6 pt-5 border-t border-[rgba(0,0,0,0.06)] text-center text-[13px] font-bold text-[#6e6e73]">
+                <span className="block text-[11px] font-black uppercase tracking-wider text-[#8e8e93] mb-2">Estado</span>
+                <p className="flex justify-center gap-4 text-[#1d1d1f]">
+                  <span>0 jugadores cargados</span>
+                  <span className="text-[#aeaeb2] font-normal">|</span>
+                  <span className="text-[#df3a30] font-extrabold">Lista oficial pendiente</span>
+                </p>
+              </div>
             </div>
           ) : (
             <div className="space-y-6">
               {/* SEARCH BAR (Only if team is selected and has players) */}
-              <div className="relative max-w-[360px]">
+              <div className="playersSearch relative">
                 <input
                   type="text"
                   placeholder="Buscar jugador..."
@@ -382,6 +452,44 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
       )}
 
       <style jsx>{`
+        .playersPageContent {
+          width: min(1040px, 87.5vw);
+          margin: 0 auto;
+        }
+
+        .selectedTeamPanel {
+          width: min(980px, 100%);
+          margin: 32px auto 0;
+        }
+
+        .playersSearch {
+          width: min(520px, 100%);
+          margin: 28px auto;
+        }
+
+        .historical2026Block {
+          width: min(980px, 100%);
+          margin: 0 auto;
+          background: #f5f5f7;
+          border-radius: 34px;
+          padding: 32px;
+          border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .statCard {
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.06);
+          border-radius: 24px;
+          padding: 20px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .statCard:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
         .squadStatusBadge {
           display: inline-flex;
           align-items: center;
