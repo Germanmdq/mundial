@@ -9,8 +9,7 @@ import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/tea
 
 const SHOULD_GATE_AFTER_SIX_MATCHES = false;
 
-type ScoreValue = number | "";
-type LocalScore = { home: ScoreValue; away: ScoreValue; };
+type LocalScore = { home: number; away: number; };
 
 interface PredictionFormProps {
   matches: Match[];
@@ -36,16 +35,28 @@ const getStatusColor = (status: string) => {
   }
 };
 
+const getScoreValue = (value: number | undefined | null): number => {
+  return typeof value === "number" ? value : 0;
+};
+
 export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: PredictionFormProps) {
   const [scores, setScores] = useState<Record<number, LocalScore>>(() => {
     return matches.reduce((acc, match) => {
       const existing = initialScores[match.id];
       acc[match.id] = {
-        home: typeof existing?.home === "number" ? existing.home : "",
-        away: typeof existing?.away === "number" ? existing.away : ""
+        home: typeof existing?.home === "number" ? existing.home : 0,
+        away: typeof existing?.away === "number" ? existing.away : 0
       };
       return acc;
     }, {} as Record<number, LocalScore>);
+  });
+
+  const [completedMatchIds, setCompletedMatchIds] = useState<Set<number>>(() => {
+    const ids = new Set<number>();
+    Object.keys(initialScores).forEach(idStr => {
+      ids.add(Number(idStr));
+    });
+    return ids;
   });
 
   const [saveStatus, setSaveStatus] = useState<string>(isLoggedIn ? "Guardado" : "Borrador local");
@@ -59,13 +70,12 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Sync guest draft to Supabase if they login
-  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; }[]) => {
+  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
     const payload = draftItems
-      .filter(item => typeof item.homeScore === "number" && typeof item.awayScore === "number")
       .map(item => ({
         match_id: item.matchId,
-        home_goals: item.homeScore as number,
-        away_goals: item.awayScore as number
+        home_goals: item.homeScore,
+        away_goals: item.awayScore
       }));
 
     if (payload.length > 0) {
@@ -87,19 +97,29 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       if (rawDraft) {
         setTimeout(() => {
           try {
-            const parsed: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; updatedAt: string; }[] = JSON.parse(rawDraft);
+            const parsed: { matchId: number; homeScore: number; awayScore: number; updatedAt: string; }[] = JSON.parse(rawDraft);
             
             setScores(prev => {
               const updated = { ...prev };
               parsed.forEach(item => {
                 if (item.matchId && updated[item.matchId]) {
                   updated[item.matchId] = {
-                    home: typeof item.homeScore === "number" ? item.homeScore : "",
-                    away: typeof item.awayScore === "number" ? item.awayScore : ""
+                    home: typeof item.homeScore === "number" ? item.homeScore : 0,
+                    away: typeof item.awayScore === "number" ? item.awayScore : 0
                   };
                 }
               });
               return updated;
+            });
+
+            setCompletedMatchIds(prev => {
+              const next = new Set(prev);
+              parsed.forEach(item => {
+                if (item.matchId) {
+                  next.add(item.matchId);
+                }
+              });
+              return next;
             });
 
             // Sync draft to Supabase if now logged in
@@ -123,9 +143,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
   // Progress Panel Data
   const totalMatches = matches.length || 104;
-  const completedMatches = useMemo(() => {
-    return Object.values(scores).filter(s => typeof s.home === "number" && typeof s.away === "number").length;
-  }, [scores]);
+  const completedMatches = completedMatchIds.size;
 
   // Derived filters
   const groups = useMemo(() => {
@@ -146,33 +164,34 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   }, [matches, selectedFilter]);
 
   const handleScoreChange = (matchId: number, type: 'home' | 'away', val: string) => {
+    const numericVal = val === "" ? 0 : Math.max(0, parseInt(val, 10) || 0);
     setScores(prev => ({
       ...prev,
       [matchId]: {
         ...prev[matchId],
-        [type]: val === "" ? "" : Math.max(0, parseInt(val, 10) || 0)
+        [type]: numericVal
       }
     }));
     setValidationMessage(null); // Clear error on edit
     setSaveStatus(isLoggedIn ? "Guardando..." : "Borrador local");
+
+    setCompletedMatchIds(prev => {
+      const next = new Set(prev);
+      next.add(matchId);
+      return next;
+    });
   };
 
   const handleIncrement = (matchId: number, side: 'home' | 'away') => {
     const currentVal = scores[matchId]?.[side];
-    if (currentVal === "") {
-      handleScoreChange(matchId, side, "1");
-    } else {
-      handleScoreChange(matchId, side, String(Number(currentVal) + 1));
-    }
+    const currentNum = getScoreValue(currentVal);
+    handleScoreChange(matchId, side, String(currentNum + 1));
   };
 
   const handleDecrement = (matchId: number, side: 'home' | 'away') => {
     const currentVal = scores[matchId]?.[side];
-    if (currentVal === "" || Number(currentVal) <= 0) {
-      handleScoreChange(matchId, side, "0");
-    } else {
-      handleScoreChange(matchId, side, String(Number(currentVal) - 1));
-    }
+    const currentNum = getScoreValue(currentVal);
+    handleScoreChange(matchId, side, String(Math.max(0, currentNum - 1)));
   };
 
   // Get active match info
@@ -181,24 +200,23 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const handleNext = async () => {
     if (!activeMatch) return;
 
-    const homeScore = scores[activeMatch.id]?.home;
-    const awayScore = scores[activeMatch.id]?.away;
-
-    // Validation: both fields must be loaded
-    if (homeScore === "" || awayScore === "") {
-      setValidationMessage("Completá ambos resultados para seguir.");
-      return;
-    }
+    const homeScore = getScoreValue(scores[activeMatch.id]?.home);
+    const awayScore = getScoreValue(scores[activeMatch.id]?.away);
 
     setValidationMessage(null);
+    setCompletedMatchIds(prev => {
+      const next = new Set(prev);
+      next.add(activeMatch.id);
+      return next;
+    });
 
     // Save Prediction
     if (isLoggedIn) {
       setSaveStatus("Guardando...");
       const payload = [{
         match_id: activeMatch.id,
-        home_goals: homeScore as number,
-        away_goals: awayScore as number
+        home_goals: homeScore,
+        away_goals: awayScore
       }];
 
       const result = await saveUserPredictions(payload);
@@ -213,7 +231,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       // Local Draft Save
       setSaveStatus("Borrador local");
 
-      let currentDraft: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; updatedAt: string; }[] = [];
+      let currentDraft: { matchId: number; homeScore: number; awayScore: number; updatedAt: string; }[] = [];
       const rawDraft = localStorage.getItem("worldcup_prediction_draft");
       if (rawDraft) {
         try {
@@ -239,10 +257,12 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
 
     // CTA Check at 6th completed match
-    const updatedCompletedMatches = Object.values(scores).filter(s => typeof s.home === "number" && typeof s.away === "number").length;
+    const completedCount = completedMatchIds.has(activeMatch.id) 
+      ? completedMatchIds.size 
+      : completedMatchIds.size + 1;
     const ctaShown = localStorage.getItem("worldcup_prediction_cta_shown") === "true";
 
-    if (!isLoggedIn && updatedCompletedMatches >= 6 && !ctaShown) {
+    if (!isLoggedIn && completedCount >= 6 && !ctaShown) {
       setCtaModalOpen(true);
       return;
     }
@@ -263,104 +283,41 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
   };
 
-  // Compute recently predicted matches (max 3)
-  const recentMatches = useMemo(() => {
-    return matches
-      .filter(m => typeof scores[m.id]?.home === "number" && typeof scores[m.id]?.away === "number" && m.id !== activeMatch?.id)
-      .slice(-3)
-      .reverse();
-  }, [matches, scores, activeMatch]);
+  // Group completed predictions by group letter
+  const groupedSummary = useMemo(() => {
+    const groupsMap: Record<string, { match: Match; homeScore: number; awayScore: number; }[]> = {};
+
+    matches.forEach(m => {
+      if (completedMatchIds.has(m.id)) {
+        const groupName = m.group_letter ? `Grupo ${m.group_letter}` : (m.stage_label || "Otros");
+        if (!groupsMap[groupName]) {
+          groupsMap[groupName] = [];
+        }
+
+        const homeScore = getScoreValue(scores[m.id]?.home);
+        const awayScore = getScoreValue(scores[m.id]?.away);
+
+        groupsMap[groupName].push({
+          match: m,
+          homeScore,
+          awayScore
+        });
+      }
+    });
+
+    return Object.entries(groupsMap)
+      .map(([groupName, list]) => ({
+        groupName,
+        matches: list
+      }))
+      .sort((a, b) => a.groupName.localeCompare(b.groupName));
+  }, [matches, scores, completedMatchIds]);
 
   // Tab change
   const handleTabChange = (tab: TabOption) => {
     setActiveTab(tab);
     setShowCompletionCard(false);
   };
-
-  // Render conversion card if open
-  if (ctaModalOpen) {
-    return (
-      <div className="flex items-center justify-center p-4 min-h-[480px]">
-        <div className="conversionCard animate-fadeIn">
-          <h2 className="text-3xl md:text-[44px] font-display font-black text-white mb-4 tracking-tight leading-tight">
-            Ya tenés tu Mundial en marcha.
-          </h2>
-          <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
-            Creá tu cuenta para guardar tu predicción, participar por el premio acumulado, elegir goleador y campeón, y armar grupos privados con tus amigos.
-          </p>
-          
-          <div className="space-y-4 mb-8">
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-              <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-              <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-              <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-              <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-              <span className="text-[15px] font-medium text-white">Seguís tu ranking durante todo el Mundial.</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <Link 
-              href="/login?mode=signup&redirect=/mi-prediccion"
-              className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
-            >
-              Crear cuenta y participar
-            </Link>
-            
-            {!SHOULD_GATE_AFTER_SIX_MATCHES && (
-              <button 
-                onClick={() => {
-                  localStorage.setItem("worldcup_prediction_cta_shown", "true");
-                  setCtaModalOpen(false);
-                  // Advance next
-                  if (currentMatchIndex < filteredMatches.length - 1) {
-                    setCurrentMatchIndex(prev => prev + 1);
-                  } else {
-                    setShowCompletionCard(true);
-                  }
-                }}
-                className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
-              >
-                Seguir cargando por ahora
-              </button>
-            )}
-          </div>
-        </div>
-
-        <style jsx>{`
-          .conversionCard {
-            width: min(760px, calc(100vw - 32px));
-            margin: 32px auto;
-            background: #111827;
-            color: #fff;
-            border-radius: 34px;
-            padding: 40px;
-            box-shadow: 0 22px 70px rgba(0,0,0,0.20);
-          }
-          .animate-fadeIn {
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          }
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        `}</style>
-      </div>
-    );
-  }
 
   return (
     <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
@@ -431,6 +388,66 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             {filteredMatches.length === 0 ? (
               <div className="py-12 text-center text-[#6e6e73] font-medium">
                 No hay partidos en esta categoría.
+              </div>
+            ) : ctaModalOpen ? (
+              /* ZONA DE CONVERSIÓN CARD - INLINE (NON-BLOCKING) */
+              <div className="conversionCard animate-fadeIn">
+                <h2 className="text-3xl md:text-[44px] font-display font-black text-white mb-4 tracking-tight leading-tight">
+                  Ya tenés tu Mundial en marcha.
+                </h2>
+                <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
+                  Creá tu cuenta para guardar tu predicción, participar por el premio acumulado, elegir goleador y campeón, y armar grupos privados con tus amigos.
+                </p>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                    <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                    <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                    <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                    <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                    <span className="text-[15px] font-medium text-white">Seguís tu ranking durante todo el Mundial.</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <Link 
+                    href="/login?mode=signup&redirect=/mi-prediccion"
+                    className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
+                  >
+                    Crear cuenta y participar
+                  </Link>
+                  
+                  {!SHOULD_GATE_AFTER_SIX_MATCHES && (
+                    <button 
+                      onClick={() => {
+                        localStorage.setItem("worldcup_prediction_cta_shown", "true");
+                        setCtaModalOpen(false);
+                        // Advance next
+                        if (currentMatchIndex < filteredMatches.length - 1) {
+                          setCurrentMatchIndex(prev => prev + 1);
+                        } else {
+                          setShowCompletionCard(true);
+                        }
+                      }}
+                      className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
+                    >
+                      Seguir cargando por ahora
+                    </button>
+                  )}
+                </div>
               </div>
             ) : showCompletionCard ? (
               /* ZONA DE GRUPOS COMPLETADA CARD */
@@ -516,12 +533,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                           type="button"
                           className="scoreButton"
                           onClick={() => handleDecrement(activeMatch.id, 'home')}
+                          disabled={getScoreValue(scores[activeMatch.id]?.home) <= 0}
                           aria-label="Restar gol local"
                         >
                           −
                         </button>
                         <div className="scoreValue">
-                          {scores[activeMatch.id]?.home === "" ? "-" : scores[activeMatch.id]?.home}
+                          {getScoreValue(scores[activeMatch.id]?.home)}
                         </div>
                         <button
                           type="button"
@@ -552,12 +570,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                           type="button"
                           className="scoreButton"
                           onClick={() => handleDecrement(activeMatch.id, 'away')}
+                          disabled={getScoreValue(scores[activeMatch.id]?.away) <= 0}
                           aria-label="Restar gol visitante"
                         >
                           −
                         </button>
                         <div className="scoreValue">
-                          {scores[activeMatch.id]?.away === "" ? "-" : scores[activeMatch.id]?.away}
+                          {getScoreValue(scores[activeMatch.id]?.away)}
                         </div>
                         <button
                           type="button"
@@ -596,29 +615,6 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                     {currentMatchIndex === filteredMatches.length - 1 ? "Ver resumen" : "Siguiente"}
                   </button>
                 </div>
-
-                {/* Recent Summary Panel */}
-                {recentMatches.length > 0 && (
-                  <div className="mt-12 text-center">
-                    <span className="text-[11px] text-[#6e6e73] font-black uppercase tracking-widest block mb-4">
-                      Últimos cargados
-                    </span>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {recentMatches.map(m => (
-                        <div 
-                          key={m.id}
-                          className="bg-white border border-[rgba(0,0,0,0.06)] rounded-full px-4 py-2 text-[13px] font-bold text-[#1d1d1f] shadow-sm flex items-center gap-2"
-                        >
-                          <span>{getTeamFlag(m.home_team)} {getTeamCode(m.home_team)}</span>
-                          <span className="bg-[#f5f5f7] px-2 py-0.5 rounded text-[11px] font-black">
-                            {scores[m.id]?.home} - {scores[m.id]?.away}
-                          </span>
-                          <span>{getTeamCode(m.away_team)} {getTeamFlag(m.away_team)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
               </div>
             )}
@@ -675,6 +671,39 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         )}
 
       </div>
+
+      {/* DETAILED PREDICTIONS SUMMARY AGRUPADO POR GRUPO */}
+      {groupedSummary.length > 0 && (
+        <section className="predictionSummary">
+          <h2 className="summaryTitle">Tus predicciones</h2>
+          <p className="summarySubtitle">Así va quedando tu Mundial.</p>
+
+          <div className="summaryGroups">
+            {groupedSummary.map(g => (
+              <div key={g.groupName} className="summaryGroup">
+                <h3 className="summaryGroupTitle">{g.groupName}</h3>
+                <div className="summaryMatches">
+                  {g.matches.map(item => (
+                    <div key={item.match.id} className="summaryMatch">
+                      <div className="summaryTeam">
+                        <span className="mr-1">{getTeamFlag(item.match.home_team)}</span>
+                        <span className="truncate">{getTeamDisplayName(item.match.home_team)}</span>
+                      </div>
+                      <div className="summaryScore">
+                        {item.homeScore} - {item.awayScore}
+                      </div>
+                      <div className="summaryTeam summaryTeamAway">
+                        <span className="truncate">{getTeamDisplayName(item.match.away_team)}</span>
+                        <span className="ml-1">{getTeamFlag(item.match.away_team)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CSS STYLES FOR THE WIZARD */}
       <style jsx>{`
@@ -885,6 +914,103 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           50% { transform: translateY(-4px); }
         }
 
+        /* CONVERSION CARD INLINE */
+        .conversionCard {
+          width: min(820px, calc(100vw - 32px));
+          margin: 0 auto;
+          background: #111827;
+          color: #fff;
+          border-radius: 34px;
+          padding: 40px;
+          box-shadow: 0 22px 70px rgba(0,0,0,0.20);
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PREDICTION SUMMARY STYLES */
+        .predictionSummary {
+          width: min(820px, calc(100vw - 32px));
+          margin: 42px auto 0;
+        }
+
+        .summaryTitle {
+          font-size: 28px;
+          font-weight: 850;
+          letter-spacing: -0.04em;
+          color: #1d1d1f;
+        }
+
+        .summarySubtitle {
+          margin-top: 6px;
+          color: #6e6e73;
+          font-size: 15px;
+          font-weight: 600;
+        }
+
+        .summaryGroup {
+          margin-top: 18px;
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 24px;
+          padding: 18px;
+          box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+        }
+
+        .summaryGroupTitle {
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #0071e3;
+          margin-bottom: 12px;
+        }
+
+        .summaryMatch {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+          align-items: center;
+          gap: 12px;
+          padding: 10px 0;
+          border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .summaryMatch:first-of-type {
+          border-top: 0;
+        }
+
+        .summaryTeam {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+          font-size: 14px;
+          font-weight: 750;
+          color: #1d1d1f;
+        }
+
+        .summaryTeamAway {
+          justify-content: flex-end;
+          text-align: right;
+        }
+
+        .summaryScore {
+          min-width: 58px;
+          height: 32px;
+          border-radius: 999px;
+          background: #f5f5f7;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 900;
+          color: #1d1d1f;
+        }
+
         @media (max-width: 734px) {
           .predictionSingleFlow {
             width: calc(100vw - 28px);
@@ -949,6 +1075,32 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             flex: 1;
             height: 50px;
             padding: 0 16px;
+          }
+
+          /* SUMMARY MOBILE */
+          .predictionSummary {
+            width: calc(100vw - 28px);
+          }
+
+          .summaryGroup {
+            padding: 16px;
+            border-radius: 22px;
+          }
+
+          .summaryMatch {
+            grid-template-columns: 1fr;
+            gap: 6px;
+            text-align: center;
+          }
+
+          .summaryTeam,
+          .summaryTeamAway {
+            justify-content: center;
+            text-align: center;
+          }
+
+          .summaryScore {
+            margin: 2px auto;
           }
         }
       `}</style>
