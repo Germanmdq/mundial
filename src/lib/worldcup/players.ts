@@ -44,39 +44,47 @@ function normalizePlayer(row: PlayerRow): Player {
 }
 
 const PLAYER_SELECT = 'id, team_id, name, slug, display_name, position, shirt_number, club, nationality, source_url, status, photo_url, photo_storage_path'
+const PAGE_SIZE = 1000
 
-export async function getPlayers(): Promise<Player[]> {
+async function fetchPlayersPage(teamId?: string | number): Promise<PlayerRow[]> {
   const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('players_info')
-    .select(PLAYER_SELECT)
-    .order('team_id')
-    .order('position')
-    .order('shirt_number')
-    .order('name')
+  const rows: PlayerRow[] = []
 
-  if (error) {
-    console.error('Error fetching players:', error)
-    return []
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1
+    let query = supabase
+      .from('players_info')
+      .select(PLAYER_SELECT)
+      .order('team_id')
+      .order('position')
+      .order('shirt_number')
+      .order('name')
+      .range(from, to)
+
+    if (teamId !== undefined) {
+      query = query.eq('team_id', teamId)
+    }
+
+    const { data, error } = await query
+
+    if (error) {
+      console.error(teamId === undefined ? 'Error fetching players:' : `Error fetching players for team ${teamId}:`, error)
+      return []
+    }
+
+    rows.push(...((data ?? []) as PlayerRow[]))
+    if (!data || data.length < PAGE_SIZE) break
   }
 
-  return ((data ?? []) as PlayerRow[]).map(normalizePlayer).filter(isDisplayablePlayer)
+  return rows
+}
+
+export async function getPlayers(): Promise<Player[]> {
+  const rows = await fetchPlayersPage()
+  return rows.map(normalizePlayer).filter(isDisplayablePlayer)
 }
 
 export async function getPlayersByTeam(teamId: string | number): Promise<Player[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('players_info')
-    .select(PLAYER_SELECT)
-    .eq('team_id', teamId)
-    .order('position')
-    .order('shirt_number')
-    .order('name')
-
-  if (error) {
-    console.error(`Error fetching players for team ${teamId}:`, error)
-    return []
-  }
-
-  return ((data ?? []) as PlayerRow[]).map(normalizePlayer).filter(isDisplayablePlayer)
+  const rows = await fetchPlayersPage(teamId)
+  return rows.map(normalizePlayer).filter(isDisplayablePlayer)
 }

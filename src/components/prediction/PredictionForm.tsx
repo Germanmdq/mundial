@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { saveUserPredictions } from "@/app/actions/predictions";
 import type { Match } from "@/lib/worldcup/matches";
-import { PredictionStickyBar } from "./PredictionStickyBar";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
+
+const SHOULD_GATE_AFTER_SIX_MATCHES = false;
 
 type ScoreValue = number | "";
 type LocalScore = { home: ScoreValue; away: ScoreValue; };
@@ -20,6 +21,21 @@ interface PredictionFormProps {
 const TABS = ["Partidos", "Grupos", "Goleador"] as const;
 type TabOption = typeof TABS[number];
 
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Guardando...":
+      return "#0071e3";
+    case "Guardado":
+      return "#34a853";
+    case "Borrador local":
+      return "#8e8e93";
+    case "Error al guardar":
+      return "#df3a30";
+    default:
+      return "#8e8e93";
+  }
+};
+
 export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: PredictionFormProps) {
   const [scores, setScores] = useState<Record<number, LocalScore>>(() => {
     return matches.reduce((acc, match) => {
@@ -32,14 +48,71 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }, {} as Record<number, LocalScore>);
   });
 
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  
+  const [saveStatus, setSaveStatus] = useState<string>(isLoggedIn ? "Guardado" : "Borrador local");
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
   const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
   const [showCompletionCard, setShowCompletionCard] = useState<boolean>(false);
+  
+  // CTA modal / validation states
+  const [ctaModalOpen, setCtaModalOpen] = useState<boolean>(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+
+  // Sync guest draft to Supabase if they login
+  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; }[]) => {
+    const payload = draftItems
+      .filter(item => typeof item.homeScore === "number" && typeof item.awayScore === "number")
+      .map(item => ({
+        match_id: item.matchId,
+        home_goals: item.homeScore as number,
+        away_goals: item.awayScore as number
+      }));
+
+    if (payload.length > 0) {
+      setSaveStatus("Guardando...");
+      const result = await saveUserPredictions(payload);
+      if (result.success) {
+        setSaveStatus("Guardado");
+        localStorage.removeItem("worldcup_prediction_draft");
+      } else {
+        setSaveStatus("Error al guardar");
+      }
+    }
+  };
+
+  // Load localStorage draft on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const rawDraft = localStorage.getItem("worldcup_prediction_draft");
+      if (rawDraft) {
+        setTimeout(() => {
+          try {
+            const parsed: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; updatedAt: string; }[] = JSON.parse(rawDraft);
+            
+            setScores(prev => {
+              const updated = { ...prev };
+              parsed.forEach(item => {
+                if (item.matchId && updated[item.matchId]) {
+                  updated[item.matchId] = {
+                    home: typeof item.homeScore === "number" ? item.homeScore : "",
+                    away: typeof item.awayScore === "number" ? item.awayScore : ""
+                  };
+                }
+              });
+              return updated;
+            });
+
+            // Sync draft to Supabase if now logged in
+            if (isLoggedIn && parsed.length > 0) {
+              syncDraftToSupabase(parsed);
+            }
+          } catch {
+            console.error("Error loading draft");
+          }
+        }, 0);
+      }
+    }
+  }, [isLoggedIn]);
 
   // Group filter change - reset index and completion state
   const handleFilterChange = (filter: string) => {
@@ -80,7 +153,8 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         [type]: val === "" ? "" : Math.max(0, parseInt(val, 10) || 0)
       }
     }));
-    setHasUnsavedChanges(true);
+    setValidationMessage(null); // Clear error on edit
+    setSaveStatus(isLoggedIn ? "Guardando..." : "Borrador local");
   };
 
   const handleIncrement = (matchId: number, side: 'home' | 'away') => {
@@ -101,39 +175,79 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
   };
 
-  const handleSave = async () => {
-    if (!isLoggedIn) {
-      setShowModal(true);
-      return;
-    }
-
-    setIsSaving(true);
-
-    const payload = Object.entries(scores)
-      .filter(([, score]) => typeof score.home === "number" && typeof score.away === "number")
-      .map(([matchIdStr, score]) => ({
-        match_id: parseInt(matchIdStr, 10),
-        home_goals: score.home as number,
-        away_goals: score.away as number
-      }));
-
-    if (payload.length > 0) {
-      const result = await saveUserPredictions(payload);
-      if (result.success) {
-        setHasUnsavedChanges(false);
-      } else {
-        console.error(result.error);
-        alert("Error al guardar las predicciones.");
-      }
-    }
-    
-    setIsSaving(false);
-  };
-
   // Get active match info
   const activeMatch = filteredMatches[currentMatchIndex] || null;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (!activeMatch) return;
+
+    const homeScore = scores[activeMatch.id]?.home;
+    const awayScore = scores[activeMatch.id]?.away;
+
+    // Validation: both fields must be loaded
+    if (homeScore === "" || awayScore === "") {
+      setValidationMessage("Completá ambos resultados para seguir.");
+      return;
+    }
+
+    setValidationMessage(null);
+
+    // Save Prediction
+    if (isLoggedIn) {
+      setSaveStatus("Guardando...");
+      const payload = [{
+        match_id: activeMatch.id,
+        home_goals: homeScore as number,
+        away_goals: awayScore as number
+      }];
+
+      const result = await saveUserPredictions(payload);
+      if (result.success) {
+        setSaveStatus("Guardado");
+      } else {
+        setSaveStatus("Error al guardar");
+        alert("No se pudo guardar este partido. Probá de nuevo.");
+        return; // Halt navigation
+      }
+    } else {
+      // Local Draft Save
+      setSaveStatus("Borrador local");
+
+      let currentDraft: { matchId: number; homeScore: ScoreValue; awayScore: ScoreValue; updatedAt: string; }[] = [];
+      const rawDraft = localStorage.getItem("worldcup_prediction_draft");
+      if (rawDraft) {
+        try {
+          currentDraft = JSON.parse(rawDraft);
+        } catch {}
+      }
+
+      const index = currentDraft.findIndex(item => item.matchId === activeMatch.id);
+      const updatedItem = {
+        matchId: activeMatch.id,
+        homeScore,
+        awayScore,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (index >= 0) {
+        currentDraft[index] = updatedItem;
+      } else {
+        currentDraft.push(updatedItem);
+      }
+
+      localStorage.setItem("worldcup_prediction_draft", JSON.stringify(currentDraft));
+    }
+
+    // CTA Check at 6th completed match
+    const updatedCompletedMatches = Object.values(scores).filter(s => typeof s.home === "number" && typeof s.away === "number").length;
+    const ctaShown = localStorage.getItem("worldcup_prediction_cta_shown") === "true";
+
+    if (!isLoggedIn && updatedCompletedMatches >= 6 && !ctaShown) {
+      setCtaModalOpen(true);
+      return;
+    }
+
+    // Navigate
     if (currentMatchIndex < filteredMatches.length - 1) {
       setCurrentMatchIndex(prev => prev + 1);
     } else {
@@ -163,11 +277,96 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     setShowCompletionCard(false);
   };
 
+  // Render conversion card if open
+  if (ctaModalOpen) {
+    return (
+      <div className="flex items-center justify-center p-4 min-h-[480px]">
+        <div className="conversionCard animate-fadeIn">
+          <h2 className="text-3xl md:text-[44px] font-display font-black text-white mb-4 tracking-tight leading-tight">
+            Ya tenés tu Mundial en marcha.
+          </h2>
+          <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
+            Creá tu cuenta para guardar tu predicción, participar por el premio acumulado, elegir goleador y campeón, y armar grupos privados con tus amigos.
+          </p>
+          
+          <div className="space-y-4 mb-8">
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+              <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+              <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+              <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+              <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+              <span className="text-[15px] font-medium text-white">Seguís tu ranking durante todo el Mundial.</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Link 
+              href="/login?mode=signup&redirect=/mi-prediccion"
+              className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
+            >
+              Crear cuenta y participar
+            </Link>
+            
+            {!SHOULD_GATE_AFTER_SIX_MATCHES && (
+              <button 
+                onClick={() => {
+                  localStorage.setItem("worldcup_prediction_cta_shown", "true");
+                  setCtaModalOpen(false);
+                  // Advance next
+                  if (currentMatchIndex < filteredMatches.length - 1) {
+                    setCurrentMatchIndex(prev => prev + 1);
+                  } else {
+                    setShowCompletionCard(true);
+                  }
+                }}
+                className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
+              >
+                Seguir cargando por ahora
+              </button>
+            )}
+          </div>
+        </div>
+
+        <style jsx>{`
+          .conversionCard {
+            width: min(760px, calc(100vw - 32px));
+            margin: 32px auto;
+            background: #111827;
+            color: #fff;
+            border-radius: 34px;
+            padding: 40px;
+            box-shadow: 0 22px 70px rgba(0,0,0,0.20);
+          }
+          .animate-fadeIn {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   return (
     <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
       
       {/* Progress Panel */}
-      <PremiumCard className="!p-6 grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+      <PremiumCard className="!p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Partidos Completados</span>
           <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">{completedMatches} <span className="text-lg text-[#aeaeb2] font-semibold">/ {totalMatches}</span></span>
@@ -180,18 +379,9 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         </div>
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Estado</span>
-          <span className="text-sm font-bold" style={{ color: hasUnsavedChanges ? "#ff9500" : "#34a853" }}>
-            {hasUnsavedChanges ? "Cambios sin guardar" : "Guardado"}
+          <span className="text-sm font-bold" style={{ color: getStatusColor(saveStatus) }}>
+            {saveStatus}
           </span>
-        </div>
-        <div className="flex justify-end md:justify-end">
-          <button 
-            onClick={isLoggedIn ? handleSave : () => setShowModal(true)}
-            disabled={isSaving}
-            className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] active:scale-95 transition-all w-full md:w-auto"
-          >
-            {isSaving ? "Guardando..." : "Guardar predicción"}
-          </button>
         </div>
       </PremiumCard>
 
@@ -254,7 +444,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                     Ya cargaste la primera parte de tu Mundial. Ahora podés activar tu participación por el premio acumulado, elegir goleador y campeón, y competir en el ranking general.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/premios" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all">
+                    <Link href="/premios" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all justify-center items-center flex">
                       Participar por el premio
                     </Link>
                     <button onClick={() => handleTabChange("Goleador")} className="bg-white text-[#1d1d1f] border border-[rgba(0,0,0,0.15)] px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#f5f5f7] transition-all">
@@ -382,6 +572,14 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                   </div>
                 </div>
 
+                {/* Validation message warning */}
+                {validationMessage && (
+                  <div className="flex items-center justify-center gap-2 text-[#df3a30] text-[14px] font-bold mt-5 animate-bounce-slow">
+                    <span className="material-symbols-outlined text-[18px]">error</span>
+                    {validationMessage}
+                  </div>
+                )}
+
                 {/* Flow Navigation Actions */}
                 <div className="flowActions">
                   <button
@@ -477,39 +675,6 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         )}
 
       </div>
-
-      <PredictionStickyBar 
-        isVisible={hasUnsavedChanges}
-        isSaving={isSaving}
-        isLoggedIn={isLoggedIn}
-        onSave={handleSave}
-        onLoginRequest={() => setShowModal(true)}
-      />
-
-      {/* Guest Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-[28px] w-full max-w-[400px] p-8 shadow-xl border border-[rgba(0,0,0,0.08)]">
-            <div className="w-14 h-14 bg-[#e8f0fd] rounded-full flex items-center justify-center mb-6">
-              <span className="material-symbols-outlined text-[#0071e3] text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                save
-              </span>
-            </div>
-            <h3 className="font-display font-extrabold text-[#1d1d1f] text-[22px] tracking-tight mb-2">Guardá tu Mundial</h3>
-            <p className="text-[#6e6e73] text-[15px] leading-relaxed mb-8">
-              Para guardar tu predicción y competir en el ranking con tus amigos, necesitás iniciar sesión en tu cuenta.
-            </p>
-            <div className="space-y-3">
-              <Link href="/login" className="flex items-center justify-center w-full h-14 bg-[#0071e3] text-white font-bold text-[15px] rounded-full hover:bg-[#0077ed] transition-all active:scale-[0.98] shadow-sm">
-                Iniciar sesión
-              </Link>
-              <button onClick={() => setShowModal(false)} className="flex items-center justify-center w-full h-14 bg-white text-[#1d1d1f] border border-[#e5e5e7] font-bold text-[15px] rounded-full hover:bg-[#f5f5f7] transition-all active:scale-[0.98]">
-                Seguir editando
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* CSS STYLES FOR THE WIZARD */}
       <style jsx>{`
@@ -710,6 +875,14 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
+        }
+
+        .animate-bounce-slow {
+          animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
         }
 
         @media (max-width: 734px) {

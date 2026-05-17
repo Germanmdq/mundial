@@ -6,6 +6,9 @@ import { PageHero } from "@/components/layout/PageHero";
 import { PageSection } from "@/components/ui/PageSection";
 import { JugadoresClient } from "@/components/worldcup/JugadoresClient";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface PageProps {
   searchParams: Promise<{ team?: string }>;
 }

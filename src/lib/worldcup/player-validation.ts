@@ -44,7 +44,6 @@ function hasHumanNameShape(name: string): boolean {
 export function isLikelyBogusPlayer(player: PlayerValidationLike): boolean {
   const name = clean(player.name)
   const normalizedName = normalize(name)
-  const trusted = hasTrustedSource(player)
 
   if (normalize(player.status) === 'bogus_ocr') return true
   if (hasOcrMarkers(player)) return true
@@ -54,9 +53,9 @@ export function isLikelyBogusPlayer(player: PlayerValidationLike): boolean {
   const sourceUrl = clean(player.source_url)
   const position = clean(player.position)
   const club = clean(player.club)
-  if (!trusted && !sourceUrl && /por confirmar/i.test(`${position} ${club}`)) return true
+  if (!hasTrustedSource(player) && !sourceUrl && /por confirmar/i.test(`${position} ${club}`)) return true
 
-  if (!trusted && !hasHumanNameShape(name)) return true
+  if (/^[A-Z0-9\s]{2,}$/.test(name) && !hasHumanNameShape(name)) return true
 
   return false
 }
