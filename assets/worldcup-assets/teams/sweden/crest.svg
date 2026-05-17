@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="880" viewBox="0 0 720 880" role="img" aria-label="Escudo temporal Sweden">
+  <defs>
+    <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(180 46% 13%)"/>
+      <stop offset=".55" stop-color="hsl(268 58% 34%)"/>
+      <stop offset="1" stop-color="#10131d"/>
+    </linearGradient>
+    <radialGradient id="shine" cx=".35" cy=".18" r=".8">
+      <stop offset="0" stop-color="white" stop-opacity=".24"/>
+      <stop offset=".55" stop-color="white" stop-opacity=".05"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M360 38 640 142v244c0 192-117 341-280 454C197 727 80 578 80 386V142L360 38Z" fill="url(#shield)" stroke="white" stroke-opacity=".38" stroke-width="14"/>
+  <path d="M360 74 604 165v215c0 165-96 295-244 399C212 675 116 545 116 380V165L360 74Z" fill="url(#shine)"/>
+  <path d="M174 266h372" stroke="white" stroke-opacity=".20" stroke-width="8" stroke-linecap="round"/>
+  <path d="M220 640c68-40 212-40 280 0" fill="none" stroke="hsl(350 72% 58%)" stroke-opacity=".9" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="360" cy="548" r="42" fill="none" stroke="white" stroke-opacity=".42" stroke-width="8"/>
+  <text x="360" y="446" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="142" font-weight="950" letter-spacing="12" fill="white">SWE</text>
+  <text x="360" y="514" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="3" fill="hsl(268 44% 86%)">SWEDEN</text>
+</svg>
