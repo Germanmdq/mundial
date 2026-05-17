@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { saveUserPredictions } from "@/app/actions/predictions";
 import type { Match } from "@/lib/worldcup/matches";
-import { PredictionMatchCard } from "./PredictionMatchCard";
 import { PredictionStickyBar } from "./PredictionStickyBar";
 import { PremiumCard } from "@/components/ui/PremiumCard";
+import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
 
 type ScoreValue = number | "";
 type LocalScore = { home: ScoreValue; away: ScoreValue; };
@@ -38,6 +38,15 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
+  const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
+  const [showCompletionCard, setShowCompletionCard] = useState<boolean>(false);
+
+  // Group filter change - reset index and completion state
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+    setCurrentMatchIndex(0);
+    setShowCompletionCard(false);
+  };
 
   // Progress Panel Data
   const totalMatches = matches.length || 104;
@@ -74,6 +83,24 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     setHasUnsavedChanges(true);
   };
 
+  const handleIncrement = (matchId: number, side: 'home' | 'away') => {
+    const currentVal = scores[matchId]?.[side];
+    if (currentVal === "") {
+      handleScoreChange(matchId, side, "1");
+    } else {
+      handleScoreChange(matchId, side, String(Number(currentVal) + 1));
+    }
+  };
+
+  const handleDecrement = (matchId: number, side: 'home' | 'away') => {
+    const currentVal = scores[matchId]?.[side];
+    if (currentVal === "" || Number(currentVal) <= 0) {
+      handleScoreChange(matchId, side, "0");
+    } else {
+      handleScoreChange(matchId, side, String(Number(currentVal) - 1));
+    }
+  };
+
   const handleSave = async () => {
     if (!isLoggedIn) {
       setShowModal(true);
@@ -83,7 +110,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     setIsSaving(true);
 
     const payload = Object.entries(scores)
-      .filter(([_, score]) => typeof score.home === "number" && typeof score.away === "number")
+      .filter(([, score]) => typeof score.home === "number" && typeof score.away === "number")
       .map(([matchIdStr, score]) => ({
         match_id: parseInt(matchIdStr, 10),
         home_goals: score.home as number,
@@ -103,6 +130,39 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     setIsSaving(false);
   };
 
+  // Get active match info
+  const activeMatch = filteredMatches[currentMatchIndex] || null;
+
+  const handleNext = () => {
+    if (currentMatchIndex < filteredMatches.length - 1) {
+      setCurrentMatchIndex(prev => prev + 1);
+    } else {
+      setShowCompletionCard(true);
+    }
+  };
+
+  const handlePrev = () => {
+    if (showCompletionCard) {
+      setShowCompletionCard(false);
+    } else if (currentMatchIndex > 0) {
+      setCurrentMatchIndex(prev => prev - 1);
+    }
+  };
+
+  // Compute recently predicted matches (max 3)
+  const recentMatches = useMemo(() => {
+    return matches
+      .filter(m => typeof scores[m.id]?.home === "number" && typeof scores[m.id]?.away === "number" && m.id !== activeMatch?.id)
+      .slice(-3)
+      .reverse();
+  }, [matches, scores, activeMatch]);
+
+  // Tab change
+  const handleTabChange = (tab: TabOption) => {
+    setActiveTab(tab);
+    setShowCompletionCard(false);
+  };
+
   return (
     <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
       
@@ -114,19 +174,21 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         </div>
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Grupos Cargados</span>
-          <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">0 <span className="text-lg text-[#aeaeb2] font-semibold">/ 12</span></span>
+          <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">
+            {completedMatches >= totalMatches ? "12" : "0"} <span className="text-lg text-[#aeaeb2] font-semibold">/ 12</span>
+          </span>
         </div>
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Estado</span>
           <span className="text-sm font-bold" style={{ color: hasUnsavedChanges ? "#ff9500" : "#34a853" }}>
-            {hasUnsavedChanges ? "Cambios pendientes" : "Guardado"}
+            {hasUnsavedChanges ? "Cambios sin guardar" : "Guardado"}
           </span>
         </div>
         <div className="flex justify-end md:justify-end">
           <button 
             onClick={isLoggedIn ? handleSave : () => setShowModal(true)}
-            disabled={isSaving || !hasUnsavedChanges}
-            className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] active:scale-95 transition-all disabled:opacity-50 disabled:bg-[#aeaeb2] w-full md:w-auto"
+            disabled={isSaving}
+            className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] active:scale-95 transition-all w-full md:w-auto"
           >
             {isSaving ? "Guardando..." : "Guardar predicción"}
           </button>
@@ -139,7 +201,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           {TABS.map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => handleTabChange(tab)}
               className="h-[42px] px-5 rounded-full text-[14px] font-bold transition-colors shrink-0"
               style={{
                 background: activeTab === tab ? "#0071e3" : "transparent",
@@ -159,11 +221,11 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         {activeTab === "Partidos" && (
           <div className="space-y-6">
             {/* Filter Chips */}
-            <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar" style={{ scrollbarWidth: "none" }}>
               {groups.map(g => (
                 <button
                   key={g}
-                  onClick={() => setSelectedFilter(g)}
+                  onClick={() => handleFilterChange(g)}
                   className="h-10 px-4 rounded-full text-[13px] font-bold shrink-0 transition-colors border"
                   style={{
                     background: selectedFilter === g ? "#0071e3" : "#ffffff",
@@ -176,32 +238,199 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               ))}
             </div>
 
-            {/* Matches List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              {filteredMatches.map(match => (
-                <PredictionMatchCard
-                  key={match.id}
-                  match={match}
-                  homeScore={scores[match.id]?.home ?? ""}
-                  awayScore={scores[match.id]?.away ?? ""}
-                  onScoreChange={(type, val) => handleScoreChange(match.id, type, val)}
-                  isSaved={!hasUnsavedChanges && typeof scores[match.id]?.home === "number"}
-                />
-              ))}
-              {filteredMatches.length === 0 && (
-                <div className="col-span-full py-12 text-center text-[#6e6e73] font-medium">
-                  No hay partidos en esta categoría.
+            {filteredMatches.length === 0 ? (
+              <div className="py-12 text-center text-[#6e6e73] font-medium">
+                No hay partidos en esta categoría.
+              </div>
+            ) : showCompletionCard ? (
+              /* ZONA DE GRUPOS COMPLETADA CARD */
+              <div className="max-w-2xl mx-auto">
+                <div className="bg-white rounded-[34px] border border-[rgba(0,0,0,0.08)] p-8 md:p-12 text-center shadow-lg">
+                  <span className="material-symbols-outlined text-[64px] text-[#0071e3] mb-6" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    task_alt
+                  </span>
+                  <h2 className="text-3xl font-display font-extrabold text-[#1d1d1f] mb-4">Zona de grupos completada.</h2>
+                  <p className="text-[#6e6e73] text-[16px] leading-relaxed mb-8 max-w-lg mx-auto">
+                    Ya cargaste la primera parte de tu Mundial. Ahora podés activar tu participación por el premio acumulado, elegir goleador y campeón, y competir en el ranking general.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link href="/premios" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all">
+                      Participar por el premio
+                    </Link>
+                    <button onClick={() => handleTabChange("Goleador")} className="bg-white text-[#1d1d1f] border border-[rgba(0,0,0,0.15)] px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#f5f5f7] transition-all">
+                      Elegir goleador
+                    </button>
+                    <button onClick={() => handleTabChange("Goleador")} className="bg-white text-[#1d1d1f] border border-[rgba(0,0,0,0.15)] px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#f5f5f7] transition-all">
+                      Elegir campeón
+                    </button>
+                  </div>
+                  <div className="mt-8 pt-6 border-t border-[rgba(0,0,0,0.06)]">
+                    <button onClick={handlePrev} className="text-[#0071e3] text-[14px] font-bold hover:underline">
+                      ← Volver a revisar partidos
+                    </button>
+                  </div>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : activeMatch && (
+              /* SINGLE MATCH WIZARD FLOW */
+              <div className="predictionSingleFlow">
+                
+                {/* Progress Header */}
+                <div className="progressHeader">
+                  <span className="progressLabel">
+                    {selectedFilter === "Todos" 
+                      ? `Partido ${currentMatchIndex + 1} de ${filteredMatches.length}`
+                      : `${selectedFilter} · Partido ${currentMatchIndex + 1} de ${filteredMatches.length}`
+                    }
+                  </span>
+                  <h2 className="progressTitle">
+                    {getTeamDisplayName(activeMatch.home_team)} vs {getTeamDisplayName(activeMatch.away_team)}
+                  </h2>
+                  <div className="progressBar">
+                    <div 
+                      className="progressFill" 
+                      style={{ width: `${((currentMatchIndex + 1) / filteredMatches.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Match Focus Card */}
+                <div className="matchFocusCard">
+                  <div className="matchFocusMeta">
+                    <span className="matchFocusGroup">
+                      {activeMatch.group_letter ? `Grupo ${activeMatch.group_letter}` : activeMatch.stage_label} · Fase de grupos
+                    </span>
+                    <span className="matchFocusTime">
+                      {activeMatch.kickoff_at 
+                        ? new Date(activeMatch.kickoff_at).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' })
+                        : "Por definir"
+                      }
+                      {activeMatch.stadium_name ? ` · ${activeMatch.stadium_name}, ${activeMatch.city}` : ""}
+                    </span>
+                  </div>
+
+                  <div className="matchFocusTeams">
+                    {/* Home Team Row */}
+                    <div className="focusTeam">
+                      <div className="focusTeamInfo">
+                        <div className="focusFlag flex items-center justify-center font-bold text-2xl shadow-inner">
+                          {getTeamFlag(activeMatch.home_team) || "🏳️"}
+                        </div>
+                        <div>
+                          <h3 className="focusTeamName">{getTeamDisplayName(activeMatch.home_team)}</h3>
+                          <p className="focusTeamCode">{getTeamCode(activeMatch.home_team)}</p>
+                        </div>
+                      </div>
+                      <div className="scoreStepper">
+                        <button
+                          type="button"
+                          className="scoreButton"
+                          onClick={() => handleDecrement(activeMatch.id, 'home')}
+                          aria-label="Restar gol local"
+                        >
+                          −
+                        </button>
+                        <div className="scoreValue">
+                          {scores[activeMatch.id]?.home === "" ? "-" : scores[activeMatch.id]?.home}
+                        </div>
+                        <button
+                          type="button"
+                          className="scoreButton"
+                          onClick={() => handleIncrement(activeMatch.id, 'home')}
+                          aria-label="Sumar gol local"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="focusVs">VS</div>
+
+                    {/* Away Team Row */}
+                    <div className="focusTeam">
+                      <div className="focusTeamInfo">
+                        <div className="focusFlag flex items-center justify-center font-bold text-2xl shadow-inner">
+                          {getTeamFlag(activeMatch.away_team) || "🏳️"}
+                        </div>
+                        <div>
+                          <h3 className="focusTeamName">{getTeamDisplayName(activeMatch.away_team)}</h3>
+                          <p className="focusTeamCode">{getTeamCode(activeMatch.away_team)}</p>
+                        </div>
+                      </div>
+                      <div className="scoreStepper">
+                        <button
+                          type="button"
+                          className="scoreButton"
+                          onClick={() => handleDecrement(activeMatch.id, 'away')}
+                          aria-label="Restar gol visitante"
+                        >
+                          −
+                        </button>
+                        <div className="scoreValue">
+                          {scores[activeMatch.id]?.away === "" ? "-" : scores[activeMatch.id]?.away}
+                        </div>
+                        <button
+                          type="button"
+                          className="scoreButton"
+                          onClick={() => handleIncrement(activeMatch.id, 'away')}
+                          aria-label="Sumar gol visitante"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Flow Navigation Actions */}
+                <div className="flowActions">
+                  <button
+                    onClick={handlePrev}
+                    disabled={currentMatchIndex === 0}
+                    className="flowButton bg-white border border-[rgba(0,0,0,0.15)] text-[#1d1d1f] hover:bg-[#f5f5f7] transition-all disabled:opacity-30 disabled:pointer-events-none"
+                  >
+                    Anterior
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="flowButton bg-[#0071e3] text-white hover:bg-[#0077ed] transition-all"
+                  >
+                    {currentMatchIndex === filteredMatches.length - 1 ? "Ver resumen" : "Siguiente"}
+                  </button>
+                </div>
+
+                {/* Recent Summary Panel */}
+                {recentMatches.length > 0 && (
+                  <div className="mt-12 text-center">
+                    <span className="text-[11px] text-[#6e6e73] font-black uppercase tracking-widest block mb-4">
+                      Últimos cargados
+                    </span>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {recentMatches.map(m => (
+                        <div 
+                          key={m.id}
+                          className="bg-white border border-[rgba(0,0,0,0.06)] rounded-full px-4 py-2 text-[13px] font-bold text-[#1d1d1f] shadow-sm flex items-center gap-2"
+                        >
+                          <span>{getTeamFlag(m.home_team)} {getTeamCode(m.home_team)}</span>
+                          <span className="bg-[#f5f5f7] px-2 py-0.5 rounded text-[11px] font-black">
+                            {scores[m.id]?.home} - {scores[m.id]?.away}
+                          </span>
+                          <span>{getTeamCode(m.away_team)} {getTeamFlag(m.away_team)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            )}
           </div>
         )}
 
         {/* TAB: GRUPOS */}
         {activeTab === "Grupos" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Placeholder Visual Cards */}
-            {["A", "B", "C", "D", "E", "F"].map(group => (
+            {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"].map(group => (
               <PremiumCard key={group} className="!p-5">
                 <h3 className="font-display font-extrabold text-[#1d1d1f] text-[18px] mb-4">Grupo {group}</h3>
                 <div className="w-full text-left">
@@ -281,6 +510,276 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           </div>
         </div>
       )}
+
+      {/* CSS STYLES FOR THE WIZARD */}
+      <style jsx>{`
+        .predictionSingleFlow {
+          width: min(820px, calc(100vw - 32px));
+          margin: 0 auto;
+        }
+
+        .progressHeader {
+          margin: 32px auto 18px;
+          text-align: center;
+        }
+
+        .progressLabel {
+          color: #6e6e73;
+          font-size: 14px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .progressTitle {
+          margin-top: 8px;
+          color: #1d1d1f;
+          font-size: clamp(28px, 5vw, 44px);
+          font-weight: 850;
+          letter-spacing: -0.045em;
+        }
+
+        .progressBar {
+          width: 100%;
+          height: 8px;
+          border-radius: 999px;
+          background: rgba(0,0,0,0.08);
+          overflow: hidden;
+          margin-top: 18px;
+        }
+
+        .progressFill {
+          height: 100%;
+          border-radius: inherit;
+          background: #0071e3;
+          transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .matchFocusCard {
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 34px;
+          padding: 34px;
+          box-shadow: 0 18px 60px rgba(0,0,0,0.08);
+        }
+
+        .matchFocusMeta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          margin-bottom: 34px;
+        }
+
+        .matchFocusGroup {
+          color: #0071e3;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .matchFocusTime {
+          color: #6e6e73;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .matchFocusTeams {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+
+        .focusTeam {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-items: center;
+          gap: 22px;
+        }
+
+        .focusTeamInfo {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          min-width: 0;
+        }
+
+        .focusFlag {
+          width: 62px;
+          height: 62px;
+          border-radius: 999px;
+          border: 1px solid rgba(0,0,0,0.08);
+          background: #f5f5f7;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .focusTeamName {
+          margin: 0;
+          color: #1d1d1f;
+          font-size: clamp(24px, 4vw, 36px);
+          font-weight: 850;
+          letter-spacing: -0.045em;
+          line-height: 1.02;
+        }
+
+        .focusTeamCode {
+          margin: 5px 0 0;
+          color: #6e6e73;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.1em;
+        }
+
+        .focusVs {
+          text-align: center;
+          color: #9ca3af;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+        }
+
+        .scoreStepper {
+          display: grid;
+          grid-template-columns: 48px 72px 48px;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .scoreButton {
+          width: 48px;
+          height: 48px;
+          border-radius: 999px;
+          border: 1px solid rgba(0,0,0,0.10);
+          background: #ffffff;
+          color: #1d1d1f;
+          font-size: 26px;
+          font-weight: 900;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+          cursor: pointer;
+          transition: transform 0.1s, background 0.1s;
+        }
+
+        .scoreButton:active {
+          transform: scale(0.92);
+        }
+
+        .scoreButton:disabled {
+          opacity: 0.35;
+          pointer-events: none;
+        }
+
+        .scoreValue {
+          width: 72px;
+          height: 64px;
+          border-radius: 20px;
+          background: #f5f5f7;
+          border: 1px solid rgba(0,0,0,0.10);
+          color: #1d1d1f;
+          font-size: 34px;
+          font-weight: 900;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .flowActions {
+          width: min(820px, calc(100vw - 32px));
+          margin: 24px auto 0;
+          display: flex;
+          justify-content: space-between;
+          gap: 14px;
+        }
+
+        .flowButton {
+          height: 52px;
+          padding: 0 28px;
+          border-radius: 999px;
+          font-size: 16px;
+          font-weight: 800;
+          cursor: pointer;
+          transition: background 0.2s, transform 0.1s;
+        }
+
+        .flowButton:active {
+          transform: scale(0.98);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        @media (max-width: 734px) {
+          .predictionSingleFlow {
+            width: calc(100vw - 28px);
+          }
+
+          .matchFocusCard {
+            padding: 22px 16px;
+            border-radius: 28px;
+          }
+
+          .matchFocusMeta {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 26px;
+            text-align: center;
+          }
+
+          .focusTeam {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            text-align: center;
+            gap: 14px;
+          }
+
+          .focusTeamInfo {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+          }
+
+          .focusFlag {
+            width: 58px;
+            height: 58px;
+          }
+
+          .focusTeamName {
+            font-size: 28px;
+          }
+
+          .scoreStepper {
+            grid-template-columns: 46px 68px 46px;
+            gap: 9px;
+          }
+
+          .scoreButton {
+            width: 46px;
+            height: 46px;
+          }
+
+          .scoreValue {
+            width: 68px;
+            height: 60px;
+            font-size: 32px;
+          }
+
+          .flowActions {
+            width: calc(100vw - 28px);
+          }
+
+          .flowButton {
+            flex: 1;
+            height: 50px;
+            padding: 0 16px;
+          }
+        }
+      `}</style>
+
     </div>
   );
 }
