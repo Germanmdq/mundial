@@ -6,6 +6,7 @@ import { RegisterForm } from "./RegisterForm";
 import { createClient } from "@/lib/supabase/client";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { cn } from "@/lib/utils";
+import { getAuthCallbackUrl } from "@/lib/auth/redirect-url";
 
 export function AuthTabs() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
@@ -17,7 +18,7 @@ export function AuthTabs() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`
+        redirectTo: getAuthCallbackUrl()
       }
     });
   };

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { getAuthCallbackUrl } from "@/lib/auth/redirect-url";
 
 export function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -26,6 +27,9 @@ export function RegisterForm() {
     const { error: authError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: getAuthCallbackUrl(),
+      },
     });
     
     if (authError) {
