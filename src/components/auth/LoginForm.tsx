@@ -4,7 +4,11 @@ import React, { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export function LoginForm() {
+type LoginFormProps = {
+  redirectTo?: string;
+};
+
+export function LoginForm({ redirectTo = "/mi-prediccion" }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +35,7 @@ export function LoginForm() {
     }
     
     router.refresh();
-    router.push("/cuenta");
+    router.push(redirectTo.startsWith("/") && !redirectTo.startsWith("//") ? redirectTo : "/mi-prediccion");
   };
 
   return (

@@ -5,7 +5,11 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { getAuthCallbackUrl } from "@/lib/auth/redirect-url";
 
-export function RegisterForm() {
+type RegisterFormProps = {
+  redirectTo?: string;
+};
+
+export function RegisterForm({ redirectTo = "/mi-prediccion" }: RegisterFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +32,7 @@ export function RegisterForm() {
       email,
       password,
       options: {
-        emailRedirectTo: getAuthCallbackUrl(),
+        emailRedirectTo: getAuthCallbackUrl(redirectTo),
       },
     });
     
@@ -44,7 +48,7 @@ export function RegisterForm() {
     // If confirmation is required, it won't sign in immediately.
     // We assume auto-login for now or successful account creation.
     router.refresh();
-    router.push("/cuenta");
+    router.push(redirectTo.startsWith("/") && !redirectTo.startsWith("//") ? redirectTo : "/mi-prediccion");
   };
 
   return (

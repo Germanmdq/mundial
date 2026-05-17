@@ -4,7 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/cuenta'
+  const requestedNext = searchParams.get('next') ?? '/mi-prediccion'
+  const next = requestedNext.startsWith('/') && !requestedNext.startsWith('//') ? requestedNext : '/mi-prediccion'
   const appUrl = (process.env.NEXT_PUBLIC_APP_URL || origin).replace(/\/$/, '')
 
   if (code) {

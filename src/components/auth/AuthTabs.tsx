@@ -8,8 +8,13 @@ import { PremiumCard } from "@/components/ui/PremiumCard";
 import { cn } from "@/lib/utils";
 import { getAuthCallbackUrl } from "@/lib/auth/redirect-url";
 
-export function AuthTabs() {
-  const [activeTab, setActiveTab] = useState<"login" | "register">("login");
+type AuthTabsProps = {
+  mode?: "login" | "signup";
+  redirectTo?: string;
+};
+
+export function AuthTabs({ mode = "login", redirectTo = "/mi-prediccion" }: AuthTabsProps) {
+  const [activeTab, setActiveTab] = useState<"login" | "register">(mode === "signup" ? "register" : "login");
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const supabase = createClient();
 
@@ -18,7 +23,7 @@ export function AuthTabs() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: getAuthCallbackUrl()
+        redirectTo: getAuthCallbackUrl(redirectTo)
       }
     });
   };
@@ -95,7 +100,7 @@ export function AuthTabs() {
         </div>
 
 
-        {activeTab === "login" ? <LoginForm /> : <RegisterForm />}
+        {activeTab === "login" ? <LoginForm redirectTo={redirectTo} /> : <RegisterForm redirectTo={redirectTo} />}
       </PremiumCard>
     </div>
   );

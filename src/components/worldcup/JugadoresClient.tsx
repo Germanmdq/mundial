@@ -10,6 +10,7 @@ import { getTeamDisplayName, getTeamCode } from "@/lib/worldcup/team-display-nam
 import { getFifaTeamProfile } from "@/lib/worldcup/team-history";
 import { SafeAssetImage } from "@/components/worldcup/SafeAssetImage";
 import { getTeamAssetSources } from "@/lib/worldcup/assets";
+import { Search, ExternalLink, Users } from "lucide-react";
 
 interface JugadoresClientProps {
   teams: Team[];
@@ -174,7 +175,6 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
   const totalCargados = playersByTeam.get(String(activeTeam?.id || ""))?.length || 0;
   const isRosterConfirmed = totalCargados > 0;
   const statusLabel = isRosterConfirmed ? "Plantel en revisión" : "Plantel por confirmar";
-  const statusDetail = isRosterConfirmed ? `${totalCargados} jugadores cargados` : "Todavía no hay jugadores cargados para esta selección.";
 
   return (
     <div className="w-full flex flex-col gap-10">
@@ -196,9 +196,7 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full sm:w-[260px] h-[40px] pl-10 pr-4 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-[14px] font-medium text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3] transition-all"
                 />
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#aeaeb2] material-symbols-rounded">
-                  search
-                </span>
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#aeaeb2]" size={18} />
               </div>
               
               <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 sm:pb-0">
@@ -275,9 +273,17 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                   <p className="mt-2 text-[14px] font-bold text-[#6e6e73]">
                     {getTeamCode(activeTeam.name)} · Grupo {activeTeam.group_letter || "-"}
                   </p>
-                  <p className="mt-1.5 text-[13px] font-extrabold text-[#0071e3]">
-                    {statusLabel} · {statusDetail}
-                  </p>
+                  <div className="mt-3 flex flex-col items-start gap-1">
+                    <span className="squadStatusBadge">
+                      {statusLabel}
+                    </span>
+                    <p className="squadStatusText">
+                      {isRosterConfirmed 
+                        ? `${totalCargados} jugadores cargados.` 
+                        : "La lista de jugadores todavía no está cargada para esta selección."
+                      }
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -289,16 +295,23 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[13px] font-bold text-[#0071e3] transition-all self-start md:self-center shrink-0"
                 >
                   <span>Ver fuente FIFA</span>
-                  <span className="text-[16px] material-symbols-rounded">open_in_new</span>
+                  <ExternalLink size={14} className="shrink-0" />
                 </a>
               )}
             </div>
 
             {/* MINI DATOS HISTÓRICOS COMPACTOS */}
             <div className="mt-6 pt-6 border-t border-[rgba(0,0,0,0.06)] relative z-10">
-              <h4 className="text-[12px] font-black uppercase tracking-wider text-[#6e6e73] mb-3">
-                Historia FIFA
-              </h4>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                  <h3 className="text-[18px] font-black text-[#1d1d1f] tracking-tight">
+                    {getTeamDisplayName(activeTeam.name)} en los Mundiales
+                  </h3>
+                  <span className="inline-flex items-center px-2.5 py-0.5 mt-1.5 rounded bg-[rgba(0,113,227,0.08)] text-[#0071e3] text-[10px] font-black uppercase tracking-wider">
+                    Historia FIFA
+                  </span>
+                </div>
+              </div>
               {isImported ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                   <MiniStat label="Confederación" value={confederation} />
@@ -318,11 +331,13 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
 
           {/* PLAYERS LIST CONTAINER */}
           {!isRosterConfirmed ? (
-            <div className="py-12 px-6 text-center bg-white border border-[rgba(0,0,0,0.08)] rounded-[28px] shadow-sm max-w-[500px] mx-auto mt-6">
-              <span className="text-[48px] text-[#aeaeb2] material-symbols-rounded">group_off</span>
-              <h3 className="text-[18px] font-black text-[#1d1d1f] mt-4">Plantel por confirmar</h3>
-              <p className="text-[14px] text-[#6e6e73] font-medium mt-2 leading-relaxed">
-                Todavía no hay jugadores cargados para esta selección. Cuando la lista esté disponible, vas a poder ver el plantel completo acá.
+            <div className="emptySquadCard">
+              <div className="emptySquadIcon">
+                <Users size={24} />
+              </div>
+              <h3 className="emptySquadTitle">Plantel por confirmar</h3>
+              <p className="emptySquadText">
+                La lista de jugadores todavía no está cargada para esta selección. Cuando la lista esté disponible, vas a poder ver el plantel completo acá.
               </p>
             </div>
           ) : (
@@ -336,9 +351,7 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full h-[40px] pl-10 pr-4 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-[14px] font-medium text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3] transition-all"
                 />
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#aeaeb2] material-symbols-rounded">
-                  search
-                </span>
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#aeaeb2]" size={18} />
               </div>
 
               {groupedPlayers.length === 0 ? (
@@ -369,6 +382,62 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
       )}
 
       <style jsx>{`
+        .squadStatusBadge {
+          display: inline-flex;
+          align-items: center;
+          height: 30px;
+          padding: 0 12px;
+          border-radius: 999px;
+          background: rgba(0, 113, 227, 0.10);
+          color: #0071e3;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .squadStatusText {
+          margin-top: 8px;
+          color: #6e6e73;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .emptySquadCard {
+          width: min(520px, 100%);
+          margin: 32px auto 0;
+          padding: 34px;
+          border-radius: 28px;
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 10px 34px rgba(0,0,0,0.06);
+          text-align: center;
+        }
+
+        .emptySquadIcon {
+          width: 58px;
+          height: 58px;
+          margin: 0 auto 18px;
+          border-radius: 999px;
+          background: #f5f5f7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #6e6e73;
+        }
+
+        .emptySquadTitle {
+          font-size: 22px;
+          font-weight: 850;
+          letter-spacing: -0.03em;
+          color: #1d1d1f;
+        }
+
+        .emptySquadText {
+          margin-top: 10px;
+          color: #6e6e73;
+          font-size: 15px;
+          line-height: 1.45;
+        }
+
         .teamGrid {
           display: grid;
           gap: 16px;

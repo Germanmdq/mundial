@@ -8,8 +8,18 @@ import { PremiumCard } from "@/components/ui/PremiumCard";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
 
 const SHOULD_GATE_AFTER_SIX_MATCHES = false;
+const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
+const PREDICTION_RETURN_PATH_KEY = "worldcup_prediction_return_path";
 
 type LocalScore = { home: number; away: number; };
+type DraftPredictionItem = { matchId: number; homeScore: number; awayScore: number; updatedAt: string; };
+type PredictionDraft = {
+  scores: Record<number, LocalScore>;
+  completedMatchIds: number[];
+  currentMatchIndex: number;
+  selectedGroup: string;
+  updatedAt: string;
+};
 
 interface PredictionFormProps {
   matches: Match[];
@@ -37,6 +47,59 @@ const getStatusColor = (status: string) => {
 
 const getScoreValue = (value: number | undefined | null): number => {
   return typeof value === "number" ? value : 0;
+};
+
+const parseDraft = (rawDraft: string | null): PredictionDraft | null => {
+  if (!rawDraft) return null;
+
+  try {
+    const parsed = JSON.parse(rawDraft) as PredictionDraft | DraftPredictionItem[];
+
+    if (Array.isArray(parsed)) {
+      const scores = parsed.reduce((acc, item) => {
+        if (item.matchId) {
+          acc[item.matchId] = {
+            home: getScoreValue(item.homeScore),
+            away: getScoreValue(item.awayScore),
+          };
+        }
+        return acc;
+      }, {} as Record<number, LocalScore>);
+
+      return {
+        scores,
+        completedMatchIds: Object.keys(scores).map(Number),
+        currentMatchIndex: 0,
+        selectedGroup: "Todos",
+        updatedAt: new Date().toISOString(),
+      };
+    }
+
+    return {
+      scores: parsed.scores ?? {},
+      completedMatchIds: Array.isArray(parsed.completedMatchIds) ? parsed.completedMatchIds : [],
+      currentMatchIndex: typeof parsed.currentMatchIndex === "number" ? parsed.currentMatchIndex : 0,
+      selectedGroup: typeof parsed.selectedGroup === "string" ? parsed.selectedGroup : "Todos",
+      updatedAt: parsed.updatedAt ?? new Date().toISOString(),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const buildDraftItems = (draft: PredictionDraft): DraftPredictionItem[] => {
+  return draft.completedMatchIds
+    .map((matchId) => {
+      const score = draft.scores[matchId];
+      if (!score) return null;
+      return {
+        matchId,
+        homeScore: getScoreValue(score.home),
+        awayScore: getScoreValue(score.away),
+        updatedAt: draft.updatedAt,
+      };
+    })
+    .filter((item): item is DraftPredictionItem => Boolean(item));
 };
 
 export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: PredictionFormProps) {
@@ -90,22 +153,46 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
   };
 
+  const persistDraft = (
+    nextScores = scores,
+    nextCompletedMatchIds = completedMatchIds,
+    nextCurrentMatchIndex = currentMatchIndex,
+    nextSelectedGroup = selectedFilter,
+  ) => {
+    if (typeof window === "undefined" || isLoggedIn) return;
+
+    const draft: PredictionDraft = {
+      scores: Object.fromEntries(
+        Array.from(nextCompletedMatchIds)
+          .map((matchId) => [matchId, nextScores[matchId]])
+          .filter(([, score]) => Boolean(score)),
+      ) as Record<number, LocalScore>,
+      completedMatchIds: Array.from(nextCompletedMatchIds),
+      currentMatchIndex: nextCurrentMatchIndex,
+      selectedGroup: nextSelectedGroup,
+      updatedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(PREDICTION_DRAFT_KEY, JSON.stringify(draft));
+    localStorage.setItem(PREDICTION_RETURN_PATH_KEY, "/mi-prediccion");
+  };
+
   // Load localStorage draft on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const rawDraft = localStorage.getItem("worldcup_prediction_draft");
-      if (rawDraft) {
+      const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
+      const parsedDraft = parseDraft(rawDraft);
+      if (parsedDraft) {
         setTimeout(() => {
           try {
-            const parsed: { matchId: number; homeScore: number; awayScore: number; updatedAt: string; }[] = JSON.parse(rawDraft);
-            
             setScores(prev => {
               const updated = { ...prev };
-              parsed.forEach(item => {
-                if (item.matchId && updated[item.matchId]) {
-                  updated[item.matchId] = {
-                    home: typeof item.homeScore === "number" ? item.homeScore : 0,
-                    away: typeof item.awayScore === "number" ? item.awayScore : 0
+              Object.entries(parsedDraft.scores).forEach(([matchId, score]) => {
+                const id = Number(matchId);
+                if (id && updated[id]) {
+                  updated[id] = {
+                    home: getScoreValue(score.home),
+                    away: getScoreValue(score.away)
                   };
                 }
               });
@@ -114,17 +201,21 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
             setCompletedMatchIds(prev => {
               const next = new Set(prev);
-              parsed.forEach(item => {
-                if (item.matchId) {
-                  next.add(item.matchId);
+              parsedDraft.completedMatchIds.forEach(matchId => {
+                if (matchId) {
+                  next.add(matchId);
                 }
               });
               return next;
             });
 
+            setSelectedFilter(parsedDraft.selectedGroup || "Todos");
+            setCurrentMatchIndex(Math.max(0, parsedDraft.currentMatchIndex || 0));
+
             // Sync draft to Supabase if now logged in
-            if (isLoggedIn && parsed.length > 0) {
-              syncDraftToSupabase(parsed);
+            const draftItems = buildDraftItems(parsedDraft);
+            if (isLoggedIn && draftItems.length > 0) {
+              syncDraftToSupabase(draftItems);
             }
           } catch {
             console.error("Error loading draft");
@@ -136,6 +227,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
   // Group filter change - reset index and completion state
   const handleFilterChange = (filter: string) => {
+    persistDraft(scores, completedMatchIds, 0, filter);
     setSelectedFilter(filter);
     setCurrentMatchIndex(0);
     setShowCompletionCard(false);
@@ -165,21 +257,21 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
   const handleScoreChange = (matchId: number, type: 'home' | 'away', val: string) => {
     const numericVal = val === "" ? 0 : Math.max(0, parseInt(val, 10) || 0);
-    setScores(prev => ({
-      ...prev,
+    const nextScores = {
+      ...scores,
       [matchId]: {
-        ...prev[matchId],
+        ...scores[matchId],
         [type]: numericVal
       }
-    }));
+    };
+    const nextCompletedMatchIds = new Set(completedMatchIds);
+    nextCompletedMatchIds.add(matchId);
+
+    setScores(nextScores);
     setValidationMessage(null); // Clear error on edit
     setSaveStatus(isLoggedIn ? "Guardando..." : "Borrador local");
-
-    setCompletedMatchIds(prev => {
-      const next = new Set(prev);
-      next.add(matchId);
-      return next;
-    });
+    setCompletedMatchIds(nextCompletedMatchIds);
+    persistDraft(nextScores, nextCompletedMatchIds);
   };
 
   const handleIncrement = (matchId: number, side: 'home' | 'away') => {
@@ -230,30 +322,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     } else {
       // Local Draft Save
       setSaveStatus("Borrador local");
-
-      let currentDraft: { matchId: number; homeScore: number; awayScore: number; updatedAt: string; }[] = [];
-      const rawDraft = localStorage.getItem("worldcup_prediction_draft");
-      if (rawDraft) {
-        try {
-          currentDraft = JSON.parse(rawDraft);
-        } catch {}
-      }
-
-      const index = currentDraft.findIndex(item => item.matchId === activeMatch.id);
-      const updatedItem = {
-        matchId: activeMatch.id,
-        homeScore,
-        awayScore,
-        updatedAt: new Date().toISOString()
+      const nextScores = {
+        ...scores,
+        [activeMatch.id]: { home: homeScore, away: awayScore },
       };
-
-      if (index >= 0) {
-        currentDraft[index] = updatedItem;
-      } else {
-        currentDraft.push(updatedItem);
-      }
-
-      localStorage.setItem("worldcup_prediction_draft", JSON.stringify(currentDraft));
+      const nextCompletedMatchIds = new Set(completedMatchIds);
+      nextCompletedMatchIds.add(activeMatch.id);
+      persistDraft(nextScores, nextCompletedMatchIds);
     }
 
     // CTA Check at 6th completed match
@@ -261,16 +336,26 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       ? completedMatchIds.size 
       : completedMatchIds.size + 1;
     const ctaShown = localStorage.getItem("worldcup_prediction_cta_shown") === "true";
+    const nextMatchIndex = currentMatchIndex < filteredMatches.length - 1 ? currentMatchIndex + 1 : currentMatchIndex;
 
     if (!isLoggedIn && completedCount >= 6 && !ctaShown) {
+      const nextScores = {
+        ...scores,
+        [activeMatch.id]: { home: homeScore, away: awayScore },
+      };
+      const nextCompletedMatchIds = new Set(completedMatchIds);
+      nextCompletedMatchIds.add(activeMatch.id);
+      persistDraft(nextScores, nextCompletedMatchIds, nextMatchIndex);
       setCtaModalOpen(true);
       return;
     }
 
     // Navigate
     if (currentMatchIndex < filteredMatches.length - 1) {
+      persistDraft(scores, completedMatchIds, currentMatchIndex + 1);
       setCurrentMatchIndex(prev => prev + 1);
     } else {
+      persistDraft(scores, completedMatchIds, currentMatchIndex);
       setShowCompletionCard(true);
     }
   };
@@ -327,6 +412,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Partidos Completados</span>
           <span className="text-2xl font-display font-extrabold text-[#1d1d1f]">{completedMatches} <span className="text-lg text-[#aeaeb2] font-semibold">/ {totalMatches}</span></span>
+          <span className="mt-1 text-[12px] font-bold text-[#6e6e73]">Partidos completados globales: {completedMatches} / {totalMatches}</span>
         </div>
         <div className="flex flex-col">
           <span className="text-[11px] text-[#aeaeb2] font-bold uppercase tracking-widest mb-1">Grupos Cargados</span>
@@ -425,6 +511,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                 <div className="flex flex-col gap-3">
                   <Link 
                     href="/login?mode=signup&redirect=/mi-prediccion"
+                    onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
                     className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
                   >
                     Crear cuenta y participar
@@ -434,6 +521,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                     <button 
                       onClick={() => {
                         localStorage.setItem("worldcup_prediction_cta_shown", "true");
+                        persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
                         setCtaModalOpen(false);
                         // Advance next
                         if (currentMatchIndex < filteredMatches.length - 1) {
@@ -673,11 +761,11 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       </div>
 
       {/* DETAILED PREDICTIONS SUMMARY AGRUPADO POR GRUPO */}
-      {groupedSummary.length > 0 && (
-        <section className="predictionSummary">
-          <h2 className="summaryTitle">Tus predicciones</h2>
-          <p className="summarySubtitle">Así va quedando tu Mundial.</p>
+      <section className="predictionSummary">
+        <h2 className="summaryTitle">Tus predicciones</h2>
+        <p className="summarySubtitle">Así va quedando tu Mundial.</p>
 
+        {groupedSummary.length > 0 ? (
           <div className="summaryGroups">
             {groupedSummary.map(g => (
               <div key={g.groupName} className="summaryGroup">
@@ -702,8 +790,10 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               </div>
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <div className="summaryEmpty">Todavía no cargaste partidos. Empezá por el primero.</div>
+        )}
+      </section>
 
       {/* CSS STYLES FOR THE WIZARD */}
       <style jsx>{`
@@ -958,6 +1048,19 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           border: 1px solid rgba(0,0,0,0.08);
           border-radius: 24px;
           padding: 18px;
+          box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+        }
+
+        .summaryEmpty {
+          margin-top: 18px;
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 24px;
+          padding: 22px;
+          color: #6e6e73;
+          font-size: 15px;
+          font-weight: 700;
+          text-align: center;
           box-shadow: 0 8px 28px rgba(0,0,0,0.05);
         }
 

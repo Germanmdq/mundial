@@ -3,12 +3,14 @@ export function getAppUrl(): string {
   if (configuredUrl) return configuredUrl.replace(/\/$/, '')
 
   if (typeof window !== 'undefined') {
-    return window.location.origin.replace(/\/$/, '')
+    const origin = window.location.origin.replace(/\/$/, '')
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) return origin
   }
 
-  return 'http://localhost:3000'
+  return 'https://mundialentreamigos.online'
 }
 
-export function getAuthCallbackUrl(): string {
-  return `${getAppUrl()}/auth/callback`
+export function getAuthCallbackUrl(next = '/mi-prediccion'): string {
+  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/mi-prediccion'
+  return `${getAppUrl()}/auth/callback?next=${encodeURIComponent(safeNext)}`
 }
