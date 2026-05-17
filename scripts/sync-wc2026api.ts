@@ -228,6 +228,12 @@ function groupLetter(groupName: string | null | undefined): string | null {
   return value.replace(/^group\s+/i, '').slice(0, 1).toUpperCase()
 }
 
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message
+  if (error && typeof error === 'object') return JSON.stringify(error)
+  return String(error)
+}
+
 async function getColumns(table: string): Promise<Set<string>> {
   const admin = getAdminSupabaseClient()
   if (!admin) return new Set()
@@ -437,7 +443,7 @@ async function main() {
     try {
       await updateTeamIfPossible(team, result, teamColumns, stats)
     } catch (error) {
-      stats.errors.push(`teams_info ${team.name}: ${error instanceof Error ? error.message : String(error)}`)
+      stats.errors.push(`teams_info ${team.name}: ${errorMessage(error)}`)
     }
   }
 
@@ -478,7 +484,7 @@ async function main() {
     try {
       await updateMatchIfPossible(match, result, teamMatchesByApiId, matchColumns, stats)
     } catch (error) {
-      stats.errors.push(`matches ${match.match_number ?? match.id}: ${error instanceof Error ? error.message : String(error)}`)
+      stats.errors.push(`matches ${match.match_number ?? match.id}: ${errorMessage(error)}`)
     }
   }
 

@@ -11,12 +11,17 @@
     "assets:sync-teams": "tsx scripts/sync-team-assets.ts",
     "players:import": "tsx scripts/import-players.ts",
     "assets:generate-placeholders": "tsx scripts/generate-placeholder-team-assets.ts",
+    "assets:import-flags": "tsx scripts/import-team-flags-from-flagcdn.ts",
+    "assets:import-badges": "tsx scripts/import-team-badges-from-thesportsdb.ts",
     "api:sync-wc2026": "tsx scripts/sync-wc2026api.ts",
     "api:sync-worldcup-2026": "tsx scripts/sync-worldcup-2026-from-api.ts",
     "api:search-teams": "tsx scripts/search-football-teams-api.ts",
     "api:import-team-logos": "tsx scripts/import-team-logos-from-api.ts",
     "api:import-squads": "tsx scripts/import-squads-from-api.ts",
-    "api:import-player-photos": "tsx scripts/import-player-photos-from-api.ts"
+    "api:import-player-photos": "tsx scripts/import-player-photos-from-api.ts",
+    "players:import-wikipedia-squads": "tsx scripts/import-worldcup-squads-from-wikipedia.ts",
+    "players:import-wikimedia-photos": "tsx scripts/import-player-photos-from-wikimedia.ts",
+    "players:import-thesportsdb-photos": "tsx scripts/import-player-photos-from-thesportsdb.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

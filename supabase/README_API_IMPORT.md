@@ -20,6 +20,11 @@ TheSportsDB puede usar la key publica de prueba para pruebas, pero produccion ne
 
 ```bash
 ~/.bun/bin/bun run api:sync-wc2026
+~/.bun/bin/bun run assets:import-flags
+~/.bun/bin/bun run assets:import-badges
+~/.bun/bin/bun run players:import-wikipedia-squads
+~/.bun/bin/bun run players:import-wikimedia-photos
+~/.bun/bin/bun run players:import-thesportsdb-photos
 ~/.bun/bin/bun run api:sync-worldcup-2026
 ~/.bun/bin/bun run api:search-teams
 ~/.bun/bin/bun run api:import-team-logos
@@ -135,5 +140,8 @@ Este flujo manual queda como soporte para busquedas puntuales o imports por prov
 - Los jugadores importados quedan `pending_review`.
 - No se marca `confirmed` automaticamente.
 - No se usa Panini/PDF como fuente de datos.
+- FlagCDN se usa para banderas.
+- TheSportsDB requiere `THESPORTSDB_API_KEY` para badges/fotos.
+- Wikipedia/Wikidata/Wikimedia Commons se usan solo como datos/fotos de revision.
 - Si falta service role, se preparan archivos locales cuando sea posible, pero no se sube Storage ni se actualiza DB.
 - Si faltan API keys, los scripts generan salidas vacias o reportes claros sin stacktrace inutil.
