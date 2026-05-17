@@ -10,6 +10,11 @@ const REPORT_PATH = 'supabase/reports/missing_assets_sources_report.md'
 type TeamRow = { id: string | number; name?: string | null; slug?: string | null; fifa_code?: string | null }
 type PlayerRow = { id: string | number; team_id?: string | number | null; name?: string | null; display_name?: string | null; slug?: string | null; team_slug?: string | null }
 
+const SECTION_NAME_PATTERN =
+  /\b(Bids|Broadcasters|Broadcasting|Final draw|Finals|General information|Miscellaneous|Official symbols|Officials|Qualification|Squads|Stages|Team appearances|Tournaments|Awards|Marketing|Sponsorship|Venues|Host selection|Draw|Format|Schedule|Prize money|Statistics|Discipline|Controversies)\b/i
+const ARTICLE_METADATA_PATTERN =
+  /(19[3-9]\d|20[0-3]\d).*(19[3-9]\d|20[0-3]\d)|\b(AFC|CAF|CONCACAF|CONMEBOL|OFC|UEFA)\b|Group stage|Group [A-L]|Qualification|World Cup|Broadcasting|Awards|Controversies|Stadiums|Task force|Mascots|Official Album/i
+
 function stripHtml(value: string): string {
   return value
     .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -23,6 +28,34 @@ function stripHtml(value: string): string {
     .trim()
 }
 
+function hasHumanNameShape(name: string): boolean {
+  const words = name
+    .replace(/[.'-]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+  if (words.length < 2 || words.length > 5) return false
+  return words.every((word) => /^[A-Za-zÀ-ÿ]{2,}$/.test(word))
+}
+
+function isValidSquadHeader(cells: string[]): boolean {
+  const joined = cells.join(' | ')
+  const hasPlayer = /\b(Player|Name|Jugador)\b/i.test(joined)
+  const hasPosition = /\b(Pos|Position|GK|DF|MF|FW)\b/i.test(joined)
+  const hasClub = /\bClub\b/i.test(joined)
+  const hasBirthOrCaps = /Date of birth|Birth|Caps|Goals|Age/i.test(joined)
+  const isNavigation = SECTION_NAME_PATTERN.test(joined) && !hasPosition
+  return hasPlayer && hasPosition && (hasClub || hasBirthOrCaps) && !isNavigation
+}
+
+function isProbablyNonPlayer(name: string, position: string, club: string): boolean {
+  if (!name || name.length < 3) return true
+  if (SECTION_NAME_PATTERN.test(name)) return true
+  if (!hasHumanNameShape(name)) return true
+  if (!position || !/\b(GK|DF|MF|FW|Goalkeeper|Defender|Midfielder|Forward)\b/i.test(position)) return true
+  if (ARTICLE_METADATA_PATTERN.test(`${name} ${club}`)) return true
+  return false
+}
+
 function extractRows(html: string, teams: TeamRow[], players: PlayerRow[]): CsvRow[] {
   const rows: CsvRow[] = []
   const sections = html.split(/<h2|<h3/gi)
@@ -33,7 +66,12 @@ function extractRows(html: string, teams: TeamRow[], players: PlayerRow[]): CsvR
     const tableMatches = section.match(/<table[\s\S]*?<\/table>/gi) ?? []
     for (const table of tableMatches) {
       const htmlRows = table.match(/<tr[\s\S]*?<\/tr>/gi) ?? []
-      for (const htmlRow of htmlRows) {
+      const headerCells = htmlRows[0]
+        ? [...htmlRows[0].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((match) => stripHtml(match[1]))
+        : []
+      if (!isValidSquadHeader(headerCells)) continue
+
+      for (const htmlRow of htmlRows.slice(1)) {
         const cells = [...htmlRow.matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((match) => stripHtml(match[1]))
         if (cells.length < 2) continue
         const joined = cells.join(' | ')
@@ -43,6 +81,7 @@ function extractRows(html: string, teams: TeamRow[], players: PlayerRow[]): CsvR
         const positionMatch = joined.match(/\b(GK|DF|MF|FW|Goalkeeper|Defender|Midfielder|Forward)\b/i)
         const position = positionMatch?.[1] ?? ''
         const club = cells[cells.length - 1] && cells[cells.length - 1] !== name ? cells[cells.length - 1] : ''
+        if (isProbablyNonPlayer(name, position, club)) continue
         const birth = cells.find((cell) => /\d{4}/.test(cell) && /born|age|\d{1,2}/i.test(cell)) ?? ''
         const matchResult = matchPlayerByNameAndTeam({ name, slug: slugifyPlayerName(name), team_slug: team.slug }, players)
         rows.push({
@@ -60,7 +99,7 @@ function extractRows(html: string, teams: TeamRow[], players: PlayerRow[]): CsvR
           matched_player_name: matchResult.player?.name ?? matchResult.player?.display_name ?? '',
           match_confidence: String(matchResult.confidence),
           status: matchResult.status === 'auto_matched' ? 'matched_pending_review' : 'pending_review',
-          notes: `raw=${joined}`,
+          notes: `source_table_type=squad|raw=${joined}`,
         })
       }
     }

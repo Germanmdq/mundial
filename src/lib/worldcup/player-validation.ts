@@ -11,6 +11,40 @@ const TRUSTED_SOURCE_PATTERN = /(wikipedia|wikidata|wikimedia|fifa\.com|thesport
 const OCR_SOURCE_PATTERN = /(ocr|panini|pdf|placeholder)/i
 const KNOWN_BOGUS_NAME_PATTERN =
   /\b(arnt|wtor|dibba|eee|mks|pogon|rahm|tesielh|eat zidane|lot|por confirmar|ocr)\b/i
+const WIKIPEDIA_SECTION_NAMES = [
+  'Bids',
+  'Broadcasters',
+  'Broadcasting',
+  'Final draw',
+  'Finals',
+  'General information',
+  'Miscellaneous',
+  'Official symbols',
+  'Officials',
+  'Qualification',
+  'Squads',
+  'Stages',
+  'Team appearances',
+  'Tournaments',
+  'Awards',
+  'Marketing',
+  'Sponsorship',
+  'Venues',
+  'Host selection',
+  'Draw',
+  'Format',
+  'Schedule',
+  'Prize money',
+  'Statistics',
+  'Discipline',
+  'Controversies',
+]
+const WIKIPEDIA_SECTION_PATTERN = new RegExp(
+  `\\b(${WIKIPEDIA_SECTION_NAMES.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+  'i',
+)
+const ARTICLE_METADATA_PATTERN =
+  /(19[3-9]\d|20[0-3]\d).*(19[3-9]\d|20[0-3]\d)|\b(AFC|CAF|CONCACAF|CONMEBOL|OFC|UEFA)\b|Group stage|Group [A-L]|Qualification|World Cup|Broadcasting|Awards|Controversies|Stadiums|Task force|Mascots|Official Album/i
 
 function clean(value: string | null | undefined): string {
   return (value ?? '').trim()
@@ -60,6 +94,22 @@ export function isLikelyBogusPlayer(player: PlayerValidationLike): boolean {
   return false
 }
 
+export function isLikelyWikipediaSectionPlayer(player: PlayerValidationLike): boolean {
+  const name = clean(player.name)
+  const normalizedName = normalize(name)
+  const position = clean(player.position)
+  const club = clean(player.club)
+  const sourceUrl = clean(player.source_url)
+  const sectionName = WIKIPEDIA_SECTION_NAMES.some((section) => normalize(section) === normalizedName)
+
+  if (sectionName) return true
+  if (WIKIPEDIA_SECTION_PATTERN.test(name) && !hasHumanNameShape(name)) return true
+  if (/por confirmar|posici[oó]n por confirmar/i.test(position) && ARTICLE_METADATA_PATTERN.test(club)) return true
+  if (/wikipedia\.org\/wiki\/2026_FIFA_World_Cup_squads/i.test(sourceUrl) && ARTICLE_METADATA_PATTERN.test(`${name} ${club}`) && !hasHumanNameShape(name)) return true
+
+  return false
+}
+
 export function isDisplayablePlayer(player: PlayerValidationLike): boolean {
-  return !isLikelyBogusPlayer(player)
+  return !isLikelyBogusPlayer(player) && !isLikelyWikipediaSectionPlayer(player)
 }

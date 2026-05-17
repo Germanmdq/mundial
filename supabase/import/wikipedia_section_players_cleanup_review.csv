@@ -1,0 +1,608 @@
+id,team_id,team_slug,name,slug,position,club,nationality,source_url,status,reason,action
+3819,14,mexico,José Antonio Rodríguez,jose-antonio-rodriguez,GK,Tijuana,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3821,14,mexico,Alex Padilla,alex-padilla,GK,Athletic Bilbao,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3823,14,mexico,César Montes,cesar-montes,DF,Lokomotiv Moscow,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3825,14,mexico,Johan Vásquez,johan-vasquez,DF,Genoa,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3827,14,mexico,Jesús Alberto Angulo,jesus-alberto-angulo,DF,UANL,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3829,14,mexico,Mateo Chávez,mateo-chavez,DF,AZ,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3831,14,mexico,Richard Ledezma,richard-ledezma,DF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3833,14,mexico,Denzell García,denzell-garcia,DF,Juárez,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3835,14,mexico,Ramón Juárez,ramon-juarez,DF,América,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3837,14,mexico,Alejandro Gómez,alejandro-gomez,DF,Tijuana,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3839,14,mexico,Edson Álvarez ( captain ),edson-alvarez-captain,MF,Fenerbahçe,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3841,14,mexico,Carlos Rodríguez,carlos-rodriguez,MF,Cruz Azul,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3843,14,mexico,Luis Romo,luis-romo,MF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3845,14,mexico,Érick Sánchez,erick-sanchez,MF,América,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3847,14,mexico,Érik Lira,erik-lira,MF,Cruz Azul,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3849,14,mexico,Efraín Álvarez,efrain-alvarez,MF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3851,14,mexico,Alexis Gutiérrez,alexis-gutierrez,MF,América,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3853,14,mexico,Obed Vargas,obed-vargas,MF,Atlético Madrid,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3855,14,mexico,Jordán Carrillo,jordan-carrillo,MF,UNAM,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3857,14,mexico,Álvaro Fidalgo,alvaro-fidalgo,MF,Real Betis,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3859,14,mexico,Alexéi Domínguez,alexei-dominguez,MF,Pachuca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3861,14,mexico,Elías Montiel,elias-montiel,MF,Pachuca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3863,14,mexico,Raúl Jiménez,raul-jimenez,FW,Fulham,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3865,14,mexico,Santiago Giménez,santiago-gimenez,FW,Milan,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3867,14,mexico,Julián Quiñones,julian-quinones,FW,Al-Qadsiah,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3869,14,mexico,Guillermo Martínez,guillermo-martinez,FW,UNAM,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3871,54,south-korea,Kim Seung-gyu,kim-seung-gyu,GK,FC Tokyo,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3873,54,south-korea,Song Bum-keun,song-bum-keun,GK,Jeonbuk Hyundai Motors,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3875,54,south-korea,Kim Moon-hwan,kim-moon-hwan,DF,Daejeon Hana Citizen,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3877,54,south-korea,Cho Yu-min,cho-yu-min,DF,Sharjah,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3879,54,south-korea,Park Jin-seob,park-jin-seob,DF,Zhejiang FC,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3881,54,south-korea,Lee Han-beom,lee-han-beom,DF,Midtjylland,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3883,54,south-korea,Lee Ki-hyuk,lee-ki-hyuk,DF,Gangwon FC,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3820,14,mexico,Carlos Moreno,carlos-moreno,GK,Pachuca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3822,14,mexico,Jesús Gallardo,jesus-gallardo,DF,Toluca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3824,14,mexico,Jorge Sánchez,jorge-sanchez,DF,PAOK,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3826,14,mexico,Israel Reyes,israel-reyes,DF,América,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3828,14,mexico,Julián Araujo,julian-araujo,DF,Celtic,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3830,14,mexico,Víctor Guzmán,victor-guzman,DF,Monterrey,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3832,14,mexico,Everardo López,everardo-lopez,DF,Toluca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3834,14,mexico,Bryan González,bryan-gonzalez,DF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3836,14,mexico,Eduardo Águila,eduardo-aguila,DF,Atlético San Luis,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3838,14,mexico,Luis Rey,luis-rey,DF,Puebla,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3840,14,mexico,Orbelín Pineda,orbelin-pineda,MF,AEK Athens,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3842,14,mexico,Roberto Alvarado,roberto-alvarado,MF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3844,14,mexico,Luis Chávez,luis-chavez,MF,Dynamo Moscow,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3846,14,mexico,Diego Lainez,diego-lainez,MF,UANL,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3848,14,mexico,Marcel Ruiz,marcel-ruiz,MF,Toluca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3850,14,mexico,Brian Gutiérrez,brian-gutierrez,MF,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3852,14,mexico,Gilberto Mora,gilberto-mora,MF,Tijuana,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3854,14,mexico,Jesús Ricardo Angulo,jesus-ricardo-angulo,MF,Toluca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3856,14,mexico,Kevin Castañeda,kevin-castaneda,MF,Tijuana,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3858,14,mexico,Jorge Ruvalcaba,jorge-ruvalcaba,MF,New York Red Bulls,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3860,14,mexico,Jeremy Márquez,jeremy-marquez,MF,Cruz Azul,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3862,14,mexico,Isaías Violante,isaias-violante,MF,América,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3864,14,mexico,Alexis Vega,alexis-vega,FW,Toluca,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3866,14,mexico,César Huerta,cesar-huerta,FW,Anderlecht,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3868,14,mexico,Germán Berterame,german-berterame,FW,Inter Miami CF,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3870,14,mexico,Armando González,armando-gonzalez,FW,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3872,54,south-korea,Jo Hyeon-woo,jo-hyeon-woo,GK,Ulsan HD,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3874,54,south-korea,Kim Min-jae,kim-min-jae,DF,Bayern Munich,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3876,54,south-korea,Seol Young-woo,seol-young-woo,DF,Red Star Belgrade,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3878,54,south-korea,Lee Tae-seok,lee-tae-seok,DF,Austria Wien,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3880,54,south-korea,Kim Tae-hyeon,kim-tae-hyeon,DF,Kashima Antlers,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3882,54,south-korea,Jens Castrop,jens-castrop,DF,Borussia Mönchengladbach,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3884,54,south-korea,Lee Jae-sung,lee-jae-sung,MF,Mainz 05,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3886,54,south-korea,Hwang In-beom,hwang-in-beom,MF,Feyenoord,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3887,54,south-korea,Lee Kang-in,lee-kang-in,MF,Paris Saint-Germain,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3889,54,south-korea,Kim Jin-gyu,kim-jin-gyu,MF,Jeonbuk Hyundai Motors,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3891,54,south-korea,Bae Jun-ho,bae-jun-ho,MF,Stoke City,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3893,54,south-korea,Yang Hyun-jun,yang-hyun-jun,MF,Celtic,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3895,54,south-korea,Cho Gue-sung,cho-gue-sung,FW,Midtjylland,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3897,57,bosnia-and-herzegovina,Nikola Vasilj,nikola-vasilj,GK,FC St. Pauli,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3899,57,bosnia-and-herzegovina,Osman Hadžikić,osman-hadzikic,GK,Slaven Belupo,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3901,57,bosnia-and-herzegovina,Dennis Hadžikadunić,dennis-hadzikadunic,DF,Sampdoria,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3903,57,bosnia-and-herzegovina,Nikola Katić,nikola-katic,DF,Schalke 04,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3905,57,bosnia-and-herzegovina,Nihad Mujakić,nihad-mujakic,DF,Gaziantep,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3907,57,bosnia-and-herzegovina,Nidal Čelik,nidal-celik,DF,Lens,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3909,57,bosnia-and-herzegovina,Benjamin Tahirović,benjamin-tahirovic,MF,Brøndby,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3913,57,bosnia-and-herzegovina,Esmir Bajraktarević,esmir-bajraktarevic,MF,PSV Eindhoven,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3915,57,bosnia-and-herzegovina,Ivan Šunjić,ivan-sunjic,MF,Pafos,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3917,57,bosnia-and-herzegovina,Ermin Mahmić,ermin-mahmic,MF,Slovan Liberec,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3919,57,bosnia-and-herzegovina,Ermedin Demirović,ermedin-demirovic,FW,VfB Stuttgart,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3921,57,bosnia-and-herzegovina,Haris Tabaković,haris-tabakovic,FW,Borussia Mönchengladbach,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3923,41,qatar,Meshaal Barsham,meshaal-barsham,GK,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3925,41,qatar,Mahmud Abunada,mahmud-abunada,GK,Al-Rayyan,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3927,41,qatar,Boualem Khoukhi,boualem-khoukhi,DF,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3929,41,qatar,Tarek Salman,tarek-salman,DF,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3931,41,qatar,Homam Ahmed,homam-ahmed,DF,Cultural Leonesa,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3933,41,qatar,Sultan Al-Brake,sultan-al-brake,DF,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3935,41,qatar,Ayoub Al-Oui,ayoub-al-oui,DF,Al-Gharafa,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3937,41,qatar,Rayyan Al-Ali,rayyan-al-ali,DF,Al-Gharafa,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3939,41,qatar,Abdulaziz Hatem,abdulaziz-hatem,MF,Al-Rayyan,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3941,41,qatar,Assim Madibo,assim-madibo,MF,Al-Wakrah,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3943,41,qatar,Ahmed Fathy,ahmed-fathy,MF,Al-Arabi,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3945,41,qatar,Mohamed Al-Mannai,mohamed-al-mannai,MF,Al-Shamal,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3947,41,qatar,Hassan Al-Haydos ( captain ),hassan-al-haydos-captain,FW,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3949,41,qatar,Akram Afif,akram-afif,FW,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3951,41,qatar,Mohammed Muntari,mohammed-muntari,FW,Al-Gharafa,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3953,41,qatar,Yusuf Abdurisag,yusuf-abdurisag,FW,Al-Wakrah,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3955,41,qatar,Ahmed Al-Ganehi,ahmed-al-ganehi,FW,Al-Gharafa,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3890,54,south-korea,Lee Dong-gyeong,lee-dong-gyeong,MF,Ulsan HD,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3892,54,south-korea,Eom Ji-sung,eom-ji-sung,MF,Swansea City,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3894,54,south-korea,Son Heung-min ( captain ),son-heung-min-captain,FW,Los Angeles FC,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3896,54,south-korea,Oh Hyeon-gyu,oh-hyeon-gyu,FW,Beşiktaş,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3898,57,bosnia-and-herzegovina,Martin Zlomislić,martin-zlomislic,GK,Rijeka,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3900,57,bosnia-and-herzegovina,Sead Kolašinac,sead-kolasinac,DF,Atalanta,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3902,57,bosnia-and-herzegovina,Amar Dedić,amar-dedic,DF,Benfica,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3904,57,bosnia-and-herzegovina,Tarik Muharemović,tarik-muharemovic,DF,Sassuolo,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3906,57,bosnia-and-herzegovina,Stjepan Radeljić,stjepan-radeljic,DF,Rijeka,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3908,57,bosnia-and-herzegovina,Amir Hadžiahmetović,amir-hadziahmetovic,MF,Hull City,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3910,57,bosnia-and-herzegovina,Armin Gigović,armin-gigovic,MF,Young Boys,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3912,57,bosnia-and-herzegovina,Ivan Bašić,ivan-basic,MF,Astana,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3914,57,bosnia-and-herzegovina,Amar Memić,amar-memic,MF,Viktoria Plzeň,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3916,57,bosnia-and-herzegovina,Kerim Alajbegović,kerim-alajbegovic,MF,Red Bull Salzburg,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3918,57,bosnia-and-herzegovina,Edin Džeko ( captain ),edin-dzeko-captain,FW,Schalke 04,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3920,57,bosnia-and-herzegovina,Samed Baždar,samed-bazdar,FW,Jagiellonia Białystok,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3922,57,bosnia-and-herzegovina,Jovo Lukić,jovo-lukic,FW,Universitatea Cluj,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3924,41,qatar,Salah Zakaria,salah-zakaria,GK,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3926,41,qatar,Shehab Ellethy,shehab-ellethy,GK,Al-Shahaniya,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3928,41,qatar,Pedro Miguel,pedro-miguel,DF,Al-Sadd,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3930,41,qatar,Bassam Al-Rawi,bassam-al-rawi,DF,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3932,41,qatar,Lucas Mendes,lucas-mendes,DF,Al-Wakrah,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3934,41,qatar,Al-Hashmi Al-Hussain,al-hashmi-al-hussain,DF,Al-Arabi,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3936,41,qatar,Issa Laye,issa-laye,DF,Al-Arabi,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3938,41,qatar,Niall Mason,niall-mason,DF,Qatar SC,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3940,41,qatar,Karim Boudiaf,karim-boudiaf,MF,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3942,41,qatar,Mohammed Waad,mohammed-waad,MF,Al-Shamal,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3944,41,qatar,Jassem Gaber,jassem-gaber,MF,Al-Rayyan,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3946,41,qatar,Tahsin Jamshid,tahsin-jamshid,MF,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3948,41,qatar,Sebastián Soria,sebastian-soria,FW,Qatar SC,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3950,41,qatar,Almoez Ali,almoez-ali,FW,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3952,41,qatar,Ahmed Alaaeldin,ahmed-alaaeldin,FW,Al-Rayyan,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3954,41,qatar,Edmilson Junior,edmilson-junior,FW,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3956,41,qatar,Mubarak Shanan,mubarak-shanan,FW,Al-Duhail,Qatar,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3958,60,brazil,Ederson,ederson,GK,Fenerbahçe,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3960,60,brazil,Hugo Souza,hugo-souza,GK,Corinthians,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3962,60,brazil,John Victor,john-victor,GK,Nottingham Forest,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3964,60,brazil,Marquinhos,marquinhos,DF,Paris Saint-Germain,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3966,60,brazil,Alex Sandro,alex-sandro,DF,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3968,60,brazil,Bremer,bremer,DF,Juventus,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3970,60,brazil,Wesley,wesley,DF,Roma,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3972,60,brazil,Douglas Santos,douglas-santos,DF,Zenit Saint Petersburg,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3974,60,brazil,Alexsandro,alexsandro,DF,Lille,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3976,60,brazil,Léo Ortiz,leo-ortiz,DF,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3978,60,brazil,Vitinho,vitinho,DF,Botafogo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3980,60,brazil,Luciano Juba,luciano-juba,DF,Bahia,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3982,60,brazil,Casemiro ( captain ),casemiro-captain,MF,Manchester United,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3984,60,brazil,Bruno Guimarães,bruno-guimaraes,MF,Newcastle United,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3957,60,brazil,Alisson,alisson,GK,Liverpool,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3959,60,brazil,Bento,bento,GK,Al-Nassr,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3961,60,brazil,Weverton,weverton,GK,Grêmio,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3963,60,brazil,Thiago Silva,thiago-silva,DF,Porto,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3965,60,brazil,Danilo Luiz,danilo-luiz,DF,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3967,60,brazil,Gabriel Magalhães,gabriel-magalhaes,DF,Arsenal,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3969,60,brazil,Fabrício Bruno,fabricio-bruno,DF,Cruzeiro,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3971,60,brazil,Roger Ibañez,roger-ibanez,DF,Al-Ahli,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3973,60,brazil,Carlos Augusto,carlos-augusto,DF,Inter Milan,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3975,60,brazil,Paulo Henrique,paulo-henrique,DF,Vasco da Gama,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3977,60,brazil,Léo Pereira,leo-pereira,DF,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3979,60,brazil,Kaiki,kaiki,DF,Cruzeiro,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3981,60,brazil,Vitor Reis,vitor-reis,DF,Girona,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3983,60,brazil,Lucas Paquetá,lucas-paqueta,MF,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3987,60,brazil,Andreas Pereira,andreas-pereira,MF,Palmeiras,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3989,60,brazil,Andrey Santos,andrey-santos,MF,Chelsea,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3991,60,brazil,Matheus Pereira,matheus-pereira,MF,Cruzeiro,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3993,60,brazil,Neymar,neymar,FW,Santos,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3995,60,brazil,Richarlison,richarlison,FW,Tottenham Hotspur,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3997,60,brazil,Raphinha,raphinha,FW,Barcelona,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3999,60,brazil,Matheus Cunha,matheus-cunha,FW,Manchester United,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4001,60,brazil,Endrick,endrick,FW,Lyon,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4003,60,brazil,Savinho,savinho,FW,Manchester City,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4005,60,brazil,Pedro,pedro,FW,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4007,60,brazil,Igor Thiago,igor-thiago,FW,Brentford,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4009,60,brazil,Samuel Lino,samuel-lino,FW,Flamengo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4011,28,haiti,Johny Placide ( captain ),johny-placide-captain,GK,Bastia,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4013,28,haiti,Josué Duverger,josue-duverger,GK,Cosmos Koblenz &#91; de &#93;,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4015,28,haiti,Carlens Arcus,carlens-arcus,DF,Angers,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4017,28,haiti,Jean-Kévin Duverne,jean-kevin-duverne,DF,Gent,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4019,28,haiti,Wilguens Paugain,wilguens-paugain,DF,Zulte Waregem,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4021,28,haiti,Keeto Thermoncy,keeto-thermoncy,DF,Young Boys,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4023,28,haiti,Danley Jean Jacques,danley-jean-jacques,MF,Philadelphia Union,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4025,28,haiti,Jean-Ricner Bellegarde,jean-ricner-bellegarde,MF,Wolverhampton Wanderers,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4027,28,haiti,Dominique Simon,dominique-simon,MF,Tatran Prešov,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4029,28,haiti,Frantzdy Pierrot,frantzdy-pierrot,FW,Çaykur Rizespor,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4031,28,haiti,Louicius Deedson,louicius-deedson,FW,FC Dallas,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4033,28,haiti,Josué Casimir,josue-casimir,FW,Auxerre,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4035,28,haiti,Wilson Isidor,wilson-isidor,FW,Sunderland,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4037,39,paraguay,Gatito Fernández,gatito-fernandez,GK,Cerro Porteño,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4039,39,paraguay,Orlando Gill,orlando-gill,GK,San Lorenzo,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4041,39,paraguay,Juan Espínola,juan-espinola,GK,Barracas Central,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4043,39,paraguay,Gustavo Gómez ( captain ),gustavo-gomez-captain,DF,Palmeiras,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4045,39,paraguay,Fabián Balbuena,fabian-balbuena,DF,Grêmio,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4047,39,paraguay,Juan José Cáceres,juan-jose-caceres,DF,Dynamo Moscow,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4049,39,paraguay,Gustavo Velázquez,gustavo-velazquez,DF,Cerro Porteño,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4051,39,paraguay,Agustín Sández,agustin-sandez,DF,Rosario Central,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3988,60,brazil,João Gomes,joao-gomes,MF,Wolverhampton Wanderers,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3990,60,brazil,Danilo Santos,danilo-santos,MF,Botafogo,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3992,60,brazil,Gabriel Sara,gabriel-sara,MF,Galatasaray,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3994,60,brazil,Gabriel Jesus,gabriel-jesus,FW,Arsenal,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3996,60,brazil,Vinícius Júnior,vinicius-junior,FW,Real Madrid,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3998,60,brazil,Gabriel Martinelli,gabriel-martinelli,FW,Arsenal,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4000,60,brazil,Antony,antony,FW,Real Betis,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4002,60,brazil,Luiz Henrique,luiz-henrique,FW,Zenit Saint Petersburg,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4004,60,brazil,João Pedro,joao-pedro,FW,Chelsea,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4006,60,brazil,Igor Jesus,igor-jesus,FW,Nottingham Forest,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4008,60,brazil,Kaio Jorge,kaio-jorge,FW,Cruzeiro,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4010,60,brazil,Rayan,rayan,FW,Bournemouth,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4012,28,haiti,Alexandre Pierre,alexandre-pierre,GK,Sochaux,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4014,28,haiti,Ricardo Adé,ricardo-ade,DF,LDU Quito,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4016,28,haiti,Martin Expérience,martin-experience,DF,Nancy,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4018,28,haiti,Duke Lacroix,duke-lacroix,DF,Colorado Springs Switchbacks FC,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4020,28,haiti,Hannes Delcroix,hannes-delcroix,DF,Lugano,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4022,28,haiti,Leverton Pierre,leverton-pierre,MF,Vizela,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4024,28,haiti,Carl Sainté,carl-sainte,MF,El Paso Locomotive FC,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4026,28,haiti,Woodensky Pierre,woodensky-pierre,MF,Violette,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4028,28,haiti,Duckens Nazon,duckens-nazon,FW,Esteghlal,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4030,28,haiti,Derrick Etienne Jr.,derrick-etienne-jr,FW,Toronto FC,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4032,28,haiti,Ruben Providence,ruben-providence,FW,Almere City,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4034,28,haiti,Yassin Fortuné,yassin-fortune,FW,Vizela,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4036,28,haiti,Lenny Joseph,lenny-joseph,FW,Ferencváros,Haiti,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4038,39,paraguay,Carlos Coronel,carlos-coronel,GK,São Paulo,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4040,39,paraguay,Santiago Rojas,santiago-rojas,GK,Nacional,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4042,39,paraguay,Gastón Olveira,gaston-olveira,GK,Olimpia,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4044,39,paraguay,Júnior Alonso,junior-alonso,DF,Atlético Mineiro,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4046,39,paraguay,Omar Alderete,omar-alderete,DF,Sunderland,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4048,39,paraguay,Blas Riveros,blas-riveros,DF,Cerro Porteño,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4050,39,paraguay,Alan Benítez,alan-benitez,DF,Libertad,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4052,39,paraguay,Mateo Gamarra,mateo-gamarra,DF,Cruzeiro,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4054,39,paraguay,José Canale,jose-canale,DF,Lanús,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4056,39,paraguay,Alexandro Maidana,alexandro-maidana,DF,Talleres,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4055,39,paraguay,Diego León,diego-leon,DF,Manchester United,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4057,39,paraguay,Alcides Benítez,alcides-benitez,DF,Belgrano,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4059,39,paraguay,Alan Núñez,alan-nunez,DF,Nacional,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4061,39,paraguay,Mathías Villasanti,mathias-villasanti,MF,Grêmio,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4063,39,paraguay,Andrés Cubas,andres-cubas,MF,Vancouver Whitecaps FC,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4065,39,paraguay,Diego Gómez,diego-gomez,MF,Brighton & Hove Albion,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4067,39,paraguay,Braian Ojeda,braian-ojeda,MF,Orlando City SC,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4069,39,paraguay,Robert Piris Da Motta,robert-piris-da-motta,MF,Cerro Porteño,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4071,39,paraguay,Diego González,diego-gonzalez,MF,Atlas,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4073,39,paraguay,Maurício,mauricio,MF,Palmeiras,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4075,39,paraguay,Enso González,enso-gonzalez,MF,Wolverhampton Wanderers,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4077,39,paraguay,Óscar Romero,oscar-romero,FW,Huracán,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4079,39,paraguay,Antonio Sanabria,antonio-sanabria,FW,Cremonese,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4081,39,paraguay,Gabriel Ávalos,gabriel-avalos,FW,Independiente,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4083,39,paraguay,Álex Arce,alex-arce,FW,Independiente Rivadavia,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4085,39,paraguay,Lorenzo Melgarejo,lorenzo-melgarejo,FW,Libertad,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4087,39,paraguay,Ronaldo Martínez,ronaldo-martinez,FW,Talleres,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4089,39,paraguay,Robert Morales,robert-morales,FW,UNAM,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4091,39,paraguay,Rodney Redes,rodney-redes,FW,LDU Quito,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4093,70,ivory-coast,Alban Lafont,alban-lafont,GK,Panathinaikos,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4095,70,ivory-coast,Ghislain Konan,ghislain-konan,DF,Gil Vicente,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4097,70,ivory-coast,Wilfried Singo,wilfried-singo,DF,Galatasaray,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4099,70,ivory-coast,Emmanuel Agbadou,emmanuel-agbadou,DF,Beşiktaş,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4101,70,ivory-coast,Ousmane Diomande,ousmane-diomande,DF,Sporting CP,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4103,70,ivory-coast,Franck Kessié ( captain ),franck-kessie-captain,MF,Al-Ahli,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4105,70,ivory-coast,Ibrahim Sangaré,ibrahim-sangare,MF,Nottingham Forest,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4107,70,ivory-coast,Christ Inao Oulaï,christ-inao-oulai,MF,Trabzonspor,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4109,70,ivory-coast,Nicolas Pépé,nicolas-pepe,FW,Villarreal,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4060,39,paraguay,Miguel Almirón,miguel-almiron,MF,Atlanta United FC,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4062,39,paraguay,Kaku,kaku,MF,Al Ain,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4064,39,paraguay,Ramón Sosa,ramon-sosa,MF,Palmeiras,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4066,39,paraguay,Damián Bobadilla,damian-bobadilla,MF,São Paulo,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4068,39,paraguay,Matías Galarza,matias-galarza,MF,Atlanta United FC,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4070,39,paraguay,Álvaro Campuzano,alvaro-campuzano,MF,Libertad,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4072,39,paraguay,Hugo Cuenca,hugo-cuenca,MF,Burgos,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4074,39,paraguay,Lucas Romero,lucas-romero,MF,Universidad de Chile,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4076,39,paraguay,Rubén Lezcano,ruben-lezcano,MF,Olimpia,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4078,39,paraguay,Ángel Romero,angel-romero,FW,Boca Juniors,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4080,39,paraguay,Julio Enciso,julio-enciso,FW,Strasbourg,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4082,39,paraguay,Carlos González,carlos-gonzalez,FW,Independiente del Valle,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4084,39,paraguay,Adam Bareiro,adam-bareiro,FW,Boca Juniors,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4086,39,paraguay,Isidro Pitta,isidro-pitta,FW,Red Bull Bragantino,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4088,39,paraguay,Gustavo Caballero,gustavo-caballero,FW,Portsmouth,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4090,39,paraguay,Adrián Alcaraz,adrian-alcaraz,FW,Olimpia,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4092,70,ivory-coast,Yahia Fofana,yahia-fofana,GK,Çaykur Rizespor,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4094,70,ivory-coast,Mohamed Koné,mohamed-kone,GK,Charleroi,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4096,70,ivory-coast,Odilon Kossounou,odilon-kossounou,DF,Atalanta,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4098,70,ivory-coast,Evan Ndicka,evan-ndicka,DF,Roma,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4100,70,ivory-coast,Guéla Doué,guela-doue,DF,Strasbourg,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4102,70,ivory-coast,Clément Akpa,clement-akpa,DF,Auxerre,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4104,70,ivory-coast,Jean Michaël Seri,jean-michael-seri,MF,Maribor,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4106,70,ivory-coast,Seko Fofana,seko-fofana,MF,Porto,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4108,70,ivory-coast,Parfait Guiagon,parfait-guiagon,MF,Charleroi,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4110,70,ivory-coast,Oumar Diakité,oumar-diakite,FW,Cercle Brugge,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4112,70,ivory-coast,Evann Guessand,evann-guessand,FW,Crystal Palace,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4114,70,ivory-coast,Yan Diomande,yan-diomande,FW,RB Leipzig,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4116,70,ivory-coast,Elye Wahi,elye-wahi,FW,Nice,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4118,73,japan,Zion Suzuki,zion-suzuki,GK,Parma,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4120,73,japan,Tomoki Hayakawa,tomoki-hayakawa,GK,Kashima Antlers,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4113,70,ivory-coast,Amad Diallo,amad-diallo,FW,Manchester United,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4115,70,ivory-coast,Bazoumana Touré,bazoumana-toure,FW,TSG Hoffenheim,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4117,70,ivory-coast,Ange-Yoan Bonny,ange-yoan-bonny,FW,Inter Milan,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4119,73,japan,Keisuke Ōsako,keisuke-osako,GK,Sanfrecce Hiroshima,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4121,73,japan,Yūto Nagatomo,yuto-nagatomo,DF,FC Tokyo,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4123,73,japan,Kō Itakura,ko-itakura,DF,Ajax,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4125,73,japan,Hiroki Itō,hiroki-ito,DF,Bayern Munich,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4127,73,japan,Ayumu Seko,ayumu-seko,DF,Le Havre,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4129,73,japan,Junnosuke Suzuki,junnosuke-suzuki,DF,Copenhagen,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4131,73,japan,Junya Itō,junya-ito,MF,Genk,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4133,73,japan,Daichi Kamada,daichi-kamada,MF,Crystal Palace,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4135,73,japan,Ao Tanaka,ao-tanaka,MF,Leeds United,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4137,73,japan,Kaishū Sano,kaishu-sano,MF,Mainz 05,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4139,73,japan,Daizen Maeda,daizen-maeda,FW,Celtic,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4141,73,japan,Yuito Suzuki,yuito-suzuki,FW,SC Freiburg,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4143,73,japan,Kento Shiogai,kento-shiogai,FW,VfL Wolfsburg,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4145,74,sweden,Viktor Johansson,viktor-johansson,GK,Stoke City,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4147,74,sweden,Victor Lindelöf ( captain ),victor-lindelof-captain,DF,Aston Villa,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4149,74,sweden,Gabriel Gudmundsson,gabriel-gudmundsson,DF,Leeds United,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4151,74,sweden,Emil Holm,emil-holm,DF,Juventus,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4153,74,sweden,Daniel Svensson,daniel-svensson,DF,Borussia Dortmund,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4155,74,sweden,Eric Smith,eric-smith,DF,FC St. Pauli,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4157,74,sweden,Mattias Svanberg,mattias-svanberg,MF,VfL Wolfsburg,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4159,74,sweden,Yasin Ayari,yasin-ayari,MF,Brighton & Hove Albion,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4161,74,sweden,Besfort Zeneli,besfort-zeneli,MF,Union Saint-Gilloise,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4163,74,sweden,Viktor Gyökeres,viktor-gyokeres,FW,Arsenal,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4165,74,sweden,Anthony Elanga,anthony-elanga,FW,Newcastle United,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4167,74,sweden,Alexander Bernhardsson,alexander-bernhardsson,FW,Holstein Kiel,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4169,74,sweden,Taha Ali,taha-ali,FW,Malmö FF,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4171,75,tunisia,Sabri Ben Hessen,sabri-ben-hessen,GK,Étoile du Sahel,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4122,73,japan,Takehiro Tomiyasu,takehiro-tomiyasu,DF,Ajax,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4124,73,japan,Shōgo Taniguchi,shogo-taniguchi,DF,Sint-Truiden,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4126,73,japan,Yukinari Sugawara,yukinari-sugawara,DF,Werder Bremen,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4128,73,japan,Tsuyoshi Watanabe,tsuyoshi-watanabe,DF,Feyenoord,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4130,73,japan,Wataru Endo ( captain ),wataru-endo-captain,MF,Liverpool,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4132,73,japan,Ritsu Dōan,ritsu-doan,MF,Eintracht Frankfurt,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4134,73,japan,Takefusa Kubo,takefusa-kubo,MF,Real Sociedad,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4136,73,japan,Keito Nakamura,keito-nakamura,MF,Reims,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4138,73,japan,Ayase Ueda,ayase-ueda,FW,Feyenoord,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4140,73,japan,Kōki Ogawa,koki-ogawa,FW,NEC,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4142,73,japan,Keisuke Gotō,keisuke-goto,FW,Sint-Truiden,Japan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4146,74,sweden,Jacob Widell Zetterström,jacob-widell-zetterstrom,GK,Derby County,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4148,74,sweden,Isak Hien,isak-hien,DF,Atalanta,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4150,74,sweden,Carl Starfelt,carl-starfelt,DF,Celta Vigo,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4152,74,sweden,Hjalmar Ekdal,hjalmar-ekdal,DF,Burnley,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4154,74,sweden,Gustaf Lagerbielke,gustaf-lagerbielke,DF,Braga,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4156,74,sweden,Elliot Stroud,elliot-stroud,DF,Mjällby AIF,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4158,74,sweden,Jesper Karlström,jesper-karlstrom,MF,Udinese,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4160,74,sweden,Lucas Bergvall,lucas-bergvall,MF,Tottenham Hotspur,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4162,74,sweden,Alexander Isak,alexander-isak,FW,Liverpool,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4164,74,sweden,Ken Sema,ken-sema,FW,Pafos,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4166,74,sweden,Benjamin Nygren,benjamin-nygren,FW,Celtic,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4168,74,sweden,Gustaf Nilsson,gustaf-nilsson,FW,Club Brugge,Sweden,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4170,75,tunisia,Aymen Dahmen,aymen-dahmen,GK,CS Sfaxien,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4172,75,tunisia,Mouhib Chamakh,mouhib-chamakh,GK,Club Africain,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4174,75,tunisia,Dylan Bronn,dylan-bronn,DF,Servette,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4176,75,tunisia,Yan Valery,yan-valery,DF,Young Boys,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4178,75,tunisia,Moutaz Neffati,moutaz-neffati,DF,IFK Norrköping,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4180,75,tunisia,Adem Arous,adem-arous,DF,Kasımpaşa,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4182,75,tunisia,Ellyes Skhiri ( captain ),ellyes-skhiri-captain,MF,Eintracht Frankfurt,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4184,75,tunisia,Anis Ben Slimane,anis-ben-slimane,MF,Norwich City,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4186,75,tunisia,Ismaël Gharbi,ismael-gharbi,MF,FC Augsburg,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4188,75,tunisia,Rani Khedira,rani-khedira,MF,Union Berlin,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4173,75,tunisia,Montassar Talbi,montassar-talbi,DF,Lorient,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4175,75,tunisia,Ali Abdi,ali-abdi,DF,Nice,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4177,75,tunisia,Mohamed Amine Ben Hamida,mohamed-amine-ben-hamida,DF,Espérance de Tunis,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4179,75,tunisia,Omar Rekik,omar-rekik,DF,Maribor,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4181,75,tunisia,Raed Chikhaoui,raed-chikhaoui,DF,US Monastir,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4183,75,tunisia,Hannibal Mejbri,hannibal-mejbri,MF,Burnley,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4185,75,tunisia,Mortadha Ben Ouanes,mortadha-ben-ouanes,MF,Kasımpaşa,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4187,75,tunisia,Hadj Mahmoud,hadj-mahmoud,MF,Lugano,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4189,75,tunisia,Elias Achouri,elias-achouri,FW,Copenhagen,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4192,75,tunisia,Elias Saad,elias-saad,FW,Hannover 96,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4194,75,tunisia,Khalil Ayari,khalil-ayari,FW,Paris Saint-Germain,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4196,76,belgium,Thibaut Courtois,thibaut-courtois,GK,Real Madrid,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4198,76,belgium,Mike Penders,mike-penders,GK,Strasbourg,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4200,76,belgium,Timothy Castagne,timothy-castagne,DF,Fulham,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4202,76,belgium,Zeno Debast,zeno-debast,DF,Sporting CP,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4204,76,belgium,Brandon Mechele,brandon-mechele,DF,Club Brugge,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4206,76,belgium,Joaquin Seys,joaquin-seys,DF,Club Brugge,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4208,76,belgium,Axel Witsel,axel-witsel,MF,Girona,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4210,76,belgium,Youri Tielemans ( captain ),youri-tielemans-captain,MF,Aston Villa,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4212,76,belgium,Amadou Onana,amadou-onana,MF,Aston Villa,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4214,76,belgium,Romelu Lukaku,romelu-lukaku,FW,Napoli,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4216,76,belgium,Jérémy Doku,jeremy-doku,FW,Manchester City,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4218,76,belgium,Charles De Ketelaere,charles-de-ketelaere,FW,Atalanta,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4220,76,belgium,Diego Moreira,diego-moreira,FW,Strasbourg,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4222,79,new-zealand,Max Crocombe,max-crocombe,GK,Millwall,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4224,79,new-zealand,Francis de Vries,francis-de-vries,DF,Auckland FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4226,79,new-zealand,Michael Boxall,michael-boxall,DF,Minnesota United FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4228,79,new-zealand,Matthew Garbett,matthew-garbett,MF,Peterborough United,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4230,79,new-zealand,Chris Wood ( captain ),chris-wood-captain,FW,Nottingham Forest,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4232,79,new-zealand,Elijah Just,elijah-just,MF,Motherwell,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4234,79,new-zealand,Liberato Cacace,liberato-cacace,DF,Wrexham,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4236,79,new-zealand,Nando Pijnaker,nando-pijnaker,DF,Auckland FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4238,79,new-zealand,Kosta Barbarouses,kosta-barbarouses,FW,Western Sydney Wanderers,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4240,79,new-zealand,Ben Old,ben-old,MF,Saint-Étienne,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4242,79,new-zealand,Jesse Randall,jesse-randall,FW,Auckland FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4244,79,new-zealand,Ryan Thomas,ryan-thomas,MF,PEC Zwolle,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4246,79,new-zealand,Lachlan Bayliss,lachlan-bayliss,MF,Newcastle Jets,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4248,84,france,Mike Maignan,mike-maignan,GK,Milan,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4250,84,france,Robin Risser,robin-risser,GK,Lens,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4252,84,france,Jules Koundé,jules-kounde,DF,Barcelona,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4254,84,france,Lucas Hernandez,lucas-hernandez,DF,Paris Saint-Germain,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4256,84,france,William Saliba,william-saliba,DF,Arsenal,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4258,84,france,Malo Gusto,malo-gusto,DF,Chelsea,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4260,84,france,N'Golo Kanté,n-golo-kante,MF,Fenerbahçe,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4193,75,tunisia,Sebastian Tounekti,sebastian-tounekti,FW,Celtic,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4195,75,tunisia,Rayan Elloumi,rayan-elloumi,FW,Vancouver Whitecaps FC,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4197,76,belgium,Senne Lammens,senne-lammens,GK,Manchester United,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4199,76,belgium,Thomas Meunier,thomas-meunier,DF,Lille,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4201,76,belgium,Arthur Theate,arthur-theate,DF,Eintracht Frankfurt,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4203,76,belgium,Maxim De Cuyper,maxim-de-cuyper,DF,Brighton & Hove Albion,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4205,76,belgium,Koni De Winter,koni-de-winter,DF,Milan,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4207,76,belgium,Nathan Ngoy,nathan-ngoy,DF,Lille,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4209,76,belgium,Kevin De Bruyne,kevin-de-bruyne,MF,Napoli,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4211,76,belgium,Hans Vanaken,hans-vanaken,MF,Club Brugge,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4213,76,belgium,Nicolas Raskin,nicolas-raskin,MF,Rangers,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4215,76,belgium,Leandro Trossard,leandro-trossard,FW,Arsenal,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4217,76,belgium,Dodi Lukébakio,dodi-lukebakio,FW,Benfica,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4219,76,belgium,Alexis Saelemaekers,alexis-saelemaekers,FW,Milan,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4221,76,belgium,Matias Fernandez-Pardo,matias-fernandez-pardo,FW,Lille,Belgium,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4223,79,new-zealand,Tim Payne,tim-payne,DF,Wellington Phoenix,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4225,79,new-zealand,Tyler Bindon,tyler-bindon,DF,Sheffield United,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4227,79,new-zealand,Joe Bell,joe-bell,MF,Viking,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4229,79,new-zealand,Marko Stamenić,marko-stamenic,MF,Swansea City,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4231,79,new-zealand,Sarpreet Singh,sarpreet-singh,MF,Wellington Phoenix,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4233,79,new-zealand,Alex Paulsen,alex-paulsen,GK,Lechia Gdańsk,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4235,79,new-zealand,Alex Rufer,alex-rufer,MF,Wellington Phoenix,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4237,79,new-zealand,Finn Surman,finn-surman,DF,Portland Timbers,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4239,79,new-zealand,Ben Waine,ben-waine,FW,Port Vale,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4241,79,new-zealand,Callum McCowatt,callum-mccowatt,MF,Silkeborg,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4243,79,new-zealand,Michael Woud,michael-woud,GK,Auckland FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4245,79,new-zealand,Callan Elliot,callan-elliot,DF,Auckland FC,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4247,79,new-zealand,Tommy Smith,tommy-smith,DF,Braintree Town,New Zealand,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4249,84,france,Brice Samba,brice-samba,GK,Rennes,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4251,84,france,Lucas Digne,lucas-digne,DF,Aston Villa,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4253,84,france,Théo Hernandez,theo-hernandez,DF,Al-Hilal,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4255,84,france,Dayot Upamecano,dayot-upamecano,DF,Bayern Munich,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4257,84,france,Ibrahima Konaté,ibrahima-konate,DF,Liverpool,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4259,84,france,Maxence Lacroix,maxence-lacroix,DF,Crystal Palace,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4261,84,france,Adrien Rabiot,adrien-rabiot,MF,Milan,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4264,84,france,Warren Zaïre-Emery,warren-zaire-emery,MF,Paris Saint-Germain,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4266,84,france,Ousmane Dembélé,ousmane-dembele,FW,Paris Saint-Germain,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4268,84,france,Bradley Barcola,bradley-barcola,FW,Paris Saint-Germain,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4270,84,france,Maghnes Akliouche,maghnes-akliouche,FW,Monaco,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4272,84,france,Rayan Cherki,rayan-cherki,FW,Manchester City,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4274,3,argentina,Emiliano Martínez,emiliano-martinez,GK,Aston Villa,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4276,3,argentina,Juan Musso,juan-musso,GK,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4278,3,argentina,Facundo Cambeses,facundo-cambeses,GK,Racing,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4280,3,argentina,Nicolás Otamendi,nicolas-otamendi,DF,Benfica,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4282,3,argentina,Marcos Acuña,marcos-acuna,DF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4286,3,argentina,Gonzalo Montiel,gonzalo-montiel,DF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4288,3,argentina,Lucas Martínez Quarta,lucas-martinez-quarta,DF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4290,3,argentina,Facundo Medina,facundo-medina,DF,Marseille,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4292,3,argentina,Agustín Giay,agustin-giay,DF,Palmeiras,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4294,3,argentina,Gabriel Rojas,gabriel-rojas,DF,Racing,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4296,3,argentina,Lautaro Di Lollo,lautaro-di-lollo,DF,Boca Juniors,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4298,3,argentina,Rodrigo De Paul,rodrigo-de-paul,MF,Inter Miami CF,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4300,3,argentina,Giovani Lo Celso,giovani-lo-celso,MF,Real Betis,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4302,3,argentina,Enzo Fernández,enzo-fernandez,MF,Chelsea,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4304,3,argentina,Guido Rodríguez,guido-rodriguez,MF,Valencia,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4306,3,argentina,Nicolás Domínguez,nicolas-dominguez,MF,Nottingham Forest,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4308,3,argentina,Nico Paz,nico-paz,MF,Como,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4310,3,argentina,Emiliano Buendía,emiliano-buendia,MF,Aston Villa,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4312,3,argentina,Aníbal Moreno,anibal-moreno,MF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4314,3,argentina,Equi Fernández,equi-fernandez,MF,Bayer Leverkusen,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4316,3,argentina,Lionel Messi ( captain ),lionel-messi-captain,FW,Inter Miami CF,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4318,3,argentina,Julián Alvarez,julian-alvarez,FW,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4320,3,argentina,Alejandro Garnacho,alejandro-garnacho,FW,Chelsea,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4322,3,argentina,José Manuel López,jose-manuel-lopez,FW,Palmeiras,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4324,3,argentina,Tomás Aranda,tomas-aranda,FW,Boca Juniors,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4326,3,argentina,Claudio Echeverri,claudio-echeverri,FW,Girona,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4328,3,argentina,Matías Soulé,matias-soule,FW,Roma,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4330,3,argentina,Camilo Vargas,camilo-vargas,GK,Atlas,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4332,3,argentina,Kevin Mier,kevin-mier,GK,Cruz Azul,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4267,84,france,Marcus Thuram,marcus-thuram,FW,Inter Milan,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4269,84,france,Michael Olise,michael-olise,FW,Bayern Munich,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4271,84,france,Désiré Doué,desire-doue,FW,Paris Saint-Germain,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4273,84,france,Jean-Philippe Mateta,jean-philippe-mateta,FW,Crystal Palace,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4275,3,argentina,Gerónimo Rulli,geronimo-rulli,GK,Marseille,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4277,3,argentina,Walter Benítez,walter-benitez,GK,Crystal Palace,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4279,3,argentina,Santiago Beltrán,santiago-beltran,GK,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4281,3,argentina,Nicolás Tagliafico,nicolas-tagliafico,DF,Lyon,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4283,3,argentina,Nahuel Molina,nahuel-molina,DF,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4285,3,argentina,Germán Pezzella,german-pezzella,DF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4287,3,argentina,Lisandro Martínez,lisandro-martinez,DF,Manchester United,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4289,3,argentina,Leonardo Balerdi,leonardo-balerdi,DF,Marseille,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4291,3,argentina,Marcos Senesi,marcos-senesi,DF,Bournemouth,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4293,3,argentina,Kevin Mac Allister,kevin-mac-allister,DF,Union Saint-Gilloise,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4295,3,argentina,Nicolás Capaldo,nicolas-capaldo,DF,Hamburger SV,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4297,3,argentina,Zaid Romero,zaid-romero,DF,Getafe,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4299,3,argentina,Leandro Paredes,leandro-paredes,MF,Boca Juniors,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4301,3,argentina,Alexis Mac Allister,alexis-mac-allister,MF,Liverpool,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4303,3,argentina,Exequiel Palacios,exequiel-palacios,MF,Bayer Leverkusen,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4305,3,argentina,Thiago Almada,thiago-almada,MF,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4307,3,argentina,Giuliano Simeone,giuliano-simeone,MF,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4309,3,argentina,Valentín Barco,valentin-barco,MF,Strasbourg,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4311,3,argentina,Máximo Perrone,maximo-perrone,MF,Como,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4313,3,argentina,Milton Delgado,milton-delgado,MF,Boca Juniors,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4315,3,argentina,Alan Varela,alan-varela,MF,Porto,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4317,3,argentina,Lautaro Martínez,lautaro-martinez,FW,Internazionale,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4319,3,argentina,Nicolás González,nicolas-gonzalez,FW,Atlético Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4321,3,argentina,Franco Mastantuono,franco-mastantuono,FW,Real Madrid,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4323,3,argentina,Gianluca Prestianni,gianluca-prestianni,FW,Benfica,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4325,3,argentina,Santiago Castro,santiago-castro,FW,Bologna,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4327,3,argentina,Mateo Pellegrino,mateo-pellegrino,FW,Parma,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4329,3,argentina,David Ospina,david-ospina,GK,Atlético Nacional,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4331,3,argentina,Álvaro Montero,alvaro-montero,GK,Vélez Sarsfield,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4333,3,argentina,Andrés Mosquera,andres-mosquera,GK,Independiente Santa Fe,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4334,3,argentina,Aldair Quintana,aldair-quintana,GK,Independiente del Valle,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4336,3,argentina,Santiago Arias,santiago-arias,DF,Independiente,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4338,3,argentina,Daniel Muñoz,daniel-munoz,DF,Crystal Palace,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4340,3,argentina,Jhon Lucumí,jhon-lucumi,DF,Bologna,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4342,3,argentina,Deiver Machado,deiver-machado,DF,Nantes,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4344,3,argentina,Yerson Mosquera,yerson-mosquera,DF,Wolverhampton Wanderers,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4346,3,argentina,Juan Cabal,juan-cabal,DF,Juventus,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4348,3,argentina,Andrés Román,andres-roman,DF,Atlético Nacional,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4350,3,argentina,Édier Ocampo,edier-ocampo,DF,Vancouver Whitecaps FC,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4352,3,argentina,James Rodríguez ( captain ),james-rodriguez-captain,MF,Minnesota United FC,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4354,3,argentina,Jefferson Lerma,jefferson-lerma,MF,Crystal Palace,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4356,3,argentina,Juan Fernando Quintero,juan-fernando-quintero,MF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4358,3,argentina,Richard Ríos,richard-rios,MF,Benfica,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4360,3,argentina,Jorge Carrascal,jorge-carrascal,MF,Flamengo,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4361,3,argentina,Yáser Asprilla,yaser-asprilla,MF,Galatasaray,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4363,3,argentina,Juan Portilla,juan-portilla,MF,Athletico Paranaense,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4365,3,argentina,Sebastián Gómez,sebastian-gomez,MF,Coritiba,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4367,3,argentina,Nelson Deossa,nelson-deossa,MF,Real Betis,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4368,3,argentina,Juan Manuel Rengifo &#91; es &#93;,juan-manuel-rengifo-91-es-93,MF,Atlético Nacional,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4370,3,argentina,Jhon Solís,jhon-solis,MF,Birmingham City,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4372,3,argentina,Rafael Santos Borré,rafael-santos-borre,FW,Internacional,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4374,3,argentina,Jhon Durán,jhon-duran,FW,Zenit Saint Petersburg,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4376,3,argentina,Cucho Hernández,cucho-hernandez,FW,Real Betis,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4378,3,argentina,Sebastián Villa,sebastian-villa,FW,Independiente Rivadavia,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4379,3,argentina,Johan Carbonero,johan-carbonero,FW,Internacional,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4380,3,argentina,Stiven Mendoza,stiven-mendoza,FW,Athletico Paranaense,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4382,3,argentina,Néiser Villarreal,neiser-villarreal,FW,Cruzeiro,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4384,50,uzbekistan,Utkir Yusupov,utkir-yusupov,GK,Navbahor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4386,50,uzbekistan,Botirali Ergashev,botirali-ergashev,GK,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4388,50,uzbekistan,Rustam Ashurmatov,rustam-ashurmatov,DF,Esteghlal,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4390,50,uzbekistan,Khojiakbar Alijonov,khojiakbar-alijonov,DF,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4392,50,uzbekistan,Umar Eshmurodov,umar-eshmurodov,DF,Nasaf,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4394,50,uzbekistan,Ibrokhimkhalil Yuldoshev,ibrokhimkhalil-yuldoshev,DF,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4335,3,argentina,Davinson Sánchez,davinson-sanchez,DF,Galatasaray,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4337,3,argentina,Yerry Mina,yerry-mina,DF,Cagliari,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4339,3,argentina,Johan Mojica,johan-mojica,DF,Mallorca,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4341,3,argentina,Carlos Cuesta,carlos-cuesta,DF,Vasco da Gama,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4343,3,argentina,Cristian Borja,cristian-borja,DF,América,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4345,3,argentina,Álvaro Angulo,alvaro-angulo,DF,UNAM,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4347,3,argentina,Willer Ditta,willer-ditta,DF,Cruz Azul,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4349,3,argentina,Junior Hernández &#91; es &#93;,junior-hernandez-91-es-93,DF,Deportes Tolima,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4351,3,argentina,Jhohan Romaña,jhohan-romana,DF,San Lorenzo,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4353,3,argentina,Juan Cuadrado,juan-cuadrado,MF,Pisa,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4355,3,argentina,Wilmar Barrios,wilmar-barrios,MF,Zenit Saint Petersburg,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4357,3,argentina,Jhon Arias,jhon-arias,MF,Palmeiras,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4359,3,argentina,Kevin Castaño,kevin-castano,MF,River Plate,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4362,3,argentina,Jaminton Campaz,jaminton-campaz,MF,Rosario Central,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4364,3,argentina,Gustavo Puerta,gustavo-puerta,MF,Racing Santander,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4366,3,argentina,Jordan Barrera,jordan-barrera,MF,Botafogo,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4369,3,argentina,Johan Rojas,johan-rojas,MF,Vasco da Gama,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4371,3,argentina,Luis Díaz,luis-diaz,FW,Bayern Munich,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4373,3,argentina,Jhon Córdoba,jhon-cordoba,FW,Krasnodar,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4375,3,argentina,Luis Suárez,luis-suarez,FW,Sporting CP,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4377,3,argentina,Andrés Gómez,andres-gomez,FW,Vasco da Gama,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4381,3,argentina,Edwuin Cetré,edwuin-cetre,FW,Estudiantes,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4383,3,argentina,Kevin Viveros,kevin-viveros,FW,Athletico Paranaense,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4385,50,uzbekistan,Abduvohid Nematov,abduvohid-nematov,GK,Nasaf,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4387,50,uzbekistan,Vladimir Nazarov,vladimir-nazarov,GK,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4389,50,uzbekistan,Farrukh Sayfiev,farrukh-sayfiev,DF,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4391,50,uzbekistan,Sherzod Nasrullaev,sherzod-nasrullaev,DF,Nasaf,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4393,50,uzbekistan,Abdukodir Khusanov,abdukodir-khusanov,DF,Manchester City,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4397,50,uzbekistan,Mukhammadkodir Khamraliev,mukhammadkodir-khamraliev,DF,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4399,50,uzbekistan,Mukhammadrasul Abdumazhidov,mukhammadrasul-abdumazhidov,DF,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4402,50,uzbekistan,Otabek Shukurov,otabek-shukurov,MF,Baniyas,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4404,50,uzbekistan,Odiljon Hamrobekov,odiljon-hamrobekov,MF,Tractor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4406,50,uzbekistan,Jamshid Iskanderov,jamshid-iskanderov,MF,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4408,50,uzbekistan,Abbosbek Fayzullaev,abbosbek-fayzullaev,MF,İstanbul Başakşehir,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4410,50,uzbekistan,Azizjon Ganiev,azizjon-ganiev,MF,Al Bataeh,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4412,50,uzbekistan,Kuvondik Ruziev,kuvondik-ruziev,MF,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4414,50,uzbekistan,Alisher Odilov,alisher-odilov,MF,Neftchi,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4416,50,uzbekistan,Jasurbek Jaloliddinov,jasurbek-jaloliddinov,MF,Sogdiana,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4418,50,uzbekistan,Nodirbek Abdurazzokov,nodirbek-abdurazzokov,MF,AGMK,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4420,50,uzbekistan,Sherzod Esanov,sherzod-esanov,MF,Buxoro,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4422,50,uzbekistan,Igor Sergeev,igor-sergeev,FW,Persepolis,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4400,50,uzbekistan,Diyor Ortikboev,diyor-ortikboev,DF,Khorazm,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4401,50,uzbekistan,Avazbek Ulmasaliev,avazbek-ulmasaliev,DF,AGMK,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4403,50,uzbekistan,Jaloliddin Masharipov,jaloliddin-masharipov,MF,Esteghlal,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4405,50,uzbekistan,Oston Urunov,oston-urunov,MF,Persepolis,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4407,50,uzbekistan,Dostonbek Khamdamov,dostonbek-khamdamov,MF,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4409,50,uzbekistan,Akmal Mozgovoy,akmal-mozgovoy,MF,Pakhtakor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4411,50,uzbekistan,Azizbek Amonov,azizbek-amonov,MF,Buxoro,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4413,50,uzbekistan,Ruslanbek Jiyanov,ruslanbek-jiyanov,MF,Navbahor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4415,50,uzbekistan,Khusayin Norchaev,khusayin-norchaev,MF,Navbahor,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4417,50,uzbekistan,Umarali Rakhmonaliev,umarali-rakhmonaliev,MF,Sabah,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4419,50,uzbekistan,Sardorbek Bakhromov,sardorbek-bakhromov,MF,Nasaf,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4421,50,uzbekistan,Eldor Shomurodov ( captain ),eldor-shomurodov-captain,FW,İstanbul Başakşehir,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4423,50,uzbekistan,Sherzod Temirov,sherzod-temirov,FW,Erbil,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3816,14,mexico,Guillermo Ochoa,guillermo-ochoa,GK,AEL Limassol,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3818,14,mexico,Carlos Acevedo,carlos-acevedo,GK,Santos Laguna,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3888,54,south-korea,Paik Seung-ho,paik-seung-ho,MF,Birmingham City,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3817,14,mexico,Raúl Rangel,raul-rangel,GK,Guadalajara,Mexico,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3885,54,south-korea,Hwang Hee-chan,hwang-hee-chan,MF,Wolverhampton Wanderers,South Korea,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3911,57,bosnia-and-herzegovina,Dženis Burnić,dzenis-burnic,MF,Karlsruher SC,Bosnia and Herzegovina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3985,60,brazil,Fabinho,fabinho,MF,Al-Ittihad,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+3986,60,brazil,Gerson,gerson,MF,Cruzeiro,Brazil,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4053,39,paraguay,Saúl Salcedo,saul-salcedo,DF,Newell's Old Boys,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4111,70,ivory-coast,Simon Adingra,simon-adingra,FW,Monaco,Ivory Coast,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4191,75,tunisia,Hazem Mastouri,hazem-mastouri,FW,Dynamo Makhachkala,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4058,39,paraguay,Ronaldo Dejesús,ronaldo-dejesus,DF,Lanús,Paraguay,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4190,75,tunisia,Firas Chaouat,firas-chaouat,FW,Club Africain,Tunisia,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4262,84,france,Aurélien Tchouaméni,aurelien-tchouameni,MF,Real Madrid,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4284,3,argentina,Cristian Romero,cristian-romero,DF,Tottenham Hotspur,Argentina,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4395,50,uzbekistan,Abdulla Abdullaev,abdulla-abdullaev,DF,Dibba Al Fujairah,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4263,84,france,Manu Koné,manu-kone,MF,Roma,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4265,84,france,Kylian Mbappé ( captain ),kylian-mbappe-captain,FW,Real Madrid,France,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4396,50,uzbekistan,Bekhruz Karimov,bekhruz-karimov,DF,Surkhon,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
+4398,50,uzbekistan,Jakhongir Urozov,jakhongir-urozov,DF,Dinamo Samarqand,Uzbekistan,https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads,pending_review,,keep
