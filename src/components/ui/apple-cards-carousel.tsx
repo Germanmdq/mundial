@@ -187,7 +187,10 @@ export const Card = ({
     <>
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-50 overflow-y-auto" style={{ padding: "32px 16px" }}>
+          <div
+            className="fixed inset-0 z-50 overflow-y-auto"
+            style={{ padding: "16px" }}
+          >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -196,12 +199,13 @@ export const Card = ({
               onClick={handleClose}
             />
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
               ref={containerRef}
               className="relative z-[60] mx-auto font-sans"
-              style={{ width: "min(920px, 94vw)", maxHeight: "none", borderRadius: "32px", overflow: "hidden", background: "#fff" }}
+              style={{ width: "min(920px, 100%)", maxHeight: "none", borderRadius: "24px", overflow: "hidden", background: "#fff" }}
             >
               <button
                 className="absolute top-4 right-4 z-[70] h-9 w-9 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer"
