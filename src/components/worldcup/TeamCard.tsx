@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Team } from '@/lib/worldcup/teams'
 import { getTeamAssetSources } from '@/lib/worldcup/assets'
 import { SafeAssetImage } from '@/components/worldcup/SafeAssetImage'
+import { getTeamDisplayName } from '@/lib/worldcup/team-display-names'
 
 type TeamCardProps = {
   team: Team
@@ -68,13 +69,13 @@ export function TeamCard({ team }: TeamCardProps) {
           Grupo {groupLabel}
         </span>
         <h3 className="min-h-[42px] text-[17px] font-extrabold leading-tight tracking-tight text-[#1d1d1f]">
-          {team.name}
+          {getTeamDisplayName(team.name)}
         </h3>
         <Link
-          href={`/jugadores?team=${team.id}`}
+          href={`/jugadores?team=${team.slug || team.id}`}
           className="mt-auto inline-flex items-center rounded-full bg-[#1d1d1f] px-4 py-2 text-[13px] font-bold text-white transition hover:bg-[#0071e3]"
         >
-          Ver jugadores
+          Ver plantel
         </Link>
       </div>
     </article>

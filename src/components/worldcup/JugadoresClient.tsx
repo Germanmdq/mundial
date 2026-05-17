@@ -8,23 +8,27 @@ import { PlayerCard } from "./PlayerCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import Link from "next/link";
 import { getTeamDisplayName, getTeamCode } from "@/lib/worldcup/team-display-names";
 
 interface JugadoresClientProps {
   teams: Team[];
   players: Player[];
-  initialTeamId?: string;
+  queryTeamId?: string;
 }
 
 type FilterMode = "all" | "with_players" | "without_players";
 
-export function JugadoresClient({ teams, players, initialTeamId }: JugadoresClientProps) {
+export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
   
-  // Initialize with initialTeamId or the first team if none provided
+  // Find the team by slug or ID
+  const queryTeam = queryTeamId ? teams.find(t => String(t.id) === queryTeamId || t.slug === queryTeamId) : null;
+  const isPreselected = !!queryTeam;
+  
   const [activeTeamId, setActiveTeamId] = useState<string | null>(
-    initialTeamId || (teams.length > 0 ? String(teams[0].id) : null)
+    queryTeam ? String(queryTeam.id) : null
   );
 
   // Group players by team for quick lookup and counting
@@ -94,63 +98,72 @@ export function JugadoresClient({ teams, players, initialTeamId }: JugadoresClie
   return (
     <div className="w-full flex flex-col gap-10">
       
-      {/* SECTION: ELEGÍ UNA SELECCIÓN */}
-      <section className="space-y-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-[20px] font-black tracking-tight text-[#1d1d1f]">
-            Elegí una selección
-          </h2>
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar selección o jugador..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full sm:w-[260px] h-[40px] pl-10 pr-4 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-[14px] font-medium text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3] transition-all"
-              />
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#aeaeb2] material-symbols-rounded">
-                search
-              </span>
-            </div>
+      {/* SECTION: ELEGÍ UNA SELECCIÓN (Only if no query param) */}
+      {!isPreselected && (
+        <section className="space-y-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h2 className="text-[20px] font-black tracking-tight text-[#1d1d1f]">
+              Elegí una selección
+            </h2>
             
-            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 sm:pb-0">
-              <FilterChip label="Todos" active={filterMode === "all"} onClick={() => setFilterMode("all")} />
-              <FilterChip label="Con jugadores" active={filterMode === "with_players"} onClick={() => setFilterMode("with_players")} />
-              <FilterChip label="Sin jugadores" active={filterMode === "without_players"} onClick={() => setFilterMode("without_players")} />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar selección o jugador..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full sm:w-[260px] h-[40px] pl-10 pr-4 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-[14px] font-medium text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3] transition-all"
+                />
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#aeaeb2] material-symbols-rounded">
+                  search
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 sm:pb-0">
+                <FilterChip label="Todos" active={filterMode === "all"} onClick={() => setFilterMode("all")} />
+                <FilterChip label="Con jugadores" active={filterMode === "with_players"} onClick={() => setFilterMode("with_players")} />
+                <FilterChip label="Sin jugadores" active={filterMode === "without_players"} onClick={() => setFilterMode("without_players")} />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="teamGrid">
-          {filteredTeams.length > 0 ? (
-            filteredTeams.map(team => (
-              <TeamSelectCard
-                key={team.id}
-                team={team}
-                playerCount={playersByTeam.get(String(team.id))?.length || 0}
-                isActive={String(team.id) === activeTeamId}
-                onClick={() => {
-                  setActiveTeamId(String(team.id));
-                  // Smooth scroll to players section
-                  setTimeout(() => {
-                    document.getElementById('players-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }, 50);
-                }}
-              />
-            ))
-          ) : (
-            <div className="col-span-full py-8 text-center text-[#6e6e73] font-medium bg-white rounded-[24px] border border-[rgba(0,0,0,0.06)]">
-              No se encontraron selecciones.
-            </div>
-          )}
-        </div>
-      </section>
+          <div className="teamGrid">
+            {filteredTeams.length > 0 ? (
+              filteredTeams.map(team => (
+                <TeamSelectCard
+                  key={team.id}
+                  team={team}
+                  playerCount={playersByTeam.get(String(team.id))?.length || 0}
+                  isActive={String(team.id) === activeTeamId}
+                  onClick={() => {
+                    setActiveTeamId(String(team.id));
+                    setTimeout(() => {
+                      document.getElementById('players-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                  }}
+                />
+              ))
+            ) : (
+              <div className="col-span-full py-8 text-center text-[#6e6e73] font-medium bg-white rounded-[24px] border border-[rgba(0,0,0,0.06)]">
+                No se encontraron selecciones.
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* SECTION: PANEL DE JUGADORES */}
       {activeTeam && (
-        <section id="players-panel" className="scroll-mt-24">
+        <section id="players-panel" className="scroll-mt-24 space-y-4">
+          {isPreselected && (
+            <Link 
+              href="/jugadores" 
+              className="inline-flex items-center text-[14px] font-bold text-[#0071e3] hover:underline"
+            >
+              ← Volver a selecciones
+            </Link>
+          )}
           <PremiumCard className="overflow-hidden">
             <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[rgba(0,0,0,0.06)] pb-6">
               <div>

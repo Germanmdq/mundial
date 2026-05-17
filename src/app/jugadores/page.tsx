@@ -32,7 +32,7 @@ export default async function JugadoresPage({ searchParams }: PageProps) {
         <JugadoresClient 
           teams={teams} 
           players={players} 
-          initialTeamId={initialTeamId} 
+          queryTeamId={initialTeamId} 
         />
       </PageSection>
     </AppShell>
