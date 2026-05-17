@@ -65,7 +65,7 @@ export function getLocalTeamAssetUrl(teamSlug: string | null | undefined, type: 
 
   const fileByType: Partial<Record<TeamAssetType, string>> = {
     flag: "flag.svg",
-    crest: "crest.svg",
+    crest: "crest.webp",
     hero_image: "hero.svg",
     background: "background.svg",
   };
@@ -80,7 +80,8 @@ export function getTeamAssetSources(
 ): string[] {
   const remote = getTeamAssetUrl(teamAssets, type);
   const local = getLocalTeamAssetUrl(teamSlug, type);
-  return [remote, local].filter((source): source is string => Boolean(source));
+  const generated = type === "crest" ? getLocalGeneratedTeamAssetUrl(teamSlug, type) : null;
+  return [remote, local, generated].filter((source): source is string => Boolean(source));
 }
 
 export function getTeamFlagUrl(teamAssets: TeamAssetLike[] | null | undefined, teamSlug?: string | null): string | null {
@@ -103,7 +104,7 @@ export function getLocalPlayerPhotoUrl(player: PlayerPhotoLike | null | undefine
   const cleanTeamSlug = cleanValue(teamSlug);
   if (!player || !cleanTeamSlug) return null;
   const playerSlug = cleanValue(player.slug) ?? buildGeneratedPlayerSlug(player);
-  return playerSlug ? `/worldcup-assets/players/${cleanTeamSlug}/${playerSlug}.svg` : null;
+  return playerSlug ? `/worldcup-assets/players/${cleanTeamSlug}/${playerSlug}.webp` : null;
 }
 
 export function getPlayerPhotoUrl(player: PlayerPhotoLike | null | undefined, teamSlug?: string | null): string | null {
@@ -114,8 +115,9 @@ export function getPlayerPhotoUrl(player: PlayerPhotoLike | null | undefined, te
 export function getPlayerPhotoSources(player: PlayerPhotoLike | null | undefined, teamSlug?: string | null): string[] {
   if (!player) return [];
   const remote = cleanValue(player.photo_url) ?? buildPublicStorageUrl(player.photo_storage_path ?? player.photo_path);
-  const local = getLocalPlayerPhotoUrl(player, teamSlug);
-  return [remote, local].filter((source): source is string => Boolean(source));
+  const extracted = getLocalPlayerPhotoUrl(player, teamSlug);
+  const generated = getLocalGeneratedPlayerPhotoUrl(player, teamSlug);
+  return [remote, extracted, generated].filter((source): source is string => Boolean(source));
 }
 
 export function getInitials(name: string): string {
@@ -144,4 +146,21 @@ function buildGeneratedPlayerSlug(player: PlayerPhotoLike): string | null {
   if (!player.id) return slugifyForAsset(player.name ?? "");
   const base = slugifyForAsset(player.name ?? "") ?? "player";
   return `${base}-${player.id}`;
+}
+
+function getLocalGeneratedPlayerPhotoUrl(player: PlayerPhotoLike | null | undefined, teamSlug?: string | null): string | null {
+  const cleanTeamSlug = cleanValue(teamSlug);
+  if (!player || !cleanTeamSlug) return null;
+  const playerSlug = cleanValue(player.slug) ?? buildGeneratedPlayerSlug(player);
+  return playerSlug ? `/worldcup-assets/players/${cleanTeamSlug}/${playerSlug}.svg` : null;
+}
+
+function getLocalGeneratedTeamAssetUrl(teamSlug: string | null | undefined, type: TeamAssetType): string | null {
+  const slug = cleanValue(teamSlug);
+  if (!slug) return null;
+  const fileByType: Partial<Record<TeamAssetType, string>> = {
+    crest: "crest.svg",
+  };
+  const fileName = fileByType[type];
+  return fileName ? `/worldcup-assets/teams/${slug}/${fileName}` : null;
 }
