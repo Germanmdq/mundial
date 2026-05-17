@@ -6,6 +6,7 @@ import { saveUserPredictions } from "@/app/actions/predictions";
 import type { Match } from "@/lib/worldcup/matches";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
+import { formatMatchDate } from "@/lib/worldcup/match-date";
 
 const SHOULD_GATE_AFTER_SIX_MATCHES = false;
 const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
@@ -122,7 +123,8 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     return ids;
   });
 
-  const [saveStatus, setSaveStatus] = useState<string>(isLoggedIn ? "Guardado" : "Borrador local");
+  const [hasMounted, setHasMounted] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string>("Preparando predicción");
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
   const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
@@ -177,8 +179,19 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     localStorage.setItem(PREDICTION_RETURN_PATH_KEY, "/mi-prediccion");
   };
 
-  // Load localStorage draft on mount
   useEffect(() => {
+    const mountTimer = window.setTimeout(() => {
+      setHasMounted(true);
+      setSaveStatus(isLoggedIn ? "Guardado" : "Borrador local");
+    }, 0);
+
+    return () => window.clearTimeout(mountTimer);
+  }, [isLoggedIn]);
+
+  // Load localStorage draft after mount only, so hydration starts from deterministic server markup.
+  useEffect(() => {
+    if (!hasMounted) return;
+
     if (typeof window !== "undefined") {
       const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
       const parsedDraft = parseDraft(rawDraft);
@@ -223,7 +236,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         }, 0);
       }
     }
-  }, [isLoggedIn]);
+  }, [hasMounted, isLoggedIn]);
 
   // Group filter change - reset index and completion state
   const handleFilterChange = (filter: string) => {
@@ -639,10 +652,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                       {activeMatch.group_letter ? `Grupo ${activeMatch.group_letter}` : activeMatch.stage_label} · Fase de grupos
                     </span>
                     <span className="matchFocusTime">
-                      {activeMatch.kickoff_at 
-                        ? new Date(activeMatch.kickoff_at).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' })
-                        : "Por definir"
-                      }
+                      {formatMatchDate(activeMatch.kickoff_at, "long")}
                       {activeMatch.stadium_name ? ` · ${activeMatch.stadium_name}, ${activeMatch.city}` : ""}
                     </span>
                   </div>

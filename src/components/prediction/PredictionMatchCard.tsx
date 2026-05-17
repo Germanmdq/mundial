@@ -3,6 +3,7 @@
 import React from "react";
 import type { Match } from "@/lib/worldcup/matches";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
+import { formatMatchDate } from "@/lib/worldcup/match-date";
 
 interface PredictionMatchCardProps {
   match: Match;
@@ -31,9 +32,7 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
   const homeFlag = getTeamFlag(rawHomeName);
   const awayFlag = getTeamFlag(rawAwayName);
 
-  const dateStr = match.kickoff_at 
-    ? new Date(match.kickoff_at).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) 
-    : 'Por definir';
+  const dateStr = formatMatchDate(match.kickoff_at);
 
   const groupLabel = match.group_letter ? `Grupo ${match.group_letter}` : (match.stage_label || "Eliminatorias");
   const hasScore = typeof homeScore === "number" && typeof awayScore === "number";
