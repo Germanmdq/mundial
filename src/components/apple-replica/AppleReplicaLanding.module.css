@@ -1,4 +1,4 @@
-/* Apple MacBook Air Full-Screen Video Hero Stylesheet (Clean Video, 56px Menu, Aceternity Player Carousel) */
+/* Apple MacBook Air Full-Screen Video Hero Stylesheet (Clean Video, 56px Menu, Aceternity Player Carousel, Premium Sections) */
 
 .page {
   width: 100%;
@@ -97,6 +97,10 @@
   display: none;
 }
 
+.mobileMenu {
+  display: none;
+}
+
 /* Full-Screen Hero (No Opacity overlay) */
 .hero {
   position: relative;
@@ -145,44 +149,41 @@
   width: 620px;
 }
 
-.productName,
-.heroTitle,
-.heroSubline {
-  text-shadow: 0 2px 18px rgba(255, 255, 255, 0.45);
-}
-
 .productName {
   font-size: 28px;
   line-height: 1.1;
   font-weight: 700;
-  color: #1d1d1f;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
   margin-bottom: 18px;
 }
 
 .heroTitle {
   margin: 0;
-  font-size: 56px;
+  font-size: 64px;
   line-height: 1.05;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.025em;
-  color: #17445e;
+  color: #ffffff;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.55);
 }
 
 .heroSubline {
   margin: 18px 0 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #c94b12;
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 
 .heroContentRight {
   width: 300px;
   height: 76px;
   border-radius: 999px;
-  background: rgba(245, 245, 247, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -208,7 +209,7 @@
 }
 
 .buyButton {
-  width: 64px;
+  width: 76px;
   height: 48px;
   border: 0;
   border-radius: 999px;
@@ -216,13 +217,23 @@
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 160ms ease;
+}
+
+.buyButton:hover {
+  background: #0066cc;
 }
 
 /* Featured Players Carousel Section */
 .featuredPlayers {
   width: 100%;
   background: #f5f5f7;
-  padding: 110px 0 120px;
+  padding: 110px 0 100px;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -234,7 +245,7 @@
 
 .featuredPlayersEyebrow {
   margin: 0 0 12px;
-  color: #0b7a3b;
+  color: #0071e3;
   font-size: 17px;
   line-height: 1.2;
   font-weight: 700;
@@ -262,14 +273,14 @@
   height: 360px;
   border-radius: 24px;
   background:
-    radial-gradient(circle at 50% 30%, rgba(11, 122, 59, 0.28), transparent 35%),
-    linear-gradient(135deg, #0b7a3b 0%, #111111 100%);
+    radial-gradient(circle at 50% 30%, rgba(0, 113, 227, 0.28), transparent 38%),
+    linear-gradient(135deg, #08111f 0%, #111111 100%);
   margin-bottom: 28px;
 }
 
 .playerModalText p {
   margin: 0 0 8px;
-  color: #0b7a3b;
+  color: #0071e3;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
@@ -294,91 +305,270 @@
   font-weight: 600;
 }
 
-/* Highlights Section */
-.highlights {
+/* Cómo Funciona Section */
+.howItWorks {
   width: 100%;
-  min-height: 873px;
-  padding: 110px 0 120px;
-  background: rgb(245, 245, 247);
+  background: #ffffff;
+  padding: 100px 0 100px;
   box-sizing: border-box;
 }
 
-.highlightsHeader {
+.howItWorksHeader {
   width: min(1260px, 87.5vw);
-  margin: 0 auto 48px;
+  margin: 0 auto 64px;
 }
 
-.highlightsTitle {
-  margin: 0;
-  font-size: 56px;
-  line-height: 1.05;
+.howItWorksEyebrow {
+  margin: 0 0 12px;
+  color: #0071e3;
+  font-size: 17px;
   font-weight: 700;
+}
+
+.howItWorksTitle {
+  max-width: 900px;
+  margin: 0;
+  color: #1d1d1f;
+  font-size: clamp(32px, 4.5vw, 56px);
+  line-height: 1.08;
+  font-weight: 750;
   letter-spacing: -0.025em;
+}
+
+.howItWorksGrid {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.howItWorksCard {
+  background: #f5f5f7;
+  border-radius: 24px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.howItWorksCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.howItWorksIconWrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.howItWorksIconWrap span {
+  font-size: 28px;
+  color: #0071e3;
+}
+
+.howItWorksCardTitle {
+  margin: 0 0 12px;
+  color: #1d1d1f;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.howItWorksCardText {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.64);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Premio Garantizado Section */
+.prizeSection {
+  width: 100%;
+  background: #f5f5f7;
+  padding: 80px 0;
+  box-sizing: border-box;
+}
+
+.prizeCard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.prizeCard {
+  background: linear-gradient(135deg, #0a1628 0%, #111827 100%);
+  border-radius: 28px;
+  padding: 60px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+}
+
+.prizeLeft {
+  flex: 1;
+}
+
+.prizeEyebrow {
+  margin: 0 0 12px;
+  color: #ffed00; /* Yellow highlight */
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prizeAmount {
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-size: 72px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.prizeDescription {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 500;
+  max-width: 520px;
+}
+
+.prizeCtaButton {
+  height: 56px;
+  padding: 0 36px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0071e3;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.prizeCtaButton:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Final CTA Section */
+.finalCtaSection {
+  width: 100%;
+  background: #ffffff;
+  padding: 140px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.finalCtaContent {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.finalCtaTitle {
+  margin: 0 0 24px;
+  color: #1d1d1f;
+  font-size: clamp(38px, 5.5vw, 64px);
+  line-height: 1.06;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.finalCtaDescription {
+  margin: 0 0 40px;
+  color: rgba(0, 0, 0, 0.64);
+  font-size: clamp(17px, 2.5vw, 22px);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.finalCtaButton {
+  height: 56px;
+  padding: 0 40px;
+  border-radius: 999px;
+  background: #0071e3;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.25);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.finalCtaButton:hover {
+  background: #0077ed;
+  transform: scale(1.02);
+}
+
+/* Global Footer */
+.globalFooter {
+  width: 100%;
+  background: #f5f5f7;
+  padding: 64px 0 80px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.globalFooterInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.footerBrand {
+  font-size: 14px;
+  font-weight: 700;
   color: #1d1d1f;
 }
 
-.highlightsRail {
-  width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-.highlightsRail::-webkit-scrollbar {
-  display: none;
+.footerLinks a {
+  color: rgba(0, 0, 0, 0.54);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 120ms ease;
 }
 
-.highlightsTrack {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 696px;
-  gap: 20px;
-  padding-left: 230px;
-  padding-right: 230px;
+.footerLinks a:hover {
+  color: #1d1d1f;
 }
 
-.highlightCard {
-  width: 696px;
-  height: 554px;
-  border-radius: 28px;
-  background: #ffffff;
-  scroll-snap-align: start;
-  overflow: hidden;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-}
-
-.highlightMedia {
-  width: 100%;
-  height: 430px;
-  background: linear-gradient(135deg, #dff2fb 0%, #ffffff 58%, #c8e7f5 100%);
-}
-
-.highlightCopy {
-  padding: 27px 16px 50px;
-}
-
-.highlightLineLarge {
-  width: 70%;
-  height: 18px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.72);
-}
-
-.highlightLine {
-  width: 90%;
-  height: 12px;
-  margin-top: 12px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.18);
-}
-
-.highlightLineShort {
-  width: 55%;
-  height: 12px;
-  margin-top: 8px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.18);
+.footerCopyright {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.44);
 }
 
 /* Responsive Media Queries */
@@ -394,21 +584,20 @@
   }
 
   .heroTitle {
-    font-size: 48px;
+    font-size: 54px;
   }
 
   .heroContentRight {
     width: 290px;
   }
 
-  .highlightsTrack {
-    grid-auto-columns: 590px;
-    padding-left: 188px;
-    padding-right: 188px;
+  .howItWorksGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
-  .highlightCard {
-    width: 590px;
+  .prizeCard {
+    padding: 50px 60px;
   }
 }
 
@@ -426,14 +615,15 @@
     width: 280px;
   }
 
-  .highlightsTrack {
-    grid-auto-columns: 560px;
-    padding-left: 70px;
-    padding-right: 70px;
+  .prizeCard {
+    flex-direction: column;
+    text-align: center;
+    padding: 44px 32px;
+    gap: 32px;
   }
 
-  .highlightCard {
-    width: 560px;
+  .prizeDescription {
+    max-width: none;
   }
 }
 
@@ -639,33 +829,32 @@
     height: 40px;
   }
 
-  .highlights {
-    height: 760px;
-    padding: 72px 0 78px;
+  .howItWorks {
+    padding: 72px 0;
   }
 
-  .highlightsHeader {
-    width: 87.5vw;
-    margin-bottom: 40px;
+  .howItWorksHeader {
+    margin-bottom: 44px;
   }
 
-  .highlightsTitle {
-    font-size: 40px;
+  .howItWorksGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .highlightsTrack {
-    grid-auto-columns: 310px;
-    gap: 18px;
-    padding-left: 40px;
-    padding-right: 40px;
+  .howItWorksCard {
+    padding: 30px 24px;
   }
 
-  .highlightCard {
-    width: 310px;
-    height: 520px;
+  .prizeAmount {
+    font-size: 48px;
   }
 
-  .highlightMedia {
-    height: 390px;
+  .prizeDescription {
+    font-size: 15px;
+  }
+
+  .finalCtaSection {
+    padding: 80px 0;
   }
 }

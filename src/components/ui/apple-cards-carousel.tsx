@@ -35,6 +35,8 @@ export const Carousel = ({
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const checkScrollability = () => {
     if (carouselRef.current) {
@@ -44,15 +46,29 @@ export const Carousel = ({
     }
   };
 
+  const scrollToCard = (index: number) => {
+    if (!carouselRef.current) return;
+    const card = carouselRef.current.querySelector(`[data-card-index="${index}"]`);
+    if (card) {
+      card.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  };
+
   const scrollLeft = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      setActive((current) => (current - 1 < 0 ? items.length - 1 : current - 1));
     }
   };
 
   const scrollRight = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      setActive((current) => (current + 1 >= items.length ? 0 : current + 1));
     }
   };
 
@@ -63,8 +79,31 @@ export const Carousel = ({
     }
   }, [initialScroll]);
 
+  // Autoplay Effect
+  useEffect(() => {
+    if (isPaused || !items.length) return;
+
+    const interval = window.setInterval(() => {
+      setActive((current) => {
+        const next = current + 1 >= items.length ? 0 : current + 1;
+        scrollToCard(next);
+        return next;
+      });
+    }, 3500);
+
+    return () => window.clearInterval(interval);
+  }, [items.length, isPaused]);
+
   return (
-    <div className="relative w-full">
+    <div
+      className="relative w-full"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
       <div
         className="flex w-full overflow-x-auto overscroll-x-contain py-4 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         ref={carouselRef}
@@ -78,6 +117,7 @@ export const Carousel = ({
               transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
               key={"card" + index}
               className="last:pr-[5%] md:last:pr-[33%] rounded-3xl"
+              data-card-index={index}
             >
               {item}
             </motion.div>
@@ -172,7 +212,7 @@ export const Card = ({
               </button>
               <motion.p
                 layoutId={layout ? `category-${card.category}` : undefined}
-                className="text-xs md:text-sm font-semibold text-emerald-600 dark:text-emerald-400"
+                className="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400"
               >
                 {card.category}
               </motion.p>
@@ -191,7 +231,10 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[400px] md:w-80 overflow-hidden flex flex-col items-start justify-end relative z-10 cursor-pointer shadow-md hover:shadow-xl transition-shadow duration-300 border-0"
+        className="rounded-3xl h-80 w-56 md:h-[400px] md:w-80 overflow-hidden flex flex-col items-start justify-end relative z-10 cursor-pointer shadow-md hover:shadow-xl transition-shadow duration-300 border-0"
+        style={{
+          background: "radial-gradient(circle at 50% 30%, rgba(0,113,227,0.28), transparent 38%), linear-gradient(135deg, #08111f 0%, #111111 100%)"
+        }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-30 pointer-events-none" />
 
@@ -200,13 +243,13 @@ export const Card = ({
           alt={card.title}
           fill
           sizes="(max-width: 768px) 224px, 320px"
-          className="object-cover absolute inset-0 z-10"
+          className="object-cover object-[center_top] absolute inset-0 z-10"
         />
 
         <div className="relative z-40 p-6 flex flex-col items-start justify-end h-full w-full">
           <motion.p
             layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-emerald-400 text-xs md:text-sm font-semibold text-left"
+            className="text-blue-300 text-xs md:text-sm font-semibold text-left"
           >
             {card.category}
           </motion.p>
