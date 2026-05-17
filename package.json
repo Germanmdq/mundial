@@ -23,7 +23,8 @@
     "players:import-reviewed-wikipedia": "tsx scripts/import-reviewed-wikipedia-players-to-supabase.ts",
     "players:import-wikimedia-photos": "tsx scripts/import-player-photos-from-wikimedia.ts",
     "players:import-thesportsdb-photos": "tsx scripts/import-player-photos-from-thesportsdb.ts",
-    "players:clean-ocr-bogus": "tsx scripts/audit-and-clean-bogus-ocr-players.ts"
+    "players:clean-ocr-bogus": "tsx scripts/audit-and-clean-bogus-ocr-players.ts",
+    "teams:import-fifa-profiles": "tsx scripts/import-fifa-team-profiles.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

@@ -1,0 +1,27 @@
+{
+  "teamSlug": "united-states",
+  "teamName": "United States",
+  "displayNameEs": "Estados Unidos",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/estados-unidos-perfil-historia-en-los-mundiales",
+  "confederation": "CONCACAF",
+  "bestResult": "Semifinales",
+  "bestResultYears": [
+    "1930"
+  ],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Octavos de final",
+  "firstWorldCup": "1930",
+  "appearancesCount": 12,
+  "appearancesYears": [],
+  "hostYears": [
+    "1994",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Estados Unidos sera coanfitrion y busca superar su reciente eliminacion en octavos de final de 2022.",
+  "shortHistorySummary": "Estados Unidos sera coanfitrion y busca superar su reciente eliminacion en octavos de final de 2022.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

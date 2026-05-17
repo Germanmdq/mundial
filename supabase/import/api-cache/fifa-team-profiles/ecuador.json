@@ -1,0 +1,22 @@
+{
+  "teamSlug": "ecuador",
+  "teamName": "Ecuador",
+  "displayNameEs": "Ecuador",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-en-la-copa-mundial-fifa-historia",
+  "confederation": "CONMEBOL",
+  "bestResult": "Octavos de final",
+  "bestResultYears": [
+    "2006"
+  ],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Fase de grupos",
+  "appearancesCount": 5,
+  "appearancesYears": [],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Ecuador disputara su quinta Copa Mundial y busca superar su mejor antecedente de octavos de final.",
+  "shortHistorySummary": "Ecuador disputara su quinta Copa Mundial y busca superar su mejor antecedente de octavos de final.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

@@ -1,0 +1,29 @@
+{
+  "teamSlug": "tunisia",
+  "teamName": "Tunisia",
+  "displayNameEs": "Tunez",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/tunez-seleccion-perfil-equipo-historia",
+  "confederation": "CAF",
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "1978",
+  "appearancesCount": 7,
+  "appearancesYears": [
+    "1978",
+    "1998",
+    "2002",
+    "2006",
+    "2018",
+    "2022",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Tunez llega a su septima Copa Mundial buscando superar por primera vez la fase de grupos.",
+  "shortHistorySummary": "Tunez llega a su septima Copa Mundial buscando superar por primera vez la fase de grupos.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

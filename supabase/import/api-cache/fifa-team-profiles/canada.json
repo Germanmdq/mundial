@@ -1,0 +1,25 @@
+{
+  "teamSlug": "canada",
+  "teamName": "Canada",
+  "displayNameEs": "Canada",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-en-la-copa-mundial-de-la-fifa-perfil-y-trayectoria-de-la-seleccion",
+  "confederation": "CONCACAF",
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "1986",
+  "appearancesCount": 3,
+  "appearancesYears": [
+    "1986",
+    "2022",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Canada llega como coanfitriona y encadena participaciones mundialistas tras su regreso en 2022.",
+  "shortHistorySummary": "Canada llega como coanfitriona y encadena participaciones mundialistas tras su regreso en 2022.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

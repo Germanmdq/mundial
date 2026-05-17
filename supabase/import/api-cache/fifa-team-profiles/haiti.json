@@ -1,0 +1,24 @@
+{
+  "teamSlug": "haiti",
+  "teamName": "Haiti",
+  "displayNameEs": "Haiti",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/haiti-copa-mundial-historia-perfil-trayectoria",
+  "confederation": "CONCACAF",
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [],
+  "lastWorldCup": "1974",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "1974",
+  "appearancesCount": 2,
+  "appearancesYears": [
+    "1974",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Haiti regresa al Mundial despues de su primera participacion en 1974.",
+  "shortHistorySummary": "Haiti regresa al Mundial despues de su primera participacion en 1974.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

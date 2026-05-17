@@ -1,0 +1,25 @@
+{
+  "teamSlug": "new-zealand",
+  "teamName": "New Zealand",
+  "displayNameEs": "Nueva Zelanda",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/nueva-zelanda-seleccion-perfil-historia",
+  "confederation": "OFC",
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [],
+  "lastWorldCup": "2010",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "1982",
+  "appearancesCount": 3,
+  "appearancesYears": [
+    "1982",
+    "2010",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Nueva Zelanda disputara su tercera Copa Mundial y vuelve tras sus antecedentes de 1982 y 2010.",
+  "shortHistorySummary": "Nueva Zelanda disputara su tercera Copa Mundial y vuelve tras sus antecedentes de 1982 y 2010.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

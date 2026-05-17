@@ -1,0 +1,22 @@
+{
+  "teamSlug": "belgium",
+  "teamName": "Belgium",
+  "displayNameEs": "Belgica",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/belgica-historia-perfil-mundiales",
+  "confederation": "UEFA",
+  "bestResult": "Tercer puesto",
+  "bestResultYears": [
+    "2018"
+  ],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Fase de grupos",
+  "appearancesCount": 15,
+  "appearancesYears": [],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Belgica vuelve con una historia de presencia frecuente y su techo mundialista en el tercer puesto de 2018.",
+  "shortHistorySummary": "Belgica vuelve con una historia de presencia frecuente y su techo mundialista en el tercer puesto de 2018.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

@@ -1,0 +1,21 @@
+{
+  "teamSlug": "curacao",
+  "teamName": "Curacao",
+  "displayNameEs": "Curazao",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/historia-curazao-copa-mundial",
+  "confederation": "CONCACAF",
+  "bestResult": "Debut mundialista",
+  "bestResultYears": [],
+  "firstWorldCup": "2026",
+  "appearancesCount": 1,
+  "appearancesYears": [
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Curazao llega a su primera Copa Mundial tras una clasificacion historica en Concacaf.",
+  "shortHistorySummary": "Curazao llega a su primera Copa Mundial tras una clasificacion historica en Concacaf.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

@@ -1,0 +1,26 @@
+{
+  "teamSlug": "brazil",
+  "teamName": "Brazil",
+  "displayNameEs": "Brasil",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/brasil-perfil-copa-mundial-historia-trayectoria",
+  "confederation": "CONMEBOL",
+  "bestResult": "Campeon",
+  "bestResultYears": [
+    "1958",
+    "1962",
+    "1970",
+    "1994",
+    "2002"
+  ],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Cuartos de final",
+  "appearancesCount": 23,
+  "appearancesYears": [],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Brasil mantiene la marca historica de haber disputado todas las Copas del Mundo y busca su sexto titulo.",
+  "shortHistorySummary": "Brasil mantiene la marca historica de haber disputado todas las Copas del Mundo y busca su sexto titulo.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}

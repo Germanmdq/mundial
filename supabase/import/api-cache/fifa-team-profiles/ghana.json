@@ -1,0 +1,22 @@
+{
+  "teamSlug": "ghana",
+  "teamName": "Ghana",
+  "displayNameEs": "Ghana",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-perfil-seleccion-historia-records",
+  "confederation": "CAF",
+  "bestResult": "Cuartos de final",
+  "bestResultYears": [
+    "2010"
+  ],
+  "lastWorldCup": "2022",
+  "lastWorldCupResult": "Fase de grupos",
+  "appearancesCount": 5,
+  "appearancesYears": [],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Ghana vuelve con el antecedente de cuartos de final en 2010 como mejor actuacion historica.",
+  "shortHistorySummary": "Ghana vuelve con el antecedente de cuartos de final en 2010 como mejor actuacion historica.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
+}
