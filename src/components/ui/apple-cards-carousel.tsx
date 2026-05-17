@@ -32,11 +32,13 @@ export const Carousel = ({
   items: React.ReactNode[];
   initialScroll?: number;
 }) => {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [, setActive] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   const checkScrollability = () => {
     if (carouselRef.current) {
@@ -47,13 +49,18 @@ export const Carousel = ({
   };
 
   const scrollToCard = (index: number) => {
-    if (!carouselRef.current) return;
-    const card = carouselRef.current.querySelector(`[data-card-index="${index}"]`);
+    const container = carouselRef.current;
+    if (!container) return;
+    const card = container.querySelector<HTMLElement>(`[data-card-index="${index}"]`);
     if (card) {
-      card.scrollIntoView({
+      const left =
+        card.offsetLeft -
+        container.offsetLeft -
+        Math.max(0, (container.clientWidth - card.clientWidth) / 2);
+      
+      container.scrollTo({
+        left,
         behavior: "smooth",
-        inline: "center",
-        block: "nearest",
       });
     }
   };
@@ -79,9 +86,26 @@ export const Carousel = ({
     }
   }, [initialScroll]);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.25,
+      }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   // Autoplay Effect
   useEffect(() => {
-    if (isPaused || !items.length) return;
+    if (!isInView || isPaused || items.length <= 1) return;
 
     const interval = window.setInterval(() => {
       setActive((current) => {
@@ -92,10 +116,11 @@ export const Carousel = ({
     }, 3500);
 
     return () => window.clearInterval(interval);
-  }, [items.length, isPaused]);
+  }, [isInView, isPaused, items.length]);
 
   return (
     <div
+      ref={sectionRef}
       className="relative w-full"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -106,6 +131,7 @@ export const Carousel = ({
     >
       <div
         className="flex w-full overflow-x-auto overscroll-x-contain py-4 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ scrollSnapType: "x mandatory", overscrollBehaviorY: "none" }}
         ref={carouselRef}
         onScroll={checkScrollability}
       >
