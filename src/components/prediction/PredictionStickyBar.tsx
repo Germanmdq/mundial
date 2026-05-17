@@ -14,9 +14,9 @@ export function PredictionStickyBar({ isVisible, isSaving, onSave, onLoginReques
   if (!isVisible) return null;
 
   return (
-    <div className="sticky bottom-4 md:bottom-[18px] z-40 w-[min(760px,calc(100%-32px))] mx-auto mt-8">
+    <div className="saveBarWrapper">
       <div 
-        className="flex items-center justify-between p-2.5 pl-5 rounded-[999px] border shadow-2xl backdrop-blur-xl transition-all duration-300 translate-y-0 opacity-100"
+        className="saveBar flex items-center justify-between p-2.5 pl-5 rounded-[999px] border shadow-2xl backdrop-blur-xl transition-all duration-300"
         style={{ 
           background: "rgba(255,255,255,0.88)", 
           borderColor: "rgba(0,0,0,0.08)",
@@ -35,6 +35,31 @@ export function PredictionStickyBar({ isVisible, isSaving, onSave, onLoginReques
           {isSaving ? "Guardando..." : "Guardar predicción"}
         </button>
       </div>
+      <style jsx>{`
+        .saveBarWrapper {
+          position: sticky;
+          bottom: 18px;
+          z-index: 60;
+          width: min(760px, calc(100% - 32px));
+          margin: 32px auto 0;
+        }
+
+        .saveBar {
+          width: 100%;
+        }
+
+        @media (max-width: 734px) {
+          .saveBarWrapper {
+            position: fixed;
+            left: 14px;
+            right: 14px;
+            bottom: max(14px, env(safe-area-inset-bottom));
+            width: auto;
+            max-width: calc(100vw - 28px);
+            margin: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }

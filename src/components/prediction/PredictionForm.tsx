@@ -104,7 +104,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   };
 
   return (
-    <div className="space-y-8 pb-[110px]">
+    <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
       
       {/* Progress Panel */}
       <PremiumCard className="!p-6 grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
