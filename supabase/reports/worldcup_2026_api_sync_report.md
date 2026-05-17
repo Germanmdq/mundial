@@ -1,6 +1,6 @@
 # World Cup 2026 API sync report
 
-- Fecha: 2026-05-17T18:22:44.467Z
+- Fecha: 2026-05-17T18:28:03.190Z
 - Fuente principal: API-Football / API-SPORTS
 - League: 1
 - Season: 2026
@@ -14,6 +14,7 @@
 - Equipos unmatched: 0
 - Equipos ambiguous: 0
 - Fixtures obtenidos: 0
+- Standings/grupos obtenidos: 0
 - Partidos actualizados: 0
 - Squads obtenidos: 0
 - Jugadores matched: 0
@@ -34,7 +35,9 @@
 
 ## Errores
 
-- Sin errores.
+- /fixtures {"league":"1","season":"2026"} -> {"plan":"Free plans do not have access to this season, try from 2022 to 2024."}
+- /teams {"league":"1","season":"2026"} -> {"plan":"Free plans do not have access to this season, try from 2022 to 2024."}
+- /standings {"league":"1","season":"2026"} -> {"plan":"Free plans do not have access to this season, try from 2022 to 2024."}
 
 ## Proximos pasos
 

@@ -23,6 +23,7 @@ const PLAYER_REVIEW_CSV = 'supabase/import/api_worldcup_players_review.csv'
 const REPORT_PATH = 'supabase/reports/worldcup_2026_api_sync_report.md'
 const SOURCE_STRATEGY_PATH = 'supabase/reports/source_strategy.md'
 const BUCKET = 'worldcup-assets'
+const apiWarnings: string[] = []
 
 type ApiFootballTeamItem = {
   team?: {
@@ -71,6 +72,7 @@ type ApiFootballSquadItem = {
 type ApiFootballEnvelope<T> = {
   response?: T[]
   errors?: unknown
+  results?: number
 }
 
 type TeamRow = {
@@ -112,6 +114,7 @@ type SyncStats = {
   teamsUnmatched: number
   teamsAmbiguous: number
   fixturesObtained: number
+  standingsObtained: number
   matchesUpdated: number
   squadsObtained: number
   playersMatched: number
@@ -137,7 +140,17 @@ async function fetchApiFootball<T>(pathname: string, params: Record<string, stri
   const response = await fetch(url, { headers })
   if (!response.ok) throw new Error(`API-Football ${response.status} en ${pathname}`)
   const json = (await response.json()) as ApiFootballEnvelope<T>
+  if (hasApiErrors(json.errors)) {
+    apiWarnings.push(`${pathname} ${JSON.stringify(params)} -> ${JSON.stringify(json.errors)}`)
+  }
   return json.response ?? []
+}
+
+function hasApiErrors(errors: unknown): boolean {
+  if (!errors) return false
+  if (Array.isArray(errors)) return errors.length > 0
+  if (typeof errors === 'object') return Object.keys(errors).length > 0
+  return true
 }
 
 async function writeJson(filePath: string, value: unknown) {
@@ -317,6 +330,7 @@ function buildReport(stats: SyncStats) {
 - Equipos unmatched: ${stats.teamsUnmatched}
 - Equipos ambiguous: ${stats.teamsAmbiguous}
 - Fixtures obtenidos: ${stats.fixturesObtained}
+- Standings/grupos obtenidos: ${stats.standingsObtained}
 - Partidos actualizados: ${stats.matchesUpdated}
 - Squads obtenidos: ${stats.squadsObtained}
 - Jugadores matched: ${stats.playersMatched}
@@ -357,6 +371,7 @@ async function main() {
     teamsUnmatched: 0,
     teamsAmbiguous: 0,
     fixturesObtained: 0,
+    standingsObtained: 0,
     matchesUpdated: 0,
     squadsObtained: 0,
     playersMatched: 0,
@@ -390,8 +405,10 @@ async function main() {
 
   const [teams, fixtures, standings] = await Promise.all([fetchWorldCupTeams(), fetchWorldCupFixtures(), fetchWorldCupStandings()])
   const squads = await fetchWorldCupSquads(teams)
+  stats.errors.push(...apiWarnings)
   stats.teamsObtained = teams.length
   stats.fixturesObtained = fixtures.length
+  stats.standingsObtained = standings.length
   stats.squadsObtained = squads.length
 
   await writeJson(`${CACHE_DIR}/teams.json`, teams)
