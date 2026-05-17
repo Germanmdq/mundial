@@ -1,11 +1,12 @@
 # Import por APIs externas
 
-Este flujo reemplaza al PDF Panini. La fuente principal del proyecto es API-Football para Mundial 2026.
+Este flujo reemplaza al PDF Panini. La fuente principal actual del proyecto es WC2026 API para equipos, grupos, partidos y estadios.
 
 ## Variables
 
 ```env
 API_FOOTBALL_KEY=
+WC2026_API_KEY=
 THESPORTSDB_API_KEY=
 FOOTBALL_DATA_API_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -18,6 +19,7 @@ TheSportsDB puede usar la key publica de prueba para pruebas, pero produccion ne
 ## Comandos
 
 ```bash
+~/.bun/bin/bun run api:sync-wc2026
 ~/.bun/bin/bun run api:sync-worldcup-2026
 ~/.bun/bin/bun run api:search-teams
 ~/.bun/bin/bun run api:import-team-logos
@@ -25,7 +27,48 @@ TheSportsDB puede usar la key publica de prueba para pruebas, pero produccion ne
 ~/.bun/bin/bun run api:import-player-photos
 ```
 
-## Mundial 2026 - Fuente principal
+## WC2026 API
+
+WC2026 API es la fuente principal actual para:
+
+- equipos
+- grupos
+- fixture/partidos
+- estadios
+
+No provee jugadores, fotos de jugadores, escudos/logos ni flags pobladas. Esos assets siguen con placeholders premium y fuentes secundarias futuras.
+
+Variables:
+
+```env
+WC2026_API_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+Comando principal:
+
+```bash
+~/.bun/bin/bun run api:sync-wc2026
+```
+
+Flujo recomendado:
+
+1. Poner `WC2026_API_KEY` en `.env.local`.
+2. Correr `api:sync-wc2026`.
+3. Revisar los CSV generados en `supabase/import/`.
+4. Si queres escribir en Supabase, agregar `SUPABASE_SERVICE_ROLE_KEY`.
+5. Correr `api:sync-wc2026` de nuevo.
+6. Verificar `/equipos` y `/mi-prediccion`.
+
+El script guarda respuestas crudas en `supabase/import/api-cache/wc2026api/` y genera:
+
+- `supabase/import/wc2026api_teams_review.csv`
+- `supabase/import/wc2026api_groups_review.csv`
+- `supabase/import/wc2026api_matches_review.csv`
+- `supabase/import/wc2026api_stadiums_review.csv`
+- `supabase/reports/wc2026api_sync_report.md`
+
+## API-Football - Fuente descartada en Free
 
 Parametros oficiales del sync principal:
 
@@ -69,6 +112,8 @@ El script guarda respuestas crudas en `supabase/import/api-cache/worldcup-2026/`
 - `supabase/import/api_worldcup_matches_review.csv`
 - `supabase/import/api_worldcup_players_review.csv`
 - `supabase/reports/worldcup_2026_api_sync_report.md`
+
+Nota: API-Football Free no permite consultar `season=2026`. Mantener este flujo solo si se obtiene un plan con acceso a esa temporada o para fuentes secundarias.
 
 ## Flujo
 

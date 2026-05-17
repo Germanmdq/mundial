@@ -11,6 +11,7 @@
     "assets:sync-teams": "tsx scripts/sync-team-assets.ts",
     "players:import": "tsx scripts/import-players.ts",
     "assets:generate-placeholders": "tsx scripts/generate-placeholder-team-assets.ts",
+    "api:sync-wc2026": "tsx scripts/sync-wc2026api.ts",
     "api:sync-worldcup-2026": "tsx scripts/sync-worldcup-2026-from-api.ts",
     "api:search-teams": "tsx scripts/search-football-teams-api.ts",
     "api:import-team-logos": "tsx scripts/import-team-logos-from-api.ts",

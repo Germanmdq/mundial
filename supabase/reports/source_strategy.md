@@ -1,7 +1,19 @@
 # Estrategia de fuentes
 
-- Fuente principal: API-Football Mundial 2026.
-- Fuente secundaria: TheSportsDB para imagenes.
-- PDF Panini eliminado/no usado.
-- Placeholders premium quedan solo como fallback.
-- Supabase es la base final para frontend.
+## Fuente principal actual
+
+- WC2026 API para equipos, grupos, partidos y estadios.
+
+## Fuente secundaria
+
+- Supabase local es la base final para frontend.
+- Placeholders premium cubren assets faltantes.
+- TheSportsDB u otra fuente futura queda reservada para jugadores, fotos y assets reales.
+
+## API-Football
+
+- API-Football queda descartada en plan Free para `season=2026` porque no permite consultar esa temporada.
+
+## Panini/PDF
+
+- Panini/PDF eliminado/no usado.

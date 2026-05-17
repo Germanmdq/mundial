@@ -1,0 +1,105 @@
+api_match_id,match_number,round,group_name,home_team_name,away_team_name,home_team_code,away_team_code,kickoff_utc,stadium_name,city,country,status,home_score,away_score,matched_match_id,match_confidence,notes
+2,1,group,A,Mexico,South Africa,MEX,RSA,2026-06-11T19:00:00.000Z,Estadio Azteca,Mexico City,Mexico,scheduled,,,1,100,match claro
+1,2,group,A,Korea Republic,Czechia,KOR,CZE,2026-06-12T02:00:00.000Z,Estadio Akron,Guadalajara,Mexico,scheduled,,,2,100,match claro
+7,3,group,B,Canada,Bosnia-Herzegovina,CAN,BIH,2026-06-12T19:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,7,100,match claro
+20,4,group,D,USA,Paraguay,USA,PAR,2026-06-13T01:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,19,100,match claro
+9,8,group,B,Qatar,Switzerland,QAT,SUI,2026-06-13T19:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,8,100,match claro
+13,7,group,C,Brazil,Morocco,BRA,MAR,2026-06-13T22:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,13,100,match claro
+15,5,group,C,Haiti,Scotland,HAI,SCO,2026-06-14T01:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,14,100,match claro
+19,6,group,D,Australia,Turkey,AUS,TUR,2026-06-14T04:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,20,100,match claro
+26,10,group,E,Germany,Curaçao,GER,CUW,2026-06-14T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,25,100,match claro
+34,11,group,F,Netherlands,Japan,NED,JPN,2026-06-14T20:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,31,100,match claro
+28,9,group,E,Côte d'Ivoire,Ecuador,CIV,ECU,2026-06-14T23:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,26,100,match claro
+33,12,group,F,Sweden,Tunisia,SWE,TUN,2026-06-15T02:00:00.000Z,Estadio BBVA,Monterrey,Mexico,scheduled,,,32,100,match claro
+43,14,group,H,Spain,Cabo Verde,ESP,CPV,2026-06-15T16:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,43,100,match claro
+40,16,group,G,Belgium,Egypt,BEL,EGY,2026-06-15T19:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,37,100,match claro
+45,13,group,H,Saudi Arabia,Uruguay,KSA,URU,2026-06-15T22:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,44,100,match claro
+37,15,group,G,IR Iran,New Zealand,IRN,NZL,2026-06-16T01:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,38,100,match claro
+52,17,group,I,France,Senegal,FRA,SEN,2026-06-16T19:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,49,100,match claro
+51,18,group,I,Iraq,Norway,IRQ,NOR,2026-06-16T22:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,50,100,match claro
+58,19,group,J,Argentina,Algeria,ARG,ALG,2026-06-17T01:00:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,55,100,match claro
+55,20,group,J,Austria,Jordan,AUT,JOR,2026-06-17T04:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,56,100,match claro
+61,23,group,K,Portugal,Congo DR,POR,COD,2026-06-17T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,61,100,match claro
+68,22,group,L,England,Croatia,ENG,CRO,2026-06-17T20:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,67,100,match claro
+70,21,group,L,Ghana,Panama,GHA,PAN,2026-06-17T23:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,68,100,match claro
+63,24,group,K,Uzbekistan,Colombia,UZB,COL,2026-06-18T02:00:00.000Z,Estadio Azteca,Mexico City,Mexico,scheduled,,,62,100,match claro
+3,25,group,A,Czechia,South Africa,CZE,RSA,2026-06-18T16:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,3,100,match claro
+8,26,group,B,Switzerland,Bosnia-Herzegovina,SUI,BIH,2026-06-18T19:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,9,100,match claro
+10,27,group,B,Canada,Qatar,CAN,QAT,2026-06-18T22:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,10,100,match claro
+4,28,group,A,Mexico,Korea Republic,MEX,KOR,2026-06-19T01:00:00.000Z,Estadio Akron,Guadalajara,Mexico,scheduled,,,4,100,match claro
+22,32,group,D,USA,Australia,USA,AUS,2026-06-19T19:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,21,100,match claro
+14,30,group,C,Scotland,Morocco,SCO,MAR,2026-06-19T22:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,15,100,match claro
+16,29,group,C,Brazil,Haiti,BRA,HAI,2026-06-20T01:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,16,100,match claro
+21,31,group,D,Turkey,Paraguay,TUR,PAR,2026-06-20T04:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,22,100,match claro
+31,35,group,F,Netherlands,Sweden,NED,SWE,2026-06-20T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,33,100,match claro
+29,33,group,E,Germany,Côte d'Ivoire,GER,CIV,2026-06-20T20:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,27,100,match claro
+25,34,group,E,Ecuador,Curaçao,ECU,CUW,2026-06-21T00:00:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,28,100,match claro
+35,36,group,F,Tunisia,Japan,TUN,JPN,2026-06-21T04:00:00.000Z,Estadio BBVA,Monterrey,Mexico,scheduled,,,34,100,match claro
+47,38,group,H,Spain,Saudi Arabia,ESP,KSA,2026-06-21T16:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,45,100,match claro
+38,39,group,G,Belgium,IR Iran,BEL,IRN,2026-06-21T19:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,39,100,match claro
+44,37,group,H,Uruguay,Cabo Verde,URU,CPV,2026-06-21T22:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,46,100,match claro
+41,40,group,G,New Zealand,Egypt,NZL,EGY,2026-06-22T01:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,40,100,match claro
+56,43,group,J,Argentina,Austria,ARG,AUT,2026-06-22T17:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,57,100,match claro
+49,42,group,I,France,Iraq,FRA,IRQ,2026-06-22T21:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,51,100,match claro
+53,41,group,I,Norway,Senegal,NOR,SEN,2026-06-23T00:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,52,100,match claro
+59,44,group,J,Jordan,Algeria,JOR,ALG,2026-06-23T03:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,58,100,match claro
+64,47,group,K,Portugal,Uzbekistan,POR,UZB,2026-06-23T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,63,100,match claro
+71,45,group,L,England,Ghana,ENG,GHA,2026-06-23T20:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,69,100,match claro
+67,46,group,L,Panama,Croatia,PAN,CRO,2026-06-23T23:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,70,100,match claro
+62,48,group,K,Colombia,Congo DR,COL,COD,2026-06-24T02:00:00.000Z,Estadio Akron,Guadalajara,Mexico,scheduled,,,64,100,match claro
+11,52,group,B,Bosnia-Herzegovina,Qatar,BIH,QAT,2026-06-24T19:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,12,100,match claro
+12,51,group,B,Switzerland,Canada,SUI,CAN,2026-06-24T19:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,11,100,match claro
+18,49,group,C,Scotland,Brazil,SCO,BRA,2026-06-24T22:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,17,100,match claro
+17,50,group,C,Morocco,Haiti,MAR,HAI,2026-06-24T22:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,18,100,match claro
+5,54,group,A,South Africa,Korea Republic,RSA,KOR,2026-06-25T01:00:00.000Z,Estadio BBVA,Monterrey,Mexico,scheduled,,,6,100,match claro
+6,53,group,A,Czechia,Mexico,CZE,MEX,2026-06-25T01:00:00.000Z,Estadio Azteca,Mexico City,Mexico,scheduled,,,5,100,match claro
+30,55,group,E,Curaçao,Côte d'Ivoire,CUW,CIV,2026-06-25T20:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,30,100,match claro
+27,56,group,E,Ecuador,Germany,ECU,GER,2026-06-25T20:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,29,100,match claro
+36,58,group,F,Tunisia,Netherlands,TUN,NED,2026-06-25T23:00:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,35,100,match claro
+32,57,group,F,Japan,Sweden,JPN,SWE,2026-06-25T23:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,36,100,match claro
+24,59,group,D,Turkey,USA,TUR,USA,2026-06-26T02:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,23,100,match claro
+23,60,group,D,Paraguay,Australia,PAR,AUS,2026-06-26T02:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,24,100,match claro
+54,61,group,I,Norway,France,NOR,FRA,2026-06-26T19:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,53,100,match claro
+50,62,group,I,Senegal,Iraq,SEN,IRQ,2026-06-26T19:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,54,100,match claro
+46,66,group,H,Uruguay,Spain,URU,ESP,2026-06-27T00:00:00.000Z,Estadio Akron,Guadalajara,Mexico,scheduled,,,47,100,match claro
+48,65,group,H,Cabo Verde,Saudi Arabia,CPV,KSA,2026-06-27T00:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,48,100,match claro
+39,63,group,G,Egypt,IR Iran,EGY,IRN,2026-06-27T03:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,42,100,match claro
+42,64,group,G,New Zealand,Belgium,NZL,BEL,2026-06-27T03:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,41,100,match claro
+69,67,group,L,Panama,England,PAN,ENG,2026-06-27T21:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,71,100,match claro
+72,68,group,L,Croatia,Ghana,CRO,GHA,2026-06-27T21:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,72,100,match claro
+65,72,group,K,Congo DR,Uzbekistan,COD,UZB,2026-06-27T23:30:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,66,100,match claro
+66,71,group,K,Colombia,Portugal,COL,POR,2026-06-27T23:30:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,65,100,match claro
+60,70,group,J,Jordan,Argentina,JOR,ARG,2026-06-28T02:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,59,100,match claro
+57,69,group,J,Algeria,Austria,ALG,AUT,2026-06-28T02:00:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,60,100,match claro
+82,73,R32,,,,,,2026-06-28T19:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,73,100,match claro
+95,76,R32,,,,,,2026-06-29T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,76,100,match claro
+93,74,R32,,,,,,2026-06-29T20:30:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,74,100,match claro
+101,75,R32,,,,,,2026-06-30T01:00:00.000Z,Estadio BBVA,Monterrey,Mexico,scheduled,,,75,100,match claro
+79,78,R32,,,,,,2026-06-30T17:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,78,100,match claro
+75,77,R32,,,,,,2026-06-30T21:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,77,100,match claro
+100,79,R32,,,,,,2026-07-01T01:00:00.000Z,Estadio Azteca,Mexico City,Mexico,scheduled,,,79,100,match claro
+104,80,R32,,,,,,2026-07-01T16:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,80,100,match claro
+88,82,R32,,,,,,2026-07-01T20:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,82,100,match claro
+83,81,R32,,,,,,2026-07-02T00:00:00.000Z,Levi's Stadium,"Santa Clara, CA",USA,scheduled,,,81,100,match claro
+81,84,R32,,,,,,2026-07-02T19:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,84,100,match claro
+98,83,R32,,,,,,2026-07-02T23:00:00.000Z,BMO Field,"Toronto, ON",Canada,scheduled,,,83,100,match claro
+97,85,R32,,,,,,2026-07-03T03:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,85,100,match claro
+78,88,R32,,,,,,2026-07-03T18:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,88,100,match claro
+86,86,R32,,,,,,2026-07-03T22:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,86,100,match claro
+91,87,R32,,,,,,2026-07-04T01:30:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,87,100,match claro
+94,90,R16,,,,,,2026-07-04T17:00:00.000Z,NRG Stadium,"Houston, TX",USA,scheduled,,,90,100,match claro
+89,89,R16,,,,,,2026-07-04T21:00:00.000Z,Lincoln Financial Field,"Philadelphia, PA",USA,scheduled,,,89,100,match claro
+74,91,R16,,,,,,2026-07-05T20:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,91,100,match claro
+99,92,R16,,,,,,2026-07-06T00:00:00.000Z,Estadio Azteca,Mexico City,Mexico,scheduled,,,92,100,match claro
+77,93,R16,,,,,,2026-07-06T19:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,93,100,match claro
+87,94,R16,,,,,,2026-07-07T00:00:00.000Z,Lumen Field,"Seattle, WA",USA,scheduled,,,94,100,match claro
+103,95,R16,,,,,,2026-07-07T16:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,95,100,match claro
+96,96,R16,,,,,,2026-07-07T20:00:00.000Z,BC Place,"Vancouver, BC",Canada,scheduled,,,96,100,match claro
+92,97,QF,,,,,,2026-07-09T20:00:00.000Z,Gillette Stadium,"Foxborough, MA",USA,scheduled,,,97,100,match claro
+80,98,QF,,,,,,2026-07-10T19:00:00.000Z,SoFi Stadium,"Inglewood, CA",USA,scheduled,,,98,100,match claro
+85,99,QF,,,,,,2026-07-11T21:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,99,100,match claro
+90,100,QF,,,,,,2026-07-12T01:00:00.000Z,Arrowhead Stadium,"Kansas City, MO",USA,scheduled,,,100,100,match claro
+76,101,SF,,,,,,2026-07-14T19:00:00.000Z,AT&T Stadium,"Arlington, TX",USA,scheduled,,,101,100,match claro
+102,102,SF,,,,,,2026-07-15T19:00:00.000Z,Mercedes-Benz Stadium,"Atlanta, GA",USA,scheduled,,,102,100,match claro
+84,103,3rd,,,,,,2026-07-18T21:00:00.000Z,Hard Rock Stadium,"Miami Gardens, FL",USA,scheduled,,,103,100,match claro
+73,104,final,,,,,,2026-07-19T19:00:00.000Z,MetLife Stadium,"East Rutherford, NJ",USA,scheduled,,,104,100,match claro

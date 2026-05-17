@@ -1,0 +1,49 @@
+api_team_id,api_name,api_code,api_group_name,api_flag_url,matched_team_id,matched_team_name,matched_team_slug,match_confidence,status,notes
+4,Czechia,CZE,A,,55,Czechia,czechia,100,matched,flag_url vacia
+2,Korea Republic,KOR,A,,54,South Korea,south-korea,100,matched,flag_url vacia
+1,Mexico,MEX,A,,14,Mexico,mexico,100,matched,flag_url vacia
+3,South Africa,RSA,A,,53,South Africa,south-africa,100,matched,flag_url vacia
+8,Bosnia-Herzegovina,BIH,B,,57,Bosnia and Herzegovina,bosnia-and-herzegovina,100,matched,flag_url vacia
+5,Canada,CAN,B,,9,Canada,canada,100,matched,flag_url vacia
+6,Qatar,QAT,B,,41,Qatar,qatar,100,matched,flag_url vacia
+7,Switzerland,SUI,B,,59,Switzerland,switzerland,100,matched,flag_url vacia
+9,Brazil,BRA,C,,60,Brazil,brazil,100,matched,flag_url vacia
+10,Haiti,HAI,C,,28,Haiti,haiti,100,matched,flag_url vacia
+12,Morocco,MAR,C,,61,Morocco,morocco,100,matched,flag_url vacia
+11,Scotland,SCO,C,,63,Scotland,scotland,100,matched,flag_url vacia
+14,Australia,AUS,D,,4,Australia,australia,100,matched,flag_url vacia
+15,Paraguay,PAR,D,,39,Paraguay,paraguay,100,matched,flag_url vacia
+16,Turkey,TUR,D,,67,Turkey,turkey,100,matched,flag_url vacia
+13,USA,USA,D,,64,United States,united-states,100,matched,flag_url vacia
+17,Côte d'Ivoire,CIV,E,,70,Ivory Coast,ivory-coast,100,matched,flag_url vacia
+20,Curaçao,CUW,E,,69,Curacao,curacao,100,matched,flag_url vacia
+18,Ecuador,ECU,E,,23,Ecuador,ecuador,100,matched,flag_url vacia
+19,Germany,GER,E,,68,Germany,germany,100,matched,flag_url vacia
+22,Japan,JPN,F,,73,Japan,japan,100,matched,flag_url vacia
+21,Netherlands,NED,F,,72,Netherlands,netherlands,100,matched,flag_url vacia
+24,Sweden,SWE,F,,74,Sweden,sweden,100,matched,flag_url vacia
+23,Tunisia,TUN,F,,75,Tunisia,tunisia,100,matched,flag_url vacia
+25,Belgium,BEL,G,,76,Belgium,belgium,100,matched,flag_url vacia
+26,Egypt,EGY,G,,77,Egypt,egypt,100,matched,flag_url vacia
+27,IR Iran,IRN,G,,31,Iran,iran,100,matched,flag_url vacia
+28,New Zealand,NZL,G,,79,New Zealand,new-zealand,100,matched,flag_url vacia
+32,Cabo Verde,CPV,H,,81,Cape Verde,cape-verde,100,matched,flag_url vacia
+29,Saudi Arabia,KSA,H,,82,Saudi Arabia,saudi-arabia,100,matched,flag_url vacia
+30,Spain,ESP,H,,80,Spain,spain,100,matched,flag_url vacia
+31,Uruguay,URU,H,,49,Uruguay,uruguay,100,matched,flag_url vacia
+33,France,FRA,I,,84,France,france,100,matched,flag_url vacia
+36,Iraq,IRQ,I,,86,Iraq,iraq,100,matched,flag_url vacia
+35,Norway,NOR,I,,87,Norway,norway,100,matched,flag_url vacia
+34,Senegal,SEN,I,,43,Senegal,senegal,100,matched,flag_url vacia
+38,Algeria,ALG,J,,89,Algeria,algeria,100,matched,flag_url vacia
+37,Argentina,ARG,J,,3,Argentina,argentina,100,matched,flag_url vacia
+39,Austria,AUT,J,,5,Austria,austria,100,matched,flag_url vacia
+40,Jordan,JOR,J,,91,Jordan,jordan,100,matched,flag_url vacia
+43,Colombia,COL,K,,17,Colombia,colombia,100,matched,flag_url vacia
+44,Congo DR,COD,K,,93,DR Congo,dr-congo,100,matched,flag_url vacia
+41,Portugal,POR,K,,40,Portugal,portugal,100,matched,flag_url vacia
+42,Uzbekistan,UZB,K,,50,Uzbekistan,uzbekistan,100,matched,flag_url vacia
+48,Croatia,CRO,L,,97,Croatia,croatia,100,matched,flag_url vacia
+47,England,ENG,L,,96,England,england,100,matched,flag_url vacia
+45,Ghana,GHA,L,,27,Ghana,ghana,100,matched,flag_url vacia
+46,Panama,PAN,L,,38,Panama,panama,100,matched,flag_url vacia
