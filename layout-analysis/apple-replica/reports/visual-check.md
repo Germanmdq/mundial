@@ -1,6 +1,6 @@
-# Visual Check Report - MacBook Air Exact Layout Replica (Full-Screen Hero with Real Nav Menu)
+# Visual Check Report - FIFA World Cup 2026 Official Intro Hero
 
-This report documents the exact DOM measurements of the built layout replica with the simplified edge-to-edge full-screen height video background layout.
+This report documents the exact DOM measurements of the built layout replica with the official FIFA World Cup 2026 Intro background video.
 
 ## DOM Measurements
 
