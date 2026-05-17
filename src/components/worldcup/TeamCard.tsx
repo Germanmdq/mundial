@@ -1,83 +1,192 @@
+"use client";
+
+import React from 'react'
 import Link from 'next/link'
 import type { Team } from '@/lib/worldcup/teams'
 import { getTeamAssetSources } from '@/lib/worldcup/assets'
 import { SafeAssetImage } from '@/components/worldcup/SafeAssetImage'
-import { getTeamDisplayName } from '@/lib/worldcup/team-display-names'
+import { getTeamDisplayName, getTeamCode } from '@/lib/worldcup/team-display-names'
 
 type TeamCardProps = {
   team: Team
+  playerCount: number
 }
 
 function FlagFallback({ code }: { code: string | null }) {
   return (
-    <div className="flex h-full w-full items-center justify-center rounded-full bg-white/85 text-[10px] font-black tracking-[0.18em] text-[#1d1d1f]">
+    <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-[12px] font-black tracking-widest text-[#1d1d1f]">
       {code ?? 'FIFA'}
     </div>
   )
 }
 
-function CrestFallback({ code }: { code: string | null }) {
-  return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[28%] border border-white/70 bg-gradient-to-br from-[#fefefe] via-[#e8eef7] to-[#cbd5e1] shadow-inner">
-      <div className="absolute inset-x-3 top-2 h-1 rounded-full bg-[#1d1d1f]/10" />
-      <span className="text-[13px] font-black tracking-[0.16em] text-[#1d1d1f]">{code ?? 'TM'}</span>
-    </div>
-  )
-}
-
-export function TeamCard({ team }: TeamCardProps) {
+export function TeamCard({ team, playerCount }: TeamCardProps) {
   const flagSources = [...getTeamAssetSources(team.team_assets, 'flag', team.slug), team.flag_url].filter((source): source is string => Boolean(source))
-  const crestSources = [...getTeamAssetSources(team.team_assets, 'crest', team.slug), team.crest_url].filter((source): source is string => Boolean(source))
-  const stageSources = [
-    ...getTeamAssetSources(team.team_assets, 'hero_image', team.slug),
-    ...getTeamAssetSources(team.team_assets, 'background', team.slug),
-    team.hero_image_url,
-  ].filter((source): source is string => Boolean(source))
-  const code = team.fifa_code ?? (team.name ? team.name.slice(0, 3).toUpperCase() : null)
+  
+  const displayName = getTeamDisplayName(team.name);
+  const code = getTeamCode(team.name);
   const groupLabel = team.group_letter || team.group_name?.replace(/^Grupo\s+/i, '') || '-'
 
+  let statusText = "Plantel en actualización";
+  let statusColor = "text-[#6e6e73]";
+  if (playerCount > 0 && playerCount < 26) {
+    statusText = `${playerCount} jugadores en revisión`;
+    statusColor = "text-[#c9a227]";
+  } else if (playerCount >= 26) {
+    statusText = `Plantel cargado · ${playerCount} jugadores`;
+    statusColor = "text-[#0071e3]";
+  }
+
   return (
-    <article className="group overflow-hidden rounded-[22px] border border-[#e5e5e7] bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-xl">
-      <div className="relative aspect-[1.35] overflow-hidden bg-[radial-gradient(circle_at_20%_15%,#ffffff_0,#f2f6ff_32%,#dce5f2_66%,#c4cedd_100%)]">
-        <SafeAssetImage
-          src={stageSources}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-          fallback={null}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-white/15" />
-        <div className="absolute left-4 top-4 h-10 w-10 overflow-hidden rounded-full border border-white/70 bg-white/70 shadow-sm backdrop-blur">
+    <article className="teamCard">
+      <div className="teamCardTop">
+        <div className="teamFlag shrink-0 overflow-hidden bg-white">
           <SafeAssetImage
             src={flagSources}
-            alt={`Bandera de ${team.name}`}
+            alt={`Bandera de ${displayName}`}
             className="h-full w-full object-cover"
             fallback={<FlagFallback code={code} />}
           />
         </div>
-        <div className="absolute bottom-4 left-1/2 h-20 w-20 -translate-x-1/2 rounded-[28%] bg-white/70 p-2 shadow-[0_18px_40px_rgba(0,0,0,0.22)] backdrop-blur">
-          <SafeAssetImage
-            src={crestSources}
-            alt={`Escudo de ${team.name}`}
-            className="h-full w-full object-contain"
-            fallback={<CrestFallback code={code} />}
-          />
-        </div>
+        <span className="teamCodeGhost">{code}</span>
       </div>
 
-      <div className="flex min-h-[156px] flex-col items-center px-4 pb-5 pt-12 text-center">
-        <span className="mb-2 rounded-full bg-[#f5f5f7] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6e6e73]">
-          Grupo {groupLabel}
-        </span>
-        <h3 className="min-h-[42px] text-[17px] font-extrabold leading-tight tracking-tight text-[#1d1d1f]">
-          {getTeamDisplayName(team.name)}
-        </h3>
-        <Link
-          href={`/jugadores?team=${team.slug || team.id}`}
-          className="mt-auto inline-flex items-center rounded-full bg-[#1d1d1f] px-4 py-2 text-[13px] font-bold text-white transition hover:bg-[#0071e3]"
-        >
-          Ver plantel
-        </Link>
+      <div className="flex-1 mt-6">
+        <h3 className="teamName truncate">{displayName}</h3>
+        <p className="teamMeta truncate">
+          {code} · Grupo {groupLabel}
+        </p>
+        <p className={`teamStatus truncate ${statusColor}`}>{statusText}</p>
       </div>
+
+      <Link
+        href={`/jugadores?team=${team.slug || team.id}`}
+        className="teamAction"
+      >
+        Ver plantel
+      </Link>
+
+      <style jsx>{`
+        .teamCard {
+          position: relative;
+          overflow: hidden;
+          background: #ffffff;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 28px;
+          padding: 24px;
+          min-height: 220px;
+          box-shadow: 0 8px 28px rgba(0,0,0,0.055);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .teamCard:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 16px 44px rgba(0,0,0,0.10);
+          border-color: rgba(0,113,227,0.22);
+        }
+
+        .teamCardTop {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        .teamFlag {
+          width: 64px;
+          height: 64px;
+          border-radius: 999px;
+          border: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .teamCodeGhost {
+          position: absolute;
+          right: 18px;
+          top: 14px;
+          font-size: 64px;
+          line-height: 1;
+          font-weight: 900;
+          letter-spacing: -0.07em;
+          color: rgba(0,0,0,0.035);
+          pointer-events: none;
+        }
+
+        .teamName {
+          font-size: 25px;
+          line-height: 1.05;
+          font-weight: 800;
+          letter-spacing: -0.035em;
+          color: #1d1d1f;
+        }
+
+        .teamMeta {
+          margin-top: 8px;
+          color: #6e6e73;
+          font-size: 13px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+
+        .teamStatus {
+          margin-top: 14px;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .teamAction {
+          margin-top: 22px;
+          align-self: flex-start;
+          height: 38px;
+          padding: 0 18px;
+          border-radius: 999px;
+          background: #1d1d1f;
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: background 180ms ease;
+        }
+
+        .teamAction:hover {
+          background: #0071e3;
+        }
+
+        @media (max-width: 734px) {
+          .teamCard {
+            min-height: 190px;
+            padding: 18px;
+            border-radius: 24px;
+          }
+
+          .teamFlag {
+            width: 48px;
+            height: 48px;
+          }
+
+          .teamCodeGhost {
+            font-size: 48px;
+            right: 12px;
+            top: 8px;
+          }
+
+          .teamName {
+            font-size: 19px;
+          }
+
+          .teamAction {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      `}</style>
     </article>
   )
 }
