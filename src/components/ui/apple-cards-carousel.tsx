@@ -187,12 +187,12 @@ export const Card = ({
     <>
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 h-screen z-50 overflow-auto">
+          <div className="fixed inset-0 z-50 overflow-y-auto" style={{ padding: "32px 16px" }}>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
+              className="bg-black/80 backdrop-blur-lg fixed inset-0"
               onClick={handleClose}
             />
             <motion.div
@@ -200,29 +200,17 @@ export const Card = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               ref={containerRef}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-fit z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
+              className="relative z-[60] mx-auto font-sans"
+              style={{ width: "min(920px, 94vw)", maxHeight: "none", borderRadius: "32px", overflow: "hidden", background: "#fff" }}
             >
               <button
-                className="sticky top-4 right-4 ml-auto h-8 w-8 rounded-full bg-black dark:bg-white flex items-center justify-center cursor-pointer"
+                className="absolute top-4 right-4 z-[70] h-9 w-9 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer"
                 onClick={handleClose}
                 aria-label="Cerrar"
               >
-                <X className="h-5 w-5 text-white dark:text-black" />
+                <X className="h-5 w-5 text-white" />
               </button>
-              <motion.p
-                layoutId={layout ? `category-${card.category}` : undefined}
-                className="text-xs md:text-sm font-semibold text-blue-600 dark:text-blue-400"
-              >
-                {card.category}
-              </motion.p>
-              <motion.h3
-                layoutId={layout ? `title-${card.title}` : undefined}
-                className="text-2xl md:text-5xl font-bold text-neutral-700 dark:text-white mt-2"
-              >
-                {card.title}
-              </motion.h3>
-              <div className="py-10">{card.content}</div>
+              <div>{card.content}</div>
             </motion.div>
           </div>
         )}
