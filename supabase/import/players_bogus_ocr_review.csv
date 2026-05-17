@@ -1,0 +1,2 @@
+id,team_id,team_slug,name,slug,position,club,source_url,notes,status,reason,action
+2783,38,panama,JESUS GALLARDO,,Por confirmar,Por confirmar (OCR),,,pending_review,club_contains_ocr|pending_without_trusted_source_and_placeholder_fields,keep_candidate

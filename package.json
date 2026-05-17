@@ -22,7 +22,8 @@
     "players:import-wikipedia-squads": "tsx scripts/import-worldcup-squads-from-wikipedia.ts",
     "players:import-reviewed-wikipedia": "tsx scripts/import-reviewed-wikipedia-players-to-supabase.ts",
     "players:import-wikimedia-photos": "tsx scripts/import-player-photos-from-wikimedia.ts",
-    "players:import-thesportsdb-photos": "tsx scripts/import-player-photos-from-thesportsdb.ts"
+    "players:import-thesportsdb-photos": "tsx scripts/import-player-photos-from-thesportsdb.ts",
+    "players:clean-ocr-bogus": "tsx scripts/audit-and-clean-bogus-ocr-players.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

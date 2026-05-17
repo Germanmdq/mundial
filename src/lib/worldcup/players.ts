@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { isDisplayablePlayer } from './player-validation'
 
 export type Player = {
   id: number | string
@@ -10,6 +11,8 @@ export type Player = {
   shirt_number: number | string | null
   club: string | null
   nationality?: string | null
+  source_url?: string | null
+  notes?: string | null
   status: string | null
   photo_url: string | null
   photo_storage_path: string | null
@@ -32,13 +35,15 @@ function normalizePlayer(row: PlayerRow): Player {
     shirt_number: (row.shirt_number as number | string | null) ?? null,
     club: normalizeText(row.club),
     nationality: normalizeText(row.nationality),
+    source_url: normalizeText(row.source_url),
+    notes: normalizeText(row.notes),
     status: normalizeText(row.status) ?? 'pending_review',
     photo_url: normalizeText(row.photo_url),
     photo_storage_path: normalizeText(row.photo_storage_path),
   }
 }
 
-const PLAYER_SELECT = 'id, team_id, name, slug, display_name, position, shirt_number, club, nationality, status, photo_url, photo_storage_path'
+const PLAYER_SELECT = 'id, team_id, name, slug, display_name, position, shirt_number, club, nationality, source_url, status, photo_url, photo_storage_path'
 
 export async function getPlayers(): Promise<Player[]> {
   const supabase = await createClient()
@@ -55,7 +60,7 @@ export async function getPlayers(): Promise<Player[]> {
     return []
   }
 
-  return ((data ?? []) as PlayerRow[]).map(normalizePlayer)
+  return ((data ?? []) as PlayerRow[]).map(normalizePlayer).filter(isDisplayablePlayer)
 }
 
 export async function getPlayersByTeam(teamId: string | number): Promise<Player[]> {
@@ -73,5 +78,5 @@ export async function getPlayersByTeam(teamId: string | number): Promise<Player[
     return []
   }
 
-  return ((data ?? []) as PlayerRow[]).map(normalizePlayer)
+  return ((data ?? []) as PlayerRow[]).map(normalizePlayer).filter(isDisplayablePlayer)
 }
