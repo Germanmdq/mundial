@@ -10,6 +10,7 @@ import { PremiumCard } from "@/components/ui/PremiumCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import Link from "next/link";
 import { getTeamDisplayName, getTeamCode } from "@/lib/worldcup/team-display-names";
+import { getFifaTeamProfile } from "@/lib/worldcup/team-history";
 
 interface JugadoresClientProps {
   teams: Team[];
@@ -95,6 +96,30 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
     return list;
   }, [activeTeam, playersByTeam, searchQuery]);
 
+  // FIFA History Profile calculations
+  const profile = activeTeam ? getFifaTeamProfile(activeTeam.slug) : null;
+  const isImported = profile?.status === 'imported';
+
+  const confederation = isImported && profile?.confederation ? profile.confederation : "En revisión";
+  const appearances = isImported && profile?.appearancesCount ? `${profile.appearancesCount}` : "En revisión";
+  const bestResult = isImported && profile?.bestResult ? (profile.bestResult === 'Campeon' ? 'Campeón' : profile.bestResult) : "En revisión";
+  const lastParticipation = isImported && profile?.lastWorldCup ? profile.lastWorldCup : "En revisión";
+  const firstParticipation = isImported && profile?.firstWorldCup ? profile.firstWorldCup : "En revisión";
+
+  const titlesCount = isImported && profile?.bestResult === 'Campeon' ? (profile?.bestResultYears?.length || 0) : 0;
+  const titles = isImported ? `${titlesCount}` : "En revisión";
+  const championYears = isImported && titlesCount > 0 && profile?.bestResultYears 
+    ? profile.bestResultYears.join(", ") 
+    : (isImported && profile?.bestResult === 'Campeon' ? "En revisión" : "Ninguno");
+
+  const topScorer = isImported && profile?.topScorer?.name 
+    ? `${profile.topScorer.name}${profile.topScorer.goals ? ` (${profile.topScorer.goals} goles)` : ''}` 
+    : "En revisión";
+
+  const mostAppearances = isImported && profile?.mostAppearances?.name 
+    ? `${profile.mostAppearances.name}${profile.mostAppearances.matches ? ` (${profile.mostAppearances.matches} partidos)` : ''}` 
+    : "En revisión";
+
   return (
     <div className="w-full flex flex-col gap-10">
       
@@ -164,6 +189,46 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
               ← Volver a selecciones
             </Link>
           )}
+
+          {/* FICHA HISTÓRICA FIFA */}
+          <div className="fifaHistoryCard bg-white border border-[rgba(0,0,0,0.08)] rounded-[28px] p-6 md:p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[rgba(0,0,0,0.06)] pb-4 mb-6">
+              <div>
+                <h3 className="text-[20px] md:text-[22px] font-black tracking-tight text-[#1d1d1f] flex items-center gap-2">
+                  <span className="text-[#0071e3] material-symbols-rounded">history_edu</span>
+                  {getTeamDisplayName(activeTeam.name)} en los Mundiales
+                </h3>
+                <p className="text-[12px] font-bold uppercase tracking-wider text-[#6e6e73] mt-1">
+                  Ficha Histórica Oficial
+                </p>
+              </div>
+              
+              {profile?.fifaProfileUrl && (
+                <a 
+                  href={profile.fifaProfileUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[13px] font-bold text-[#0071e3] transition-all"
+                >
+                  <span>Ver fuente FIFA</span>
+                  <span className="text-[16px] material-symbols-rounded">open_in_new</span>
+                </a>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <StatBox label="Confederación" value={confederation} />
+              <StatBox label="Participaciones" value={appearances} />
+              <StatBox label="Títulos Mundiales" value={titles} />
+              <StatBox label="Años Campeón" value={championYears} />
+              <StatBox label="Mejor Resultado" value={bestResult} />
+              <StatBox label="Última Participación" value={lastParticipation} />
+              <StatBox label="Primer Mundial" value={firstParticipation} />
+              <StatBox label="Máximo Goleador Mundialista" value={topScorer} />
+              <StatBox label="Jugador con Más Partidos" value={mostAppearances} />
+            </div>
+          </div>
+
           <PremiumCard className="overflow-hidden">
             <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[rgba(0,0,0,0.06)] pb-6">
               <div>
@@ -263,5 +328,19 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
     >
       {label}
     </button>
+  );
+}
+
+function StatBox({ label, value }: { label: string; value: string }) {
+  const isPending = value === "En revisión";
+  return (
+    <div className="bg-[#f5f5f7] rounded-[18px] p-4 flex flex-col justify-between min-h-[82px] border border-[rgba(0,0,0,0.02)]">
+      <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#8e8e93] leading-tight">
+        {label}
+      </span>
+      <span className={`text-[15px] font-extrabold mt-2 leading-snug ${isPending ? "text-[#8e8e93] italic font-medium" : "text-[#1d1d1f]"}`}>
+        {value}
+      </span>
+    </div>
   );
 }

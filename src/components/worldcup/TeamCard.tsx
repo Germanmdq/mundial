@@ -6,6 +6,7 @@ import type { Team } from '@/lib/worldcup/teams'
 import { getTeamAssetSources } from '@/lib/worldcup/assets'
 import { SafeAssetImage } from '@/components/worldcup/SafeAssetImage'
 import { getTeamDisplayName, getTeamCode } from '@/lib/worldcup/team-display-names'
+import { getFifaTeamProfile } from '@/lib/worldcup/team-history'
 
 type TeamCardProps = {
   team: Team
@@ -37,6 +38,13 @@ export function TeamCard({ team, playerCount }: TeamCardProps) {
     statusColor = "text-[#0071e3]";
   }
 
+  // FIFA History Profile
+  const profile = getFifaTeamProfile(team.slug);
+  const isImported = profile?.status === 'imported';
+  const bestResult = profile?.bestResult || null;
+  const appearances = profile?.appearancesCount || null;
+  const titlesCount = bestResult === 'Campeon' ? (profile?.bestResultYears?.length || 0) : 0;
+
   return (
     <article className="teamCard">
       <div className="teamCardTop">
@@ -57,6 +65,30 @@ export function TeamCard({ team, playerCount }: TeamCardProps) {
           {code} · Grupo {groupLabel}
         </p>
         <p className={`teamStatus truncate ${statusColor}`}>{statusText}</p>
+
+        {/* FIFA HISTORICAL PROFILE DATA */}
+        <div className="mt-4 pt-3 border-t border-[rgba(0,0,0,0.06)] flex flex-col gap-1 text-[13px] text-[#6e6e73]">
+          {isImported ? (
+            <>
+              <div className="flex items-center gap-1.5 font-extrabold text-[#0071e3]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3]"></span>
+                <span>Historia cargada</span>
+              </div>
+              <div className="font-extrabold text-[#1d1d1f]">
+                {titlesCount > 0 ? `${titlesCount} ${titlesCount === 1 ? 'título' : 'títulos'} · ` : ""}
+                {appearances} participaciones
+              </div>
+              <div className="font-medium text-[#1d1d1f] truncate">
+                Mejor: <span className="font-extrabold">{bestResult === 'Campeon' ? 'Campeón' : bestResult}</span>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center gap-1.5 text-[#8e8e93] font-extrabold italic">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#aeaeb2]"></span>
+              <span>Historia en revisión</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <Link
