@@ -27,37 +27,37 @@ const featuredPlayers = [
   {
     category: "Argentina",
     title: "Lionel Messi",
-    src: "/players/messi.jpg",
+    src: "/players/messi.webp",
     content: <PlayerContent name="Lionel Messi" country="Argentina" role="Creador, líder y definición." />,
   },
   {
     category: "Francia",
     title: "Kylian Mbappé",
-    src: "/players/mbappe.jpg",
+    src: "/players/mbappe.webp",
     content: <PlayerContent name="Kylian Mbappé" country="Francia" role="Velocidad, gol y desequilibrio." />,
   },
   {
     category: "Brasil",
     title: "Vinícius Jr.",
-    src: "/players/vinicius.svg",
+    src: "/players/vinicius.webp",
     content: <PlayerContent name="Vinícius Jr." country="Brasil" role="Uno contra uno, vértigo y ataque." />,
   },
   {
     category: "Inglaterra",
     title: "Jude Bellingham",
-    src: "/players/bellingham.svg",
+    src: "/players/bellingham.webp",
     content: <PlayerContent name="Jude Bellingham" country="Inglaterra" role="Llegada, carácter y control del juego." />,
   },
   {
     category: "Noruega",
     title: "Erling Haaland",
-    src: "/players/haaland.svg",
+    src: "/players/haaland.webp",
     content: <PlayerContent name="Erling Haaland" country="Noruega" role="Potencia, área y definición." />,
   },
   {
     category: "España",
     title: "Lamine Yamal",
-    src: "/players/yamal.svg",
+    src: "/players/yamal.webp",
     content: <PlayerContent name="Lamine Yamal" country="España" role="Talento joven, pausa y gambeta." />,
   },
 ];

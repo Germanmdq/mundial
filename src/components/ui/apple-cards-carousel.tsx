@@ -236,7 +236,7 @@ export const Card = ({
           background: "radial-gradient(circle at 50% 30%, rgba(0,113,227,0.28), transparent 38%), linear-gradient(135deg, #08111f 0%, #111111 100%)"
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-30 pointer-events-none" />
+        <div className="absolute inset-0 z-30 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.78) 100%)" }} />
 
         <Image
           src={card.src}
