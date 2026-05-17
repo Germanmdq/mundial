@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./AppleReplicaLanding.module.css";
+import { FeaturedPlayersCarousel } from "./FeaturedPlayersCarousel";
 
 export function AppleReplicaLanding() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,8 +65,6 @@ export function AppleReplicaLanding() {
           <source src="/apple-replica/hero-desktop.mp4" type="video/mp4" />
         </video>
 
-        <div className={styles.heroOverlay}></div>
-
         <div className={styles.heroContent} id="hero-content">
           <div className={styles.heroContentLeft}>
             <div className={styles.productName}>MacBook Air</div>
@@ -82,6 +81,8 @@ export function AppleReplicaLanding() {
           </div>
         </div>
       </section>
+
+      <FeaturedPlayersCarousel />
 
       <section className={styles.highlights} id="highlights-section">
         <div className={styles.highlightsHeader}>
