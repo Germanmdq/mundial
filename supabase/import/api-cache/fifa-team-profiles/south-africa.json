@@ -2,7 +2,36 @@
   "teamSlug": "south-africa",
   "teamName": "South Africa",
   "displayNameEs": "Sudafrica",
+  "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/sudafrica-seleccion-trayectoria-historia-records",
   "confederation": "CAF",
-  "status": "missing_profile",
-  "notes": "No se encontro perfil FIFA validado."
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [
+    "1998",
+    "2002",
+    "2010"
+  ],
+  "lastWorldCup": "2010",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "1998",
+  "appearancesCount": 4,
+  "appearancesYears": [
+    "1998",
+    "2002",
+    "2010",
+    "2026"
+  ],
+  "record": {
+    "played": 9,
+    "wins": 2,
+    "draws": 4,
+    "losses": 3,
+    "goalsFor": 11,
+    "goalsAgainst": 16
+  },
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Sudafrica vuelve al Mundial tras sus participaciones de 1998, 2002 y 2010, con el objetivo de superar por primera vez la fase de grupos.",
+  "shortHistorySummary": "Sudafrica vuelve al Mundial tras sus participaciones de 1998, 2002 y 2010, con el objetivo de superar por primera vez la fase de grupos.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
 }

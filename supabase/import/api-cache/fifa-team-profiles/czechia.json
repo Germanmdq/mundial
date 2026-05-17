@@ -2,7 +2,25 @@
   "teamSlug": "czechia",
   "teamName": "Czechia",
   "displayNameEs": "Chequia",
+  "fifaProfileUrl": "https://www.fifa.com/es/articles/czechia-equipo-perfil-historia-cuando-juegan-partidos",
   "confederation": "UEFA",
-  "status": "missing_profile",
-  "notes": "No se encontro perfil FIFA validado."
+  "bestResult": "Fase de grupos",
+  "bestResultYears": [
+    "2006"
+  ],
+  "lastWorldCup": "2006",
+  "lastWorldCupResult": "Fase de grupos",
+  "firstWorldCup": "2006",
+  "appearancesCount": 2,
+  "appearancesYears": [
+    "2006",
+    "2026"
+  ],
+  "record": {},
+  "topScorer": {},
+  "mostAppearances": {},
+  "iconicMomentsSummary": "Chequia vuelve a la Copa Mundial con perfil FIFA confirmado y una historia moderna que toma como referencia su participacion de 2006.",
+  "shortHistorySummary": "Chequia vuelve a la Copa Mundial con perfil FIFA confirmado y una historia moderna que toma como referencia su participacion de 2006.",
+  "status": "imported",
+  "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
 }

@@ -119,6 +119,7 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
   const profile = activeTeam ? getFifaTeamProfile(activeTeam.slug) : null;
   const isImported = profile?.status === 'imported';
 
+  const confederation = isImported && profile?.confederation ? profile.confederation : "En revisión";
   const appearances = isImported && profile?.appearancesCount ? `${profile.appearancesCount}` : "En revisión";
   const bestResult = isImported && profile?.bestResult ? (profile.bestResult === 'Campeon' ? 'Campeón' : profile.bestResult) : "En revisión";
   const lastParticipation = isImported && profile?.lastWorldCup ? profile.lastWorldCup : "En revisión";
@@ -299,7 +300,8 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
                 Historia FIFA
               </h4>
               {isImported ? (
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                  <MiniStat label="Confederación" value={confederation} />
                   <MiniStat label="Participaciones" value={appearances} />
                   <MiniStat label="Títulos" value={titles} />
                   <MiniStat label="Mejor resultado" value={bestResult} />

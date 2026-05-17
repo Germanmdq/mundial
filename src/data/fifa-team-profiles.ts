@@ -202,9 +202,27 @@ export const FIFA_TEAM_PROFILES: Record<string, FifaTeamProfile> = {
     "teamSlug": "czechia",
     "teamName": "Czechia",
     "displayNameEs": "Chequia",
+    "fifaProfileUrl": "https://www.fifa.com/es/articles/czechia-equipo-perfil-historia-cuando-juegan-partidos",
     "confederation": "UEFA",
-    "status": "missing_profile",
-    "notes": "No se encontro perfil FIFA validado."
+    "bestResult": "Fase de grupos",
+    "bestResultYears": [
+      "2006"
+    ],
+    "lastWorldCup": "2006",
+    "lastWorldCupResult": "Fase de grupos",
+    "firstWorldCup": "2006",
+    "appearancesCount": 2,
+    "appearancesYears": [
+      "2006",
+      "2026"
+    ],
+    "record": {},
+    "topScorer": {},
+    "mostAppearances": {},
+    "iconicMomentsSummary": "Chequia vuelve a la Copa Mundial con perfil FIFA confirmado y una historia moderna que toma como referencia su participacion de 2006.",
+    "shortHistorySummary": "Chequia vuelve a la Copa Mundial con perfil FIFA confirmado y una historia moderna que toma como referencia su participacion de 2006.",
+    "status": "imported",
+    "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
   },
   "dr-congo": {
     "teamSlug": "dr-congo",
@@ -527,9 +545,38 @@ export const FIFA_TEAM_PROFILES: Record<string, FifaTeamProfile> = {
     "teamSlug": "south-africa",
     "teamName": "South Africa",
     "displayNameEs": "Sudafrica",
+    "fifaProfileUrl": "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/sudafrica-seleccion-trayectoria-historia-records",
     "confederation": "CAF",
-    "status": "missing_profile",
-    "notes": "No se encontro perfil FIFA validado."
+    "bestResult": "Fase de grupos",
+    "bestResultYears": [
+      "1998",
+      "2002",
+      "2010"
+    ],
+    "lastWorldCup": "2010",
+    "lastWorldCupResult": "Fase de grupos",
+    "firstWorldCup": "1998",
+    "appearancesCount": 4,
+    "appearancesYears": [
+      "1998",
+      "2002",
+      "2010",
+      "2026"
+    ],
+    "record": {
+      "played": 9,
+      "wins": 2,
+      "draws": 4,
+      "losses": 3,
+      "goalsFor": 11,
+      "goalsAgainst": 16
+    },
+    "topScorer": {},
+    "mostAppearances": {},
+    "iconicMomentsSummary": "Sudafrica vuelve al Mundial tras sus participaciones de 1998, 2002 y 2010, con el objetivo de superar por primera vez la fase de grupos.",
+    "shortHistorySummary": "Sudafrica vuelve al Mundial tras sus participaciones de 1998, 2002 y 2010, con el objetivo de superar por primera vez la fase de grupos.",
+    "status": "imported",
+    "notes": "URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision."
   },
   "south-korea": {
     "teamSlug": "south-korea",

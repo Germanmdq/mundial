@@ -6,7 +6,9 @@ const CACHE_DIR = 'supabase/import/api-cache/fifa-team-profiles'
 const CSV_PATH = 'supabase/import/fifa_team_profiles_review.csv'
 const DATA_PATH = 'src/data/fifa-team-profiles.ts'
 const REPORT_PATH = 'supabase/reports/fifa_team_profiles_import_report.md'
+const MISSING_REPORT_PATH = 'supabase/reports/fifa_profiles_missing_after_backfill.md'
 const FIFA_ARTICLE_PREFIX = 'https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/articles/'
+const FIFA_GENERAL_ARTICLE_PREFIX = 'https://www.fifa.com/es/articles/'
 const SITEMAP_PREFIX = 'https://cxm-api.fifa.com/fifaplusweb/api/sitemaps/articles/'
 
 type TeamRow = {
@@ -163,6 +165,7 @@ const CONFIRMED_URLS: Record<string, string> = {
   brazil: `${FIFA_ARTICLE_PREFIX}brasil-perfil-copa-mundial-historia-trayectoria`,
   canada: `${FIFA_ARTICLE_PREFIX}canada-en-la-copa-mundial-de-la-fifa-perfil-y-trayectoria-de-la-seleccion`,
   curacao: `${FIFA_ARTICLE_PREFIX}historia-curazao-copa-mundial`,
+  czechia: `${FIFA_GENERAL_ARTICLE_PREFIX}czechia-equipo-perfil-historia-cuando-juegan-partidos`,
   ecuador: `${FIFA_ARTICLE_PREFIX}ecuador-en-la-copa-mundial-fifa-historia`,
   egypt: `${FIFA_ARTICLE_PREFIX}egypt-perfil-seleccion-trayectoria-historia`,
   ghana: `${FIFA_ARTICLE_PREFIX}ghana-perfil-seleccion-historia-records`,
@@ -172,15 +175,18 @@ const CONFIRMED_URLS: Record<string, string> = {
   'new-zealand': `${FIFA_ARTICLE_PREFIX}nueva-zelanda-seleccion-perfil-historia`,
   qatar: `${FIFA_ARTICLE_PREFIX}catar-perfil-seleccion-record-historia`,
   spain: `${FIFA_ARTICLE_PREFIX}espana-en-la-copa-mundial-de-la-fifa-historia-y-perfil-del-equipo`,
+  'south-africa': `${FIFA_ARTICLE_PREFIX}sudafrica-seleccion-trayectoria-historia-records`,
   tunisia: `${FIFA_ARTICLE_PREFIX}tunez-seleccion-perfil-equipo-historia`,
   'united-states': `${FIFA_ARTICLE_PREFIX}estados-unidos-perfil-historia-en-los-mundiales`,
 }
+const BACKFILL_SLUGS = ['south-africa', 'czechia']
 
 const HISTORY_FALLBACK: Record<string, Partial<Profile>> = {
   canada: { appearancesCount: 3, firstWorldCup: '1986', lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', appearancesYears: ['1986', '2022', '2026'], shortHistorySummary: 'Canada llega como coanfitriona y encadena participaciones mundialistas tras su regreso en 2022.' },
   belgium: { appearancesCount: 15, lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Tercer puesto', bestResultYears: ['2018'], shortHistorySummary: 'Belgica vuelve con una historia de presencia frecuente y su techo mundialista en el tercer puesto de 2018.' },
   brazil: { appearancesCount: 23, lastWorldCup: '2022', lastWorldCupResult: 'Cuartos de final', bestResult: 'Campeon', bestResultYears: ['1958', '1962', '1970', '1994', '2002'], shortHistorySummary: 'Brasil mantiene la marca historica de haber disputado todas las Copas del Mundo y busca su sexto titulo.' },
   curacao: { appearancesCount: 1, firstWorldCup: '2026', bestResult: 'Debut mundialista', appearancesYears: ['2026'], shortHistorySummary: 'Curazao llega a su primera Copa Mundial tras una clasificacion historica en Concacaf.' },
+  czechia: { confederation: 'UEFA', appearancesCount: 2, firstWorldCup: '2006', lastWorldCup: '2006', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', bestResultYears: ['2006'], appearancesYears: ['2006', '2026'], shortHistorySummary: 'Chequia vuelve a la Copa Mundial con perfil FIFA confirmado y una historia moderna que toma como referencia su participacion de 2006.' },
   ecuador: { appearancesCount: 5, lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Octavos de final', bestResultYears: ['2006'], shortHistorySummary: 'Ecuador disputara su quinta Copa Mundial y busca superar su mejor antecedente de octavos de final.' },
   egypt: { appearancesCount: 4, firstWorldCup: '1934', lastWorldCup: '2018', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', shortHistorySummary: 'Egipto suma una nueva participacion mundialista tras una trayectoria historica iniciada en 1934.' },
   ghana: { appearancesCount: 5, lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Cuartos de final', bestResultYears: ['2010'], shortHistorySummary: 'Ghana vuelve con el antecedente de cuartos de final en 2010 como mejor actuacion historica.' },
@@ -190,6 +196,26 @@ const HISTORY_FALLBACK: Record<string, Partial<Profile>> = {
   'new-zealand': { appearancesCount: 3, firstWorldCup: '1982', lastWorldCup: '2010', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', appearancesYears: ['1982', '2010', '2026'], shortHistorySummary: 'Nueva Zelanda disputara su tercera Copa Mundial y vuelve tras sus antecedentes de 1982 y 2010.' },
   qatar: { appearancesCount: 2, firstWorldCup: '2022', lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', appearancesYears: ['2022', '2026'], shortHistorySummary: 'Catar afronta su segunda Copa Mundial, primera clasificacion lograda en cancha tras ser anfitrion en 2022.' },
   spain: { appearancesCount: 17, lastWorldCup: '2022', lastWorldCupResult: 'Octavos de final', bestResult: 'Campeon', bestResultYears: ['2010'], shortHistorySummary: 'Espana afronta otra Copa Mundial con el titulo de 2010 como hito mayor de su historia.' },
+  'south-africa': {
+    coach: 'Hugo Broos',
+    confederation: 'CAF',
+    appearancesCount: 4,
+    appearancesYears: ['1998', '2002', '2010', '2026'],
+    firstWorldCup: '1998',
+    lastWorldCup: '2010',
+    lastWorldCupResult: 'Fase de grupos',
+    bestResult: 'Fase de grupos',
+    bestResultYears: ['1998', '2002', '2010'],
+    record: {
+      played: 9,
+      wins: 2,
+      draws: 4,
+      losses: 3,
+      goalsFor: 11,
+      goalsAgainst: 16,
+    },
+    shortHistorySummary: 'Sudafrica vuelve al Mundial tras sus participaciones de 1998, 2002 y 2010, con el objetivo de superar por primera vez la fase de grupos.',
+  },
   tunisia: { appearancesCount: 7, firstWorldCup: '1978', lastWorldCup: '2022', lastWorldCupResult: 'Fase de grupos', bestResult: 'Fase de grupos', appearancesYears: ['1978', '1998', '2002', '2006', '2018', '2022', '2026'], shortHistorySummary: 'Tunez llega a su septima Copa Mundial buscando superar por primera vez la fase de grupos.' },
   'united-states': { appearancesCount: 12, firstWorldCup: '1930', lastWorldCup: '2022', lastWorldCupResult: 'Octavos de final', bestResult: 'Semifinales', bestResultYears: ['1930'], hostYears: ['1994', '2026'], shortHistorySummary: 'Estados Unidos sera coanfitrion y busca superar su reciente eliminacion en octavos de final de 2022.' },
 }
@@ -257,7 +283,7 @@ async function discoverFifaArticleUrls(): Promise<string[]> {
   for (let index = 0; index <= 70; index += 1) {
     const xml = await fetchText(`${SITEMAP_PREFIX}${index}`)
     if (!xml) continue
-    for (const match of xml.matchAll(/<loc>(https:\/\/www\.fifa\.com\/es\/tournaments\/mens\/worldcup\/canadamexicousa2026\/articles\/[^<]+)<\/loc>/g)) {
+    for (const match of xml.matchAll(/<loc>(https:\/\/www\.fifa\.com\/es\/(?:tournaments\/mens\/worldcup\/canadamexicousa2026\/articles|articles)\/[^<]+)<\/loc>/g)) {
       const url = decodeHtml(match[1])
       if (/perfil|historia|trayectoria|record|récord/i.test(url)) urls.add(url)
     }
@@ -301,11 +327,11 @@ function compactSummary(text: string, teamName: string): string | undefined {
 }
 
 function validateArticle(team: TeamRow, title: string, text: string, url: string): boolean {
-  if (!url.startsWith(FIFA_ARTICLE_PREFIX)) return false
+  if (!url.startsWith(FIFA_ARTICLE_PREFIX) && !url.startsWith(FIFA_GENERAL_ARTICLE_PREFIX)) return false
   const display = DISPLAY_ES[team.slug] ?? team.name
   const haystack = normalize(`${title} ${text.slice(0, 3500)}`)
   const aliases = [display, team.name, team.fifa_code ?? ''].map(normalize).filter(Boolean)
-  return aliases.some((alias) => alias.length > 2 && haystack.includes(alias)) && /copa mundial|mundial|fifa/i.test(haystack)
+  return aliases.some((alias) => alias.length > 2 && haystack.includes(alias)) && /copa mundial|mundial|fifa/i.test(haystack) && /2026|copa mundial/i.test(haystack)
 }
 
 function chooseCandidate(team: TeamRow, urls: string[]): string | null {
@@ -357,7 +383,7 @@ function extractProfile(team: TeamRow, url: string | null, html: string | null):
     coach: extractCoach(text),
     groupName: text.match(/Grupo\s+([A-L])\b/i)?.[1],
     qualificationSummary: text.match(/Clasificaci[oó]n[^.]{20,220}\./i)?.[0],
-    confederation: CONFEDERATIONS[team.slug],
+    confederation: fallback.confederation ?? CONFEDERATIONS[team.slug],
     bestResult: fallback.bestResult ?? text.match(/mejor actuaci[oó]n[^.]{0,160}/i)?.[0],
     bestResultYears: fallback.bestResultYears ?? years.filter((year) => /1930|1950|1954|1958|1966|1974|1978|1986|1990|1994|1998|2002|2010|2014|2018|2022/.test(year)).slice(0, 8),
     lastWorldCup: fallback.lastWorldCup,
@@ -368,12 +394,12 @@ function extractProfile(team: TeamRow, url: string | null, html: string | null):
     currentQualificationStreak: text.match(/racha[^.]{0,160}/i)?.[0],
     hostYears: fallback.hostYears,
     record: {
-      played: extractNumberAfter(text, /partidos jugados[^0-9]{0,30}(\d{1,3})/i),
-      wins: extractNumberAfter(text, /victorias[^0-9]{0,30}(\d{1,3})/i),
-      draws: extractNumberAfter(text, /empates[^0-9]{0,30}(\d{1,3})/i),
-      losses: extractNumberAfter(text, /derrotas[^0-9]{0,30}(\d{1,3})/i),
-      goalsFor: extractNumberAfter(text, /goles a favor[^0-9]{0,30}(\d{1,3})/i),
-      goalsAgainst: extractNumberAfter(text, /goles en contra[^0-9]{0,30}(\d{1,3})/i),
+      played: fallback.record?.played ?? extractNumberAfter(text, /partidos jugados[^0-9]{0,30}(\d{1,3})/i),
+      wins: fallback.record?.wins ?? extractNumberAfter(text, /victorias[^0-9]{0,30}(\d{1,3})/i),
+      draws: fallback.record?.draws ?? extractNumberAfter(text, /empates[^0-9]{0,30}(\d{1,3})/i),
+      losses: fallback.record?.losses ?? extractNumberAfter(text, /derrotas[^0-9]{0,30}(\d{1,3})/i),
+      goalsFor: fallback.record?.goalsFor ?? extractNumberAfter(text, /goles a favor[^0-9]{0,30}(\d{1,3})/i),
+      goalsAgainst: fallback.record?.goalsAgainst ?? extractNumberAfter(text, /goles en contra[^0-9]{0,30}(\d{1,3})/i),
     },
     topScorer: {
       name: text.match(/m[aá]ximo goleador[^A-ZÁÉÍÓÚÑ]{0,80}([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .-]{3,60})/)?.[1]?.trim(),
@@ -386,7 +412,7 @@ function extractProfile(team: TeamRow, url: string | null, html: string | null):
     biggestWin: text.match(/mayor goleada[^.]{0,180}/i)?.[0],
     iconicMomentsSummary: summary,
     shortHistorySummary: summary,
-    status: !valid && !hasConfirmedFallback ? 'ambiguous' : summary && appearancesCount ? 'imported' : 'extraction_partial',
+    status: hasConfirmedFallback && summary && appearancesCount ? 'imported' : !valid ? 'ambiguous' : summary && appearancesCount ? 'imported' : 'extraction_partial',
     notes:
       !valid && hasConfirmedFallback
         ? 'URL FIFA confirmada por busqueda web; HTML cacheado no contiene articulo renderizado, se usan campos estructurados de revision.'
@@ -574,6 +600,16 @@ async function main() {
 - Persistencia Supabase: no ejecutada; no se modifica schema automaticamente.
 - Tablas compatibles esperadas si se quiere persistir luego: ${compatibleTables.map((table) => `\`${table}\``).join(', ')}
 
+## Backfill dirigido
+
+- Perfiles importados antes del backfill dirigido: 15
+- Perfiles importados despues del backfill dirigido: ${counts.imported ?? 0}
+- Sudafrica URL encontrada y cargada: ${profiles.find((profile) => profile.teamSlug === 'south-africa')?.status === 'imported' ? 'si' : 'no'}
+- Chequia URL encontrada y cargada: ${profiles.find((profile) => profile.teamSlug === 'czechia')?.status === 'imported' ? 'si' : 'no'}
+- Missing restantes: ${counts.missing_profile ?? 0}
+- Extraction_partial restantes: ${counts.extraction_partial ?? 0}
+- Slugs backfill: ${BACKFILL_SLUGS.join(', ')}
+
 ## Importados
 
 ${imported.length ? imported.map((profile) => `- ${profile.displayNameEs}: ${profile.fifaProfileUrl}`).join('\n') : '- Ninguno'}
@@ -595,6 +631,24 @@ ${missing.length ? missing.map((profile) => `- ${profile.displayNameEs}`).join('
 - Revisar \`${CSV_PATH}\` antes de publicar textos como definitivos.
 - Completar manualmente perfiles missing/ambiguous cuando FIFA publique o cambie slugs.
 - No renderizar HTML cacheado; usar solo datos estructurados y resumen propio.
+`,
+  )
+
+  await writeFile(
+    MISSING_REPORT_PATH,
+    `# FIFA profiles missing after backfill
+
+- Missing restantes: ${missing.length}
+- Perfiles importados: ${counts.imported ?? 0}
+- Extraction partial: ${counts.extraction_partial ?? 0}
+
+## Equipos pendientes
+
+${missing.length ? missing.map((profile) => `- ${profile.displayNameEs} (${profile.teamSlug}): falta URL FIFA validada o articulo publicado/accesible.`).join('\n') : '- Ninguno'}
+
+## Nota
+
+El importador ya acepta URLs de \`/es/articles/\` y \`/es/tournaments/.../articles/\`. Los equipos pendientes requieren URL confirmada o que FIFA publique un perfil localizable.
 `,
   )
 
