@@ -41,6 +41,8 @@ const getStatusColor = (status: string) => {
       return "#8e8e93";
     case "Error al guardar":
       return "#df3a30";
+    case "Participación activa":
+      return "#0071e3";
     default:
       return "#8e8e93";
   }
@@ -125,6 +127,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
   const [hasMounted, setHasMounted] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string>("Preparando predicción");
+  const [paymentStatus, setPaymentStatus] = useState<"borrador" | "pendiente" | "activo">("borrador");
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
   const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
@@ -136,6 +139,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
   // Sync guest draft to Supabase if they login
   const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
+    if (!isLoggedIn) return;
     const payload = draftItems
       .map(item => ({
         match_id: item.matchId,
@@ -184,6 +188,25 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       setHasMounted(true);
       setSaveStatus(isLoggedIn ? "Guardado" : "Borrador local");
     }, 0);
+
+    if (isLoggedIn) {
+      fetch("/api/payments/status")
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error();
+        })
+        .then((data) => {
+          if (data.status === "active") {
+            setPaymentStatus("activo");
+            setSaveStatus("Participación activa");
+          } else if (data.status === "pending") {
+            setPaymentStatus("pendiente");
+          } else {
+            setPaymentStatus("borrador");
+          }
+        })
+        .catch(() => {});
+    }
 
     return () => window.clearTimeout(mountTimer);
   }, [isLoggedIn]);
@@ -236,15 +259,9 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         }, 0);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMounted, isLoggedIn]);
 
-  // Group filter change - reset index and completion state
-  const handleFilterChange = (filter: string) => {
-    persistDraft(scores, completedMatchIds, 0, filter);
-    setSelectedFilter(filter);
-    setCurrentMatchIndex(0);
-    setShowCompletionCard(false);
-  };
 
   // Progress Panel Data
   const totalMatches = matches.length || 104;
@@ -264,14 +281,6 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     };
   }, [matches, selectedFilter, completedMatchIds]);
 
-  // Derived filters
-  const groups = useMemo(() => {
-    const g = new Set<string>();
-    matches.forEach(m => {
-      if (m.group_letter) g.add(`Grupo ${m.group_letter}`);
-    });
-    return ["Todos", ...Array.from(g).sort()];
-  }, [matches]);
 
   const filteredMatches = useMemo(() => {
     if (selectedFilter === "Todos") return matches;
@@ -281,6 +290,107 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
     return matches;
   }, [matches, selectedFilter]);
+
+  const groupTables = useMemo(() => {
+    const tables: Record<string, Record<string, {
+      name: string;
+      pj: number;
+      g: number;
+      e: number;
+      p: number;
+      gf: number;
+      gc: number;
+      dg: number;
+      pts: number;
+    }>> = {};
+
+    const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+    groupLetters.forEach(letter => {
+      tables[letter] = {};
+    });
+
+    // Seed teams from matches
+    matches.forEach(m => {
+      if (!m.group_letter || !m.home_team || !m.away_team) return;
+      const g = m.group_letter.toUpperCase();
+      if (!tables[g]) tables[g] = {};
+      
+      if (!tables[g][m.home_team]) {
+        tables[g][m.home_team] = { name: m.home_team, pj: 0, g: 0, e: 0, p: 0, gf: 0, gc: 0, dg: 0, pts: 0 };
+      }
+      if (!tables[g][m.away_team]) {
+        tables[g][m.away_team] = { name: m.away_team, pj: 0, g: 0, e: 0, p: 0, gf: 0, gc: 0, dg: 0, pts: 0 };
+      }
+    });
+
+    // Calculate predictions
+    matches.forEach(m => {
+      if (!m.group_letter || !m.home_team || !m.away_team) return;
+      const g = m.group_letter.toUpperCase();
+      
+      if (completedMatchIds.has(m.id)) {
+        const pred = scores[m.id];
+        const hGoals = pred?.home !== undefined ? pred.home : 0;
+        const aGoals = pred?.away !== undefined ? pred.away : 0;
+
+        const hStats = tables[g][m.home_team];
+        const aStats = tables[g][m.away_team];
+
+        if (hStats && aStats) {
+          hStats.pj += 1;
+          aStats.pj += 1;
+          hStats.gf += hGoals;
+          hStats.gc += aGoals;
+          aStats.gf += aGoals;
+          aStats.gc += hGoals;
+
+          if (hGoals > aGoals) {
+            hStats.g += 1;
+            hStats.pts += 3;
+            aStats.p += 1;
+          } else if (hGoals < aGoals) {
+            aStats.g += 1;
+            aStats.pts += 3;
+            hStats.p += 1;
+          } else {
+            hStats.e += 1;
+            hStats.pts += 1;
+            aStats.e += 1;
+            aStats.pts += 1;
+          }
+
+          hStats.dg = hStats.gf - hStats.gc;
+          aStats.dg = aStats.gf - aStats.gc;
+        }
+      }
+    });
+
+    // Sort teams per group: Pts -> DG -> GF -> Name
+    const sorted: Record<string, Array<{
+      name: string;
+      pj: number;
+      g: number;
+      e: number;
+      p: number;
+      gf: number;
+      gc: number;
+      dg: number;
+      pts: number;
+    }>> = {};
+
+    groupLetters.forEach(letter => {
+      const teams = Object.values(tables[letter] || {});
+      teams.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.dg !== a.dg) return b.dg - a.dg;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return a.name.localeCompare(b.name);
+      });
+      sorted[letter] = teams;
+    });
+
+    return sorted;
+  }, [matches, scores, completedMatchIds]);
 
   const handleScoreChange = (matchId: number, type: 'home' | 'away', val: string) => {
     const numericVal = val === "" ? 0 : Math.max(0, parseInt(val, 10) || 0);
@@ -296,7 +406,11 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
     setScores(nextScores);
     setValidationMessage(null); // Clear error on edit
-    setSaveStatus(isLoggedIn ? "Guardando..." : "Borrador local");
+    if (isLoggedIn) {
+      setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardando...");
+    } else {
+      setSaveStatus("Borrador local");
+    }
     setCompletedMatchIds(nextCompletedMatchIds);
     persistDraft(nextScores, nextCompletedMatchIds);
   };
@@ -331,7 +445,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
     // Save Prediction
     if (isLoggedIn) {
-      setSaveStatus("Guardando...");
+      setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardando...");
       const payload = [{
         match_id: activeMatch.id,
         home_goals: homeScore,
@@ -340,7 +454,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
       const result = await saveUserPredictions(payload);
       if (result.success) {
-        setSaveStatus("Guardado");
+        setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardado");
       } else {
         setSaveStatus("Error al guardar");
         alert("No se pudo guardar este partido. Probá de nuevo.");
@@ -509,23 +623,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         {/* TAB: PARTIDOS */}
         {activeTab === "Partidos" && (
           <div className="space-y-6">
-            {/* Filter Chips */}
-            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar" style={{ scrollbarWidth: "none" }}>
-              {groups.map(g => (
-                <button
-                  key={g}
-                  onClick={() => handleFilterChange(g)}
-                  className="h-10 px-4 rounded-full text-[13px] font-bold shrink-0 transition-colors border"
-                  style={{
-                    background: selectedFilter === g ? "#0071e3" : "#ffffff",
-                    color: selectedFilter === g ? "#ffffff" : "#1d1d1f",
-                    borderColor: selectedFilter === g ? "#0071e3" : "rgba(0,0,0,0.08)"
-                  }}
-                >
-                  {g}
-                </button>
-              ))}
-            </div>
+            {/* Filter Chips removed for a clean linear flow */}
 
             {filteredMatches.length === 0 ? (
               <div className="py-12 text-center text-[#6e6e73] font-medium">
@@ -764,33 +862,59 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
         {/* TAB: GRUPOS */}
         {activeTab === "Grupos" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"].map(group => (
-              <PremiumCard key={group} className="!p-5">
-                <h3 className="font-display font-extrabold text-[#1d1d1f] text-[18px] mb-4">Grupo {group}</h3>
-                <div className="w-full text-left">
-                  <div className="grid grid-cols-[1fr_24px_24px_24px_28px] gap-2 text-[10px] text-[#aeaeb2] font-bold uppercase tracking-wider mb-2 pb-2 border-b border-[rgba(0,0,0,0.06)]">
-                    <span>Equipo</span>
-                    <span className="text-center">J</span>
-                    <span className="text-center">G</span>
-                    <span className="text-center">E</span>
-                    <span className="text-right">Pts</span>
-                  </div>
-                  {[1,2,3,4].map(row => (
-                    <div key={row} className="grid grid-cols-[1fr_24px_24px_24px_28px] gap-2 items-center py-2 text-[13px] font-medium text-[#1d1d1f]">
-                      <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 bg-[#f5f5f7] rounded-full border border-[rgba(0,0,0,0.06)]"></div>
-                        <span>Por definir</span>
-                      </div>
-                      <span className="text-center text-[#6e6e73]">0</span>
-                      <span className="text-center text-[#6e6e73]">0</span>
-                      <span className="text-center text-[#6e6e73]">0</span>
-                      <span className="text-right font-bold">0</span>
+          <div className="space-y-6 max-w-[980px] mx-auto animate-fadeIn">
+            <div className="text-center md:text-left mb-2">
+              <p className="text-[#6e6e73] text-[13.5px] font-bold">
+                Tabla provisional según tus resultados cargados.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"].map(group => {
+                const teams = groupTables[group] || [];
+                return (
+                  <PremiumCard key={group} className="!p-5">
+                    <h3 className="font-display font-extrabold text-[#1d1d1f] text-[18px] mb-4">Grupo {group}</h3>
+                    <div className="overflow-x-auto w-full hide-scrollbar">
+                      <table className="w-full text-left border-collapse text-[12px] min-w-[320px]">
+                        <thead>
+                          <tr className="border-b border-[rgba(0,0,0,0.06)] text-[10px] text-[#aeaeb2] font-black uppercase tracking-wider">
+                            <th className="py-2 pr-2">Equipo</th>
+                            <th className="py-2 px-1 text-center">PJ</th>
+                            <th className="py-2 px-1 text-center">G</th>
+                            <th className="py-2 px-1 text-center">E</th>
+                            <th className="py-2 px-1 text-center">P</th>
+                            <th className="py-2 px-1 text-center">GF</th>
+                            <th className="py-2 px-1 text-center">GC</th>
+                            <th className="py-2 px-1 text-center">DG</th>
+                            <th className="py-2 pl-2 text-right">Pts</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {teams.map((t, idx) => (
+                            <tr key={t.name} className="border-b border-[rgba(0,0,0,0.02)] last:border-0 hover:bg-[rgba(0,0,0,0.01)] transition-colors">
+                              <td className="py-2.5 pr-2 font-bold text-[#1d1d1f] flex items-center gap-1.5">
+                                <span className="text-[#8e8e93] text-[10px] w-3 inline-block">{idx + 1}</span>
+                                <span className="text-[16px]">{getTeamFlag(t.name) || "🏳️"}</span>
+                                <span className="truncate max-w-[90px]">{getTeamDisplayName(t.name)}</span>
+                              </td>
+                              <td className="py-2.5 px-1 text-center text-[#6e6e73] font-semibold">{t.pj}</td>
+                              <td className="py-2.5 px-1 text-center text-[#6e6e73]">{t.g}</td>
+                              <td className="py-2.5 px-1 text-center text-[#6e6e73]">{t.e}</td>
+                              <td className="py-2.5 px-1 text-center text-[#6e6e73]">{t.p}</td>
+                              <td className="py-2.5 px-1 text-center text-[#aeaeb2]">{t.gf}</td>
+                              <td className="py-2.5 px-1 text-center text-[#aeaeb2]">{t.gc}</td>
+                              <td className="py-2.5 px-1 text-center text-[#aeaeb2] font-semibold">{t.dg > 0 ? `+${t.dg}` : t.dg}</td>
+                              <td className="py-2.5 pl-2 text-right font-black text-[#1d1d1f] text-[13px]">{t.pts}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                  ))}
-                </div>
-              </PremiumCard>
-            ))}
+                  </PremiumCard>
+                );
+              })}
+            </div>
           </div>
         )}
 
