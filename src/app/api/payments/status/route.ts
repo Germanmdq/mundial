@@ -22,7 +22,7 @@ export async function GET() {
             status: participation.status,
             paid: participation.paid,
             payment_status: participation.payment_status,
-            provider: participation.provider,
+            provider: participation.payment_provider,
             paid_at: participation.paid_at,
           }
         : null,
