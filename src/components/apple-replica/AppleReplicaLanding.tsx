@@ -17,8 +17,8 @@ export function AppleReplicaLanding() {
           </Link>
 
           <div className={styles.desktopLinks}>
-            <a href="#como-funciona">Cómo funciona</a>
-            <a href="#jugadores">Jugadores</a>
+            <Link href="/">Cómo funciona</Link>
+            <Link href="/equipos">Equipos</Link>
             <Link href="/ranking">Ranking</Link>
             <Link href="/premios">Premios</Link>
             <Link href="/reglas">Reglas</Link>
@@ -42,12 +42,12 @@ export function AppleReplicaLanding() {
         </nav>
 
         <div className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}>
-          <a href="#como-funciona" onClick={() => setMenuOpen(false)}>Cómo funciona</a>
-          <a href="#jugadores" onClick={() => setMenuOpen(false)}>Jugadores</a>
-          <Link href="/ranking">Ranking</Link>
-          <Link href="/premios">Premios</Link>
-          <Link href="/reglas">Reglas</Link>
-          <Link href="/mi-prediccion" className={styles.mobileMenuCta}>Crear mi predicción</Link>
+          <Link href="/" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
+          <Link href="/equipos" onClick={() => setMenuOpen(false)}>Equipos</Link>
+          <Link href="/ranking" onClick={() => setMenuOpen(false)}>Ranking</Link>
+          <Link href="/premios" onClick={() => setMenuOpen(false)}>Premios</Link>
+          <Link href="/reglas" onClick={() => setMenuOpen(false)}>Reglas</Link>
+          <Link href="/mi-prediccion" className={styles.mobileMenuCta} onClick={() => setMenuOpen(false)}>Crear mi predicción</Link>
         </div>
       </header>
 
@@ -179,9 +179,9 @@ export function AppleReplicaLanding() {
           <div className={styles.footerBrand}>Mundial entre Amigos</div>
           <div className={styles.footerLinks}>
             <Link href="/reglas">Reglas</Link>
-            <a href="#como-funciona">Términos</a>
-            <a href="#como-funciona">Privacidad</a>
-            <a href="#como-funciona">Soporte</a>
+            <Link href="/">Términos</Link>
+            <Link href="/">Privacidad</Link>
+            <Link href="/">Soporte</Link>
           </div>
           <div className={styles.footerCopyright}>
             © 2026 Mundial entre Amigos. Todos los derechos reservados.
