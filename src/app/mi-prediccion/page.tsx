@@ -7,9 +7,9 @@ export default function PrediccionPage() {
   return (
     <AppShell>
       <PageHero 
-        eyebrow="Predicciones"
-        title="Armá tu fixture."
-        description="Completá los resultados y demostrá cuánto sabés del Mundial."
+        eyebrow="Mi predicción"
+        title="Armá tu Mundial."
+        description="Cargá tus resultados, seguí cada grupo y guardá tu camino al campeón."
       />
       <PageSection>
         <PredictionScreen />
