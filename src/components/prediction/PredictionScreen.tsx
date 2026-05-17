@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { getUser } from "@/lib/auth/getUser";
 import { PredictionForm } from "./PredictionForm";
 import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
+import { PremiumCard } from "@/components/ui/PremiumCard";
 
 export async function PredictionScreen() {
   const user = await getUser();
@@ -27,7 +27,7 @@ export async function PredictionScreen() {
 
   if (!matches || matches.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto px-6 py-12">
+      <div className="max-w-2xl mx-auto py-12">
         <EmptyState 
           icon="calendar_today" 
           title="Fixture en actualización" 
@@ -38,23 +38,17 @@ export async function PredictionScreen() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="font-display font-bold text-[#1d1d1f] text-2xl mb-1">Mi Predicción</h1>
-        <p className="text-[#6e6e73] text-[14px]">Cargá tus resultados para sumar puntos.</p>
-      </div>
-
+    <div className="max-w-[720px] mx-auto">
       {/* Tab row */}
-      <div className="flex gap-2 overflow-x-auto pb-1 mb-6" style={{ scrollbarWidth: "none" }}>
+      <div className="flex gap-2 overflow-x-auto pb-4 mb-4 justify-center" style={{ scrollbarWidth: "none" }}>
         {["Fixture", "Tabla de Grupos", "Goleador"].map((tab, i) => (
           <button
             key={tab}
-            className="px-4 py-2 rounded-full text-[13px] font-semibold shrink-0 transition-all duration-150"
+            className="px-5 py-2.5 rounded-full text-[13px] font-semibold shrink-0 transition-all duration-150 shadow-sm border border-[rgba(0,0,0,0.06)]"
             style={{
-              background: i === 0 ? "#0071e3" : "white",
+              background: i === 0 ? "#1d1d1f" : "white",
               color: i === 0 ? "white" : "#6e6e73",
-              border: i === 0 ? "none" : "1px solid rgba(0,0,0,0.10)",
+              border: i === 0 ? "1px solid transparent" : "1px solid rgba(0,0,0,0.06)",
             }}
           >
             {tab}
@@ -62,18 +56,20 @@ export async function PredictionScreen() {
         ))}
       </div>
 
-      {/* Section label */}
-      <div className="flex justify-between items-center mb-4">
-        <span className="text-[11px] font-bold text-[#aeaeb2] uppercase tracking-[0.15em]">Grupo A · Fase de Grupos</span>
-        <button className="text-[#0071e3] text-[12px] font-semibold">Ver fixture completo</button>
-      </div>
+      <PremiumCard>
+        {/* Section label */}
+        <div className="flex justify-between items-center mb-6 border-b border-[rgba(0,0,0,0.06)] pb-4">
+          <span className="text-[11px] font-bold text-[#aeaeb2] uppercase tracking-[0.15em]">Grupo A · Fase de Grupos</span>
+          <button className="text-[#0071e3] text-[12px] font-bold tracking-tight hover:underline">Ver fixture completo</button>
+        </div>
 
-      {/* Match cards & Form */}
-      <PredictionForm 
-        matches={matches} 
-        isLoggedIn={!!user} 
-        initialScores={initialScores} 
-      />
+        {/* Match cards & Form */}
+        <PredictionForm 
+          matches={matches} 
+          isLoggedIn={!!user} 
+          initialScores={initialScores} 
+        />
+      </PremiumCard>
     </div>
   );
 }

@@ -1,12 +1,19 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { PredictionScreen } from "@/components/prediction/PredictionScreen";
+import { PageHero } from "@/components/layout/PageHero";
+import { PageSection } from "@/components/ui/PageSection";
 
 export default function PrediccionPage() {
   return (
     <AppShell>
-      <div className="bg-[#f5f5f7] min-h-screen pt-14">
+      <PageHero 
+        eyebrow="Predicciones"
+        title="Armá tu fixture."
+        description="Completá los resultados y demostrá cuánto sabés del Mundial."
+      />
+      <PageSection>
         <PredictionScreen />
-      </div>
+      </PageSection>
     </AppShell>
   );
 }

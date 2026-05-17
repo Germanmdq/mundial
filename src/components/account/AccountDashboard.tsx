@@ -4,6 +4,9 @@ import { getAccountDashboard } from "@/lib/worldcup/account";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getUser } from "@/lib/auth/getUser";
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { PremiumCard } from "@/components/ui/PremiumCard";
+import { PremiumButton } from "@/components/ui/PremiumButton";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 
 const MENU_ITEMS = [
   { icon: "sports_soccer", label: "Mi predicción", href: "/mi-prediccion", desc: "Ver y editar mis pronósticos" },
@@ -24,9 +27,7 @@ export async function AccountDashboard() {
           description="Iniciá sesión para guardar tus predicciones, ver tu ranking y participar por premios."
         />
         <div className="flex justify-center mt-6">
-          <Link href="/login" className="bg-[#0071e3] text-white font-semibold text-[15px] px-8 py-3 rounded-full hover:bg-[#0066cc] transition-colors active:scale-95 shadow-sm">
-            Iniciar sesión
-          </Link>
+          <PremiumButton href="/login">Iniciar sesión</PremiumButton>
         </div>
       </div>
     );
@@ -43,9 +44,7 @@ export async function AccountDashboard() {
           description="Armá tu fixture y participá de la competencia."
         />
         <div className="flex justify-center mt-6">
-          <Link href="/mi-prediccion" className="bg-[#0071e3] text-white font-semibold text-[15px] px-8 py-3 rounded-full hover:bg-[#0066cc] transition-colors active:scale-95 shadow-sm">
-            Crear mi predicción
-          </Link>
+          <PremiumButton href="/mi-prediccion">Crear mi predicción</PremiumButton>
         </div>
       </div>
     );
@@ -54,19 +53,19 @@ export async function AccountDashboard() {
   const STATS = [
     { label: "Puntos totales", value: ranking?.total_points?.toLocaleString() || "0", icon: "stars", color: "#0071e3", bg: "#e8f0fd" },
     { label: "Posición global", value: ranking?.rank ? `#${ranking.rank}` : "-", icon: "leaderboard", color: "#0071e3", bg: "#e8f0fd" },
-    { label: "Partidos completados", value: session.completed_matches || "0/104", icon: "check_circle", color: "#34a853", bg: "#e8f4e8" },
+    { label: "Partidos", value: session.completed_matches || "0/104", icon: "sports_soccer", color: "#0071e3", bg: "#e8f0fd" },
     { label: "Progreso", value: `${session.progress_percent || 0}%`, icon: "data_usage", color: "#0071e3", bg: "#e8f0fd" },
   ];
 
   return (
-    <div className="max-w-[1040px] mx-auto px-6 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="max-w-[1040px] mx-auto px-5 md:px-6 py-10 md:py-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         
         {/* LEFT COLUMN: Profile & Stats */}
         <div className="md:col-span-1 space-y-6">
           {/* Profile Card */}
-          <div className="bg-white rounded-2xl border p-6 shadow-sm flex items-center gap-4" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
-            <div className="w-16 h-16 rounded-full border border-[#e5e5e7] overflow-hidden shrink-0 bg-[#e8f0fd]">
+          <PremiumCard className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full border border-[rgba(0,0,0,0.06)] overflow-hidden shrink-0 bg-[#e8f0fd]">
               {user.user_metadata?.avatar_url ? (
                 <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
@@ -76,27 +75,26 @@ export async function AccountDashboard() {
               )}
             </div>
             <div className="min-w-0">
-              <h1 className="font-display font-bold text-[#1d1d1f] text-lg truncate">
+              <h1 className="font-display font-bold text-[#1d1d1f] text-lg truncate tracking-tight">
                 {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Usuario'}
               </h1>
-              <p className="text-[#6e6e73] text-[13px] truncate">{user.email}</p>
-              <span className="inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 bg-[#e8f4e8] text-[#34a853] text-[10px] font-bold uppercase tracking-wide rounded-full">
-                <span className="material-symbols-outlined text-[11px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+              <p className="text-[#6e6e73] text-[13px] truncate mb-2">{user.email}</p>
+              <StatusBadge variant="blue" icon="verified">
                 {session.status === 'active' ? 'Activo' : 'En curso'}
-              </span>
+              </StatusBadge>
             </div>
-          </div>
+          </PremiumCard>
 
           {/* Stats grid */}
           <div className="grid grid-cols-2 gap-3">
             {STATS.map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl border p-4 shadow-sm" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-2" style={{ background: stat.bg }}>
-                  <span className="material-symbols-outlined text-base" style={{ color: stat.color, fontVariationSettings: "'FILL' 1" }}>{stat.icon}</span>
+              <PremiumCard key={stat.label} className="!p-5">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-3" style={{ background: stat.bg }}>
+                  <span className="material-symbols-outlined text-[18px]" style={{ color: stat.color, fontVariationSettings: "'FILL' 1" }}>{stat.icon}</span>
                 </div>
-                <span className="text-[10px] text-[#aeaeb2] uppercase tracking-wider font-semibold block">{stat.label}</span>
-                <span className="font-display font-bold text-[#1d1d1f] text-lg">{stat.value}</span>
-              </div>
+                <span className="text-[10px] text-[#aeaeb2] uppercase tracking-[0.15em] font-bold block mb-1">{stat.label}</span>
+                <span className="font-display font-bold text-[#1d1d1f] text-xl tracking-tight">{stat.value}</span>
+              </PremiumCard>
             ))}
           </div>
         </div>
@@ -104,50 +102,50 @@ export async function AccountDashboard() {
         {/* RIGHT COLUMN: Prediction Status & Navigation */}
         <div className="md:col-span-2 space-y-6">
           {/* Prediction status */}
-          <div className="bg-white rounded-2xl border p-6 shadow-sm" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-display font-bold text-[#1d1d1f] text-base">Mi predicción</h2>
-              <Link href="/mi-prediccion" className="text-[#0071e3] text-[13px] font-semibold hover:underline">Editar</Link>
+          <PremiumCard>
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[rgba(0,0,0,0.06)]">
+              <h2 className="font-display font-extrabold text-[#1d1d1f] text-xl tracking-tight">Mi predicción</h2>
+              <Link href="/mi-prediccion" className="text-[#0071e3] text-[13px] font-semibold hover:underline bg-[#e8f0fd] px-3 py-1.5 rounded-full">Editar</Link>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {["Fase de grupos", "Octavos", "Cuartos", "Semis", "Final"].map((phase, i) => (
                 <div key={phase} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: i === 0 ? "#e8f4e8" : "#f0f0f2" }}>
-                    <span className="material-symbols-outlined text-[11px]" style={{ color: i === 0 ? "#34a853" : "#aeaeb2", fontVariationSettings: "'FILL' 1" }}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: i === 0 ? "#e8f0fd" : "#f5f5f7" }}>
+                    <span className="material-symbols-outlined text-[11px]" style={{ color: i === 0 ? "#0071e3" : "#aeaeb2", fontVariationSettings: "'FILL' 1" }}>
                       {i === 0 ? "check" : "radio_button_unchecked"}
                     </span>
                   </div>
-                  <span className="text-[14px] text-[#1d1d1f]">{phase}</span>
-                  {i === 0 && <span className="ml-auto text-[11px] text-[#34a853] font-semibold">En progreso</span>}
-                  {i > 0 && <span className="ml-auto text-[11px] text-[#aeaeb2]">Pendiente</span>}
+                  <span className="text-[14px] font-medium text-[#1d1d1f]">{phase}</span>
+                  {i === 0 && <span className="ml-auto text-[11px] text-[#0071e3] font-bold uppercase tracking-[0.1em]">En progreso</span>}
+                  {i > 0 && <span className="ml-auto text-[11px] text-[#aeaeb2] font-bold uppercase tracking-[0.1em]">Pendiente</span>}
                 </div>
               ))}
             </div>
-          </div>
+          </PremiumCard>
 
           {/* Menu items */}
-          <div className="bg-white rounded-2xl border shadow-sm overflow-hidden" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
+          <PremiumCard noPadding className="overflow-hidden">
             {MENU_ITEMS.map((item, i) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 px-5 py-4 hover:bg-[#f5f5f7] transition-colors"
+                className="flex items-center gap-4 px-6 py-5 hover:bg-[#fbfbfd] transition-colors"
                 style={{ borderBottom: i < MENU_ITEMS.length - 1 ? "1px solid rgba(0,0,0,0.04)" : "none" }}
               >
-                <div className="w-9 h-9 rounded-xl bg-[#f5f5f7] flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[#6e6e73] text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
+                <div className="w-10 h-10 rounded-2xl bg-[#f5f5f7] flex items-center justify-center shrink-0 border border-[rgba(0,0,0,0.03)]">
+                  <span className="material-symbols-outlined text-[#1d1d1f] text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
                 </div>
                 <div className="flex-1">
-                  <span className="text-[#1d1d1f] text-[14px] font-medium">{item.label}</span>
-                  <p className="text-[#aeaeb2] text-[12px]">{item.desc}</p>
+                  <span className="text-[#1d1d1f] text-[15px] font-bold tracking-tight">{item.label}</span>
+                  <p className="text-[#6e6e73] text-[13px]">{item.desc}</p>
                 </div>
-                <span className="material-symbols-outlined text-[#d1d1d6] text-lg">chevron_right</span>
+                <span className="material-symbols-outlined text-[#d1d1d6] text-xl">chevron_right</span>
               </Link>
             ))}
-          </div>
+          </PremiumCard>
 
           {/* Sign out */}
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-2">
             <LogoutButton />
           </div>
         </div>

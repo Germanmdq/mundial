@@ -1,10 +1,10 @@
 # World Cup 2026 API sync report
 
-- Fecha: 2026-05-17T17:59:48.207Z
+- Fecha: 2026-05-17T18:22:44.467Z
 - Fuente principal: API-Football / API-SPORTS
 - League: 1
 - Season: 2026
-- API key presente: no
+- API key presente: si
 - Service role presente: no
 
 ## Resultados
@@ -38,5 +38,5 @@
 
 ## Proximos pasos
 
-- Cargar API_FOOTBALL_KEY para traer datos reales del Mundial 2026.
+- Revisar los CSV generados antes de confiar los cambios al frontend.
 - Cargar SUPABASE_SERVICE_ROLE_KEY para subir assets y actualizar Supabase desde el script admin.
