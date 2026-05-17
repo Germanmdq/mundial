@@ -1,11 +1,15 @@
-export const TEAM_TRANSLATIONS: Record<string, string> = {
+export const TEAM_DISPLAY_NAMES_ES: Record<string, string> = {
   "Mexico": "México",
   "South Africa": "Sudáfrica",
   "South Korea": "Corea del Sur",
   "Czechia": "Chequia",
   "United States": "Estados Unidos",
+  "USA": "Estados Unidos",
+  "Canada": "Canadá",
   "Germany": "Alemania",
   "England": "Inglaterra",
+  "Scotland": "Escocia",
+  "Turkey": "Turquía",
   "Japan": "Japón",
   "Morocco": "Marruecos",
   "Ivory Coast": "Costa de Marfil",
@@ -20,7 +24,6 @@ export const TEAM_TRANSLATIONS: Record<string, string> = {
   "Croatia": "Croacia",
   "Denmark": "Dinamarca",
   "Poland": "Polonia",
-  "Portugal": "Portugal",
   "France": "Francia",
   "Brazil": "Brasil",
   "Argentina": "Argentina",
@@ -29,7 +32,28 @@ export const TEAM_TRANSLATIONS: Record<string, string> = {
   "Ecuador": "Ecuador",
   "Paraguay": "Paraguay",
   "Australia": "Australia",
-  "Canada": "Canadá"
+  "Haiti": "Haití",
+  "Qatar": "Catar",
+  "Tunisia": "Túnez",
+  "Egypt": "Egipto",
+  "Algeria": "Argelia",
+  "Ghana": "Ghana",
+  "Senegal": "Senegal",
+  "Nigeria": "Nigeria",
+  "Cameroon": "Camerún",
+  "Mali": "Malí",
+  "Uzbekistan": "Uzbekistán",
+  "Jordan": "Jordania",
+  "Iraq": "Irak",
+  "United Arab Emirates": "Emiratos Árabes Unidos",
+  "Jamaica": "Jamaica",
+  "Panama": "Panamá",
+  "Costa Rica": "Costa Rica",
+  "Honduras": "Honduras",
+  "Bolivia": "Bolivia",
+  "Venezuela": "Venezuela",
+  "Bosnia-Herzegovina": "Bosnia y Herzegovina",
+  "Bosnia and Herzegovina": "Bosnia y Herzegovina",
 };
 
 export const TEAM_FLAGS: Record<string, string> = {
@@ -38,8 +62,12 @@ export const TEAM_FLAGS: Record<string, string> = {
   "South Korea": "🇰🇷",
   "Czechia": "🇨🇿",
   "United States": "🇺🇸",
+  "USA": "🇺🇸",
+  "Canada": "🇨🇦",
   "Germany": "🇩🇪",
   "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Turkey": "🇹🇷",
   "Japan": "🇯🇵",
   "Morocco": "🇲🇦",
   "Ivory Coast": "🇨🇮",
@@ -54,7 +82,6 @@ export const TEAM_FLAGS: Record<string, string> = {
   "Croatia": "🇭🇷",
   "Denmark": "🇩🇰",
   "Poland": "🇵🇱",
-  "Portugal": "🇵🇹",
   "France": "🇫🇷",
   "Brazil": "🇧🇷",
   "Argentina": "🇦🇷",
@@ -63,12 +90,44 @@ export const TEAM_FLAGS: Record<string, string> = {
   "Ecuador": "🇪🇨",
   "Paraguay": "🇵🇾",
   "Australia": "🇦🇺",
-  "Canada": "🇨🇦"
+  "Haiti": "🇭🇹",
+  "Qatar": "🇶🇦",
+  "Tunisia": "🇹🇳",
+  "Egypt": "🇪🇬",
+  "Algeria": "🇩🇿",
+  "Ghana": "🇬🇭",
+  "Senegal": "🇸🇳",
+  "Nigeria": "🇳🇬",
+  "Cameroon": "🇨🇲",
+  "Mali": "🇲🇱",
+  "Uzbekistan": "🇺🇿",
+  "Jordan": "🇯🇴",
+  "Iraq": "🇮🇶",
+  "United Arab Emirates": "🇦🇪",
+  "Jamaica": "🇯🇲",
+  "Panama": "🇵🇦",
+  "Costa Rica": "🇨🇷",
+  "Honduras": "🇭🇳",
+  "Bolivia": "🇧🇴",
+  "Venezuela": "🇻🇪",
+  "Bosnia-Herzegovina": "🇧🇦",
+  "Bosnia and Herzegovina": "🇧🇦",
 };
 
-export function getTeamDisplayName(name: string | null): string {
-  if (!name) return "Por definir";
-  return TEAM_TRANSLATIONS[name] || name;
+export function getTeamDisplayName(name?: string | null): string {
+  if (!name) return "Equipo por definir";
+  return TEAM_DISPLAY_NAMES_ES[name] ?? name;
+}
+
+export function getTeamDisplayCode(code?: string | null, name?: string | null) {
+  if (code) return code.toUpperCase();
+
+  const display = getTeamDisplayName(name);
+  return display
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .slice(0, 3)
+    .toUpperCase();
 }
 
 export function getTeamFlag(name: string | null): string | null {
@@ -77,13 +136,5 @@ export function getTeamFlag(name: string | null): string | null {
 }
 
 export function getTeamCode(name: string | null): string {
-  if (!name) return "???";
-  // Special overrides
-  if (name === "South Africa") return "RSA";
-  if (name === "Saudi Arabia") return "KSA";
-  if (name === "South Korea") return "KOR";
-  if (name === "Ivory Coast") return "CIV";
-  if (name === "New Zealand") return "NZL";
-  if (name === "Cape Verde") return "CPV";
-  return name.substring(0, 3).toUpperCase();
+  return getTeamDisplayCode(null, name);
 }

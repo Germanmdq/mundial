@@ -97,18 +97,48 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
 
           {/* Home Stepper */}
           <div className="scoreStepper">
-            <button type="button" className="scoreButton" onClick={() => handleDecrement('home', homeScore)} disabled={homeScore !== "" && homeScore <= 0}>−</button>
-            <div className="scoreValue">{homeScore ?? "-"}</div>
-            <button type="button" className="scoreButton" onClick={() => handleIncrement('home', homeScore)}>+</button>
+            <button
+              type="button"
+              className="scoreButton"
+              onClick={() => handleDecrement('home', homeScore)}
+              disabled={(homeScore === "" ? 0 : homeScore) <= 0}
+              aria-label="Restar gol"
+            >
+              −
+            </button>
+            <div className="scoreValue">{homeScore === "" ? "-" : homeScore}</div>
+            <button
+              type="button"
+              className="scoreButton"
+              onClick={() => handleIncrement('home', homeScore)}
+              aria-label="Sumar gol"
+            >
+              +
+            </button>
           </div>
 
           <span className="versus">VS</span>
 
           {/* Away Stepper */}
           <div className="scoreStepper">
-            <button type="button" className="scoreButton" onClick={() => handleDecrement('away', awayScore)} disabled={awayScore !== "" && awayScore <= 0}>−</button>
-            <div className="scoreValue">{awayScore ?? "-"}</div>
-            <button type="button" className="scoreButton" onClick={() => handleIncrement('away', awayScore)}>+</button>
+            <button
+              type="button"
+              className="scoreButton"
+              onClick={() => handleDecrement('away', awayScore)}
+              disabled={(awayScore === "" ? 0 : awayScore) <= 0}
+              aria-label="Restar gol"
+            >
+              −
+            </button>
+            <div className="scoreValue">{awayScore === "" ? "-" : awayScore}</div>
+            <button
+              type="button"
+              className="scoreButton"
+              onClick={() => handleIncrement('away', awayScore)}
+              aria-label="Sumar gol"
+            >
+              +
+            </button>
           </div>
 
           {/* Away Team */}
@@ -144,9 +174,24 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
                 </div>
               </div>
               <div className="scoreStepper ml-auto">
-                <button type="button" className="scoreButton" onClick={() => handleDecrement('home', homeScore)} disabled={homeScore !== "" && homeScore <= 0}>−</button>
-                <div className="scoreValue">{homeScore ?? "-"}</div>
-                <button type="button" className="scoreButton" onClick={() => handleIncrement('home', homeScore)}>+</button>
+                <button
+                  type="button"
+                  className="scoreButton"
+                  onClick={() => handleDecrement('home', homeScore)}
+                  disabled={(homeScore === "" ? 0 : homeScore) <= 0}
+                  aria-label="Restar gol"
+                >
+                  −
+                </button>
+                <div className="scoreValue">{homeScore === "" ? "-" : homeScore}</div>
+                <button
+                  type="button"
+                  className="scoreButton"
+                  onClick={() => handleIncrement('home', homeScore)}
+                  aria-label="Sumar gol"
+                >
+                  +
+                </button>
               </div>
             </div>
             
@@ -162,9 +207,24 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
                 </div>
               </div>
               <div className="scoreStepper ml-auto">
-                <button type="button" className="scoreButton" onClick={() => handleDecrement('away', awayScore)} disabled={awayScore !== "" && awayScore <= 0}>−</button>
-                <div className="scoreValue">{awayScore ?? "-"}</div>
-                <button type="button" className="scoreButton" onClick={() => handleIncrement('away', awayScore)}>+</button>
+                <button
+                  type="button"
+                  className="scoreButton"
+                  onClick={() => handleDecrement('away', awayScore)}
+                  disabled={(awayScore === "" ? 0 : awayScore) <= 0}
+                  aria-label="Restar gol"
+                >
+                  −
+                </button>
+                <div className="scoreValue">{awayScore === "" ? "-" : awayScore}</div>
+                <button
+                  type="button"
+                  className="scoreButton"
+                  onClick={() => handleIncrement('away', awayScore)}
+                  aria-label="Sumar gol"
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
@@ -197,7 +257,7 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
           width: 38px;
           height: 38px;
           border-radius: 999px;
-          border: 1px solid rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(0, 0, 0, 0.10);
           background: #ffffff;
           color: #1d1d1f;
           font-size: 22px;
@@ -206,8 +266,9 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
           cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
         }
 
         .scoreButton:active {
@@ -224,7 +285,7 @@ export function PredictionMatchCard({ match, homeScore, awayScore, onScoreChange
           height: 44px;
           border-radius: 15px;
           background: #f5f5f7;
-          border: 1px solid rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(0, 0, 0, 0.10);
           color: #1d1d1f;
           font-size: 24px;
           font-weight: 800;
