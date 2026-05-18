@@ -28,10 +28,10 @@ export function PrizePaymentOptions({ compact = false, source: _source = "predic
             <span className="material-symbols-outlined text-[#0071e3] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>emoji_events</span>
           </div>
           <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg tracking-tight mb-1">
-            Participá por el premio acumulado
+            Activá tu participación
           </h3>
           <p className="text-[#6e6e73] text-[13px] leading-relaxed max-w-sm mx-auto">
-            Activá tu participación oficial para competir por fase de grupos, goleador y campeón.
+            Guardá tu predicción oficial y competí por el premio acumulado.
           </p>
         </div>
 
@@ -83,7 +83,7 @@ export function PrizePaymentOptions({ compact = false, source: _source = "predic
         </div>
 
         <p className="text-center text-[#aeaeb2] text-[10px] font-medium mt-5 leading-normal max-w-[280px] mx-auto">
-          La participación se activa cuando el pago es confirmado por el proveedor.
+          La predicción oficial se guarda cuando el pago es confirmado por el proveedor.
         </p>
       </PremiumCard>
     </div>

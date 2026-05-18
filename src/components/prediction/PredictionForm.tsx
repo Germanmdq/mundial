@@ -7,6 +7,7 @@ import type { Match } from "@/lib/worldcup/matches";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
 import { formatMatchDate } from "@/lib/worldcup/match-date";
+import { PrizePaymentOptions } from "@/components/payments/PrizePaymentOptions";
 
 const SHOULD_GATE_AFTER_SIX_MATCHES = false;
 const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
@@ -137,7 +138,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [ctaModalOpen, setCtaModalOpen] = useState<boolean>(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
-  // Sync guest draft to Supabase if they login
+  // Sync guest draft to Supabase if they login and have active payment
   const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
     if (!isLoggedIn) return;
     const payload = draftItems
@@ -151,7 +152,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       setSaveStatus("Guardando...");
       const result = await saveUserPredictions(payload);
       if (result.success) {
-        setSaveStatus("Guardado");
+        setSaveStatus("Participación activa");
         localStorage.removeItem("worldcup_prediction_draft");
       } else {
         setSaveStatus("Error al guardar");
@@ -165,7 +166,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     nextCurrentMatchIndex = currentMatchIndex,
     nextSelectedGroup = selectedFilter,
   ) => {
-    if (typeof window === "undefined" || isLoggedIn) return;
+    if (typeof window === "undefined" || (isLoggedIn && paymentStatus === "activo")) return;
 
     const draft: PredictionDraft = {
       scores: Object.fromEntries(
@@ -186,7 +187,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   useEffect(() => {
     const mountTimer = window.setTimeout(() => {
       setHasMounted(true);
-      setSaveStatus(isLoggedIn ? "Guardado" : "Borrador local");
+      setSaveStatus(isLoggedIn ? "Cargando estado..." : "Borrador temporal");
     }, 0);
 
     if (isLoggedIn) {
@@ -196,16 +197,32 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           throw new Error();
         })
         .then((data) => {
-          if (data.status === "active") {
+          const status = data.participation?.status || data.status;
+          if (status === "active") {
             setPaymentStatus("activo");
             setSaveStatus("Participación activa");
-          } else if (data.status === "pending") {
+            
+            // Sync local draft immediately since user is active
+            const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
+            const parsedDraft = parseDraft(rawDraft);
+            if (parsedDraft) {
+              const draftItems = buildDraftItems(parsedDraft);
+              if (draftItems.length > 0) {
+                syncDraftToSupabase(draftItems);
+              }
+            }
+          } else if (status === "pending" || status === "pending_payment") {
             setPaymentStatus("pendiente");
+            setSaveStatus("Borrador temporal");
           } else {
             setPaymentStatus("borrador");
+            setSaveStatus("Borrador temporal");
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          setPaymentStatus("borrador");
+          setSaveStatus("Borrador temporal");
+        });
     }
 
     return () => window.clearTimeout(mountTimer);
@@ -248,11 +265,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             setSelectedFilter(parsedDraft.selectedGroup || "Todos");
             setCurrentMatchIndex(Math.max(0, parsedDraft.currentMatchIndex || 0));
 
-            // Sync draft to Supabase if now logged in
-            const draftItems = buildDraftItems(parsedDraft);
-            if (isLoggedIn && draftItems.length > 0) {
-              syncDraftToSupabase(draftItems);
-            }
+            // Sync draft is now gated and only triggered in mount/status effects when active!
           } catch {
             console.error("Error loading draft");
           }
@@ -406,11 +419,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
     setScores(nextScores);
     setValidationMessage(null); // Clear error on edit
-    if (isLoggedIn) {
-      setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardando...");
+    
+    if (isLoggedIn && paymentStatus === "activo") {
+      setSaveStatus("Participación activa");
     } else {
-      setSaveStatus("Borrador local");
+      setSaveStatus("Borrador temporal");
     }
+    
     setCompletedMatchIds(nextCompletedMatchIds);
     persistDraft(nextScores, nextCompletedMatchIds);
   };
@@ -443,9 +458,16 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       return next;
     });
 
+    const nextScores = {
+      ...scores,
+      [activeMatch.id]: { home: homeScore, away: awayScore },
+    };
+    const nextCompletedMatchIds = new Set(completedMatchIds);
+    nextCompletedMatchIds.add(activeMatch.id);
+
     // Save Prediction
-    if (isLoggedIn) {
-      setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardando...");
+    if (isLoggedIn && paymentStatus === "activo") {
+      setSaveStatus("Guardando...");
       const payload = [{
         match_id: activeMatch.id,
         home_goals: homeScore,
@@ -454,7 +476,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
       const result = await saveUserPredictions(payload);
       if (result.success) {
-        setSaveStatus(paymentStatus === "activo" ? "Participación activa" : "Guardado");
+        setSaveStatus("Participación activa");
       } else {
         setSaveStatus("Error al guardar");
         alert("No se pudo guardar este partido. Probá de nuevo.");
@@ -462,30 +484,16 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       }
     } else {
       // Local Draft Save
-      setSaveStatus("Borrador local");
-      const nextScores = {
-        ...scores,
-        [activeMatch.id]: { home: homeScore, away: awayScore },
-      };
-      const nextCompletedMatchIds = new Set(completedMatchIds);
-      nextCompletedMatchIds.add(activeMatch.id);
+      setSaveStatus("Borrador temporal");
       persistDraft(nextScores, nextCompletedMatchIds);
     }
 
-    // CTA Check at 6th completed match
-    const completedCount = completedMatchIds.has(activeMatch.id) 
-      ? completedMatchIds.size 
-      : completedMatchIds.size + 1;
+    // CTA Check at 6th completed match - shown to unpaid users (anónimo or registered non-active)
+    const completedCount = nextCompletedMatchIds.size;
     const ctaShown = localStorage.getItem("worldcup_prediction_cta_shown") === "true";
     const nextMatchIndex = currentMatchIndex < filteredMatches.length - 1 ? currentMatchIndex + 1 : currentMatchIndex;
 
-    if (!isLoggedIn && completedCount >= 6 && !ctaShown) {
-      const nextScores = {
-        ...scores,
-        [activeMatch.id]: { home: homeScore, away: awayScore },
-      };
-      const nextCompletedMatchIds = new Set(completedMatchIds);
-      nextCompletedMatchIds.add(activeMatch.id);
+    if (paymentStatus !== "activo" && completedCount >= 6 && !ctaShown) {
       persistDraft(nextScores, nextCompletedMatchIds, nextMatchIndex);
       setCtaModalOpen(true);
       return;
@@ -493,10 +501,10 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
     // Navigate
     if (currentMatchIndex < filteredMatches.length - 1) {
-      persistDraft(scores, completedMatchIds, currentMatchIndex + 1);
+      persistDraft(nextScores, nextCompletedMatchIds, currentMatchIndex + 1);
       setCurrentMatchIndex(prev => prev + 1);
     } else {
-      persistDraft(scores, completedMatchIds, currentMatchIndex);
+      persistDraft(nextScores, nextCompletedMatchIds, currentMatchIndex);
       setShowCompletionCard(true);
     }
   };
@@ -576,6 +584,11 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           <span className="text-[14px] font-black leading-none" style={{ color: getStatusColor(saveStatus) }}>
             {saveStatus}
           </span>
+          {paymentStatus !== "activo" && (
+            <span className="mt-1 text-[9px] text-[#8e8e93] text-center font-bold">
+              Solo en este dispositivo
+            </span>
+          )}
         </div>
 
         {/* Human friendly global alert */}
@@ -585,6 +598,19 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             : "¡Felicitaciones! Completaste todas tus predicciones del Mundial."
           }
         </div>
+
+        {/* Premium warning banner for unpaid users */}
+        {paymentStatus !== "activo" && (
+          <div className="col-span-full mt-4 bg-[rgba(255,159,10,0.04)] border border-[rgba(255,159,10,0.12)] rounded-[20px] p-5 text-center flex flex-col justify-center items-center gap-2 animate-fadeIn">
+            <div className="flex items-center gap-2 text-[#ff9f0a] font-bold text-[14.5px]">
+              <span className="text-[18px]">⚠️</span>
+              <span>Podés probar tu predicción en este dispositivo.</span>
+            </div>
+            <p className="text-[13px] text-[#6e6e73] font-medium leading-relaxed max-w-[640px] mx-auto">
+              Tu predicción oficial se guarda después de activar la participación. Para guardar tu Mundial y participar por el premio acumulado, activá tu inscripción.
+            </p>
+          </div>
+        )}
 
         {/* Group-specific active filter stats */}
         {groupStats && (
@@ -633,63 +659,84 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               /* ZONA DE CONVERSIÓN CARD - INLINE (NON-BLOCKING) */
               <div className="conversionCard animate-fadeIn">
                 <h2 className="text-3xl md:text-[44px] font-display font-black text-white mb-4 tracking-tight leading-tight">
-                  Ya tenés tu Mundial en marcha.
+                  Ya tenés tu Mundial armado.
                 </h2>
                 <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
-                  Creá tu cuenta para guardar tu predicción, participar por el premio acumulado, elegir goleador y campeón, y armar grupos privados con tus amigos.
+                  Para guardar tu predicción oficial, participar por el premio acumulado, elegir goleador y campeón, y crear grupos privados con tus amigos, activá tu inscripción.
                 </p>
                 
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                    <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                    <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                    <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                    <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                    <span className="text-[15px] font-medium text-white">Seguís tu ranking durante todo el Mundial.</span>
-                  </div>
-                </div>
+                {!isLoggedIn ? (
+                  <>
+                    <div className="space-y-4 mb-8">
+                      <div className="flex items-start gap-3">
+                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                        <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                        <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                        <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
+                        <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
+                      </div>
+                    </div>
 
-                <div className="flex flex-col gap-3">
-                  <Link 
-                    href="/login?mode=signup&redirect=/mi-prediccion"
-                    onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
-                    className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
-                  >
-                    Crear cuenta y participar
-                  </Link>
-                  
-                  {!SHOULD_GATE_AFTER_SIX_MATCHES && (
-                    <button 
-                      onClick={() => {
-                        localStorage.setItem("worldcup_prediction_cta_shown", "true");
-                        persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
-                        setCtaModalOpen(false);
-                        // Advance next
-                        if (currentMatchIndex < filteredMatches.length - 1) {
-                          setCurrentMatchIndex(prev => prev + 1);
-                        } else {
-                          setShowCompletionCard(true);
-                        }
-                      }}
-                      className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
-                    >
-                      Seguir cargando por ahora
-                    </button>
-                  )}
-                </div>
+                    <div className="flex flex-col gap-3">
+                      <Link 
+                        href="/login?mode=signup&redirect=/mi-prediccion"
+                        onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
+                        className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
+                      >
+                        Crear cuenta y participar
+                      </Link>
+                      
+                      <button 
+                        onClick={() => {
+                          localStorage.setItem("worldcup_prediction_cta_shown", "true");
+                          persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
+                          setCtaModalOpen(false);
+                          if (currentMatchIndex < filteredMatches.length - 1) {
+                            setCurrentMatchIndex(prev => prev + 1);
+                          } else {
+                            setShowCompletionCard(true);
+                          }
+                        }}
+                        className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
+                      >
+                        Seguir probando
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-8 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-[24px] p-6 text-left">
+                      <PrizePaymentOptions compact />
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <button 
+                        onClick={() => {
+                          localStorage.setItem("worldcup_prediction_cta_shown", "true");
+                          persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
+                          setCtaModalOpen(false);
+                          if (currentMatchIndex < filteredMatches.length - 1) {
+                            setCurrentMatchIndex(prev => prev + 1);
+                          } else {
+                            setShowCompletionCard(true);
+                          }
+                        }}
+                        className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
+                      >
+                        Seguir probando
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             ) : showCompletionCard ? (
               /* ZONA DE GRUPOS COMPLETADA CARD */

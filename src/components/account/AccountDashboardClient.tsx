@@ -7,7 +7,7 @@ import { PremiumButton } from "@/components/ui/PremiumButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PrizePaymentOptions } from "@/components/payments/PrizePaymentOptions";
 
-const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft_v2";
+const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
 
 type AccountUser = {
   id: string;
@@ -157,13 +157,23 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
   }
 
   // Logged in
-  const completedMatches = initialSession?.completed_matches || localDraft?.completedMatchIds?.length || 0;
+  const isActive = paymentStatus === "activo";
+  const completedMatches = isActive ? (initialSession?.completed_matches || 0) : 0;
   const remainingMatches = 104 - completedMatches;
   
   // Custom stats
   const calculatedGroups = Math.floor(completedMatches / 8); // approximate calculation helper
-  const topScorerChosen = initialSession?.top_scorer ? "Elegido" : "Pendiente";
-  const championChosen = initialSession?.champion ? "Elegido" : "Pendiente";
+  const topScorerChosen = isActive && initialSession?.top_scorer ? "Elegido" : "Pendiente";
+  const championChosen = isActive && initialSession?.champion ? "Elegido" : "Pendiente";
+
+  const localCompleted = localDraft?.completedMatchIds?.length || 0;
+
+  const scrollToPaymentOptions = () => {
+    const el = document.getElementById("payment-options-anchor");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="max-w-[1040px] mx-auto px-5 md:px-6 py-10 md:py-16">
@@ -187,145 +197,172 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
               </h1>
               <p className="text-[#6e6e73] text-[13px] truncate mb-2">{initialUser.email}</p>
               
-              {paymentStatus === "activo" && (
+              {isActive ? (
                 <StatusBadge variant="blue" icon="verified">
                   Participación activa
                 </StatusBadge>
-              )}
-              {paymentStatus === "pendiente" && (
-                <StatusBadge variant="gold" icon="pending">
-                  Pago pendiente
-                </StatusBadge>
-              )}
-              {paymentStatus === "borrador" && (
-                <StatusBadge variant="gray" icon="edit_note">
-                  Borrador gratis
+              ) : (
+                <StatusBadge variant="gray" icon="warning">
+                  Participación no activada
                 </StatusBadge>
               )}
             </div>
           </PremiumCard>
 
-          {/* Metrics grids */}
-          <div className="grid grid-cols-2 gap-3">
-            <PremiumCard className="!p-4 text-center">
-              <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Partidos</span>
-              <span className="font-display font-bold text-xl text-[#1d1d1f]">{completedMatches} / 104</span>
-            </PremiumCard>
-            <PremiumCard className="!p-4 text-center">
-              <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Faltan</span>
-              <span className="font-display font-bold text-xl text-[#1d1d1f]">{remainingMatches}</span>
-            </PremiumCard>
-            <PremiumCard className="!p-4 text-center">
-              <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Grupos</span>
-              <span className="font-display font-bold text-xl text-[#1d1d1f]">{calculatedGroups} / 12</span>
-            </PremiumCard>
-            <PremiumCard className="!p-4 text-center">
-              <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Puntos</span>
-              <span className="font-display font-bold text-xl text-[#1d1d1f]">{initialRanking?.total_points || 0}</span>
-            </PremiumCard>
-          </div>
+          {/* Metrics grids - Only visible if active */}
+          {isActive && (
+            <>
+              <div className="grid grid-cols-2 gap-3 animate-fadeIn">
+                <PremiumCard className="!p-4 text-center">
+                  <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Partidos</span>
+                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{completedMatches} / 104</span>
+                </PremiumCard>
+                <PremiumCard className="!p-4 text-center">
+                  <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Faltan</span>
+                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{remainingMatches}</span>
+                </PremiumCard>
+                <PremiumCard className="!p-4 text-center">
+                  <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Grupos</span>
+                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{calculatedGroups} / 12</span>
+                </PremiumCard>
+                <PremiumCard className="!p-4 text-center">
+                  <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Puntos</span>
+                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{initialRanking?.total_points || 0}</span>
+                </PremiumCard>
+              </div>
 
-          <PremiumCard className="!p-5 space-y-4">
-            <h3 className="font-bold text-[14px] text-[#1d1d1f] uppercase tracking-wider">Pronósticos Especiales</h3>
-            <div className="flex justify-between items-center py-2 border-b border-[rgba(0,0,0,0.04)]">
-              <span className="text-[13px] text-[#6e6e73]">Goleador del torneo</span>
-              <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.top_scorer ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{topScorerChosen}</span>
-            </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-[13px] text-[#6e6e73]">Campeón del Mundo</span>
-              <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.champion ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{championChosen}</span>
-            </div>
-          </PremiumCard>
+              <PremiumCard className="!p-5 space-y-4 animate-fadeIn">
+                <h3 className="font-bold text-[14px] text-[#1d1d1f] uppercase tracking-wider">Pronósticos Especiales</h3>
+                <div className="flex justify-between items-center py-2 border-b border-[rgba(0,0,0,0.04)]">
+                  <span className="text-[13px] text-[#6e6e73]">Goleador del torneo</span>
+                  <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.top_scorer ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{topScorerChosen}</span>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-[13px] text-[#6e6e73]">Campeón del Mundo</span>
+                  <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.champion ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{championChosen}</span>
+                </div>
+              </PremiumCard>
+            </>
+          )}
         </div>
 
-        {/* RIGHT COLUMN: Sections A-E */}
+        {/* RIGHT COLUMN: Sections A-E or Checkout */}
         <div className="md:col-span-2 space-y-6">
-          {paymentStatus !== "activo" && (
-            <div className="space-y-4 bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-6 shadow-sm">
-              <div className="flex items-center gap-3 text-amber-600">
-                <span className="material-symbols-outlined text-[24px]">info</span>
-                <span className="font-bold text-[15px]">Participación no confirmada</span>
+          {!isActive ? (
+            <div className="space-y-6 animate-fadeIn">
+              {/* Main alert callout */}
+              <div className="bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-6 shadow-sm space-y-4">
+                <div className="flex items-center gap-3 text-amber-600">
+                  <span className="material-symbols-outlined text-[24px]">info</span>
+                  <span className="font-bold text-[15px]">Participación no activada</span>
+                </div>
+                <p className="text-[#6e6e73] text-[13.5px] leading-relaxed">
+                  Tu cuenta está creada, pero todavía no tenés una predicción oficial guardada. Para guardar tu Mundial y competir por el premio acumulado, activá tu inscripción.
+                </p>
+                
+                <div id="payment-options-anchor" className="pt-2">
+                  <PrizePaymentOptions compact />
+                </div>
               </div>
-              <p className="text-[#6e6e73] text-[13.5px] leading-relaxed">
-                Tu predicción se guarda gratis. Para competir por el premio acumulado, elegir goleador y campeón, y armar grupos con tus amigos, activá tu participación oficial.
-              </p>
-              <PrizePaymentOptions compact />
-            </div>
-          )}
 
-          {/* Section A: Mi predicción */}
-          <PremiumCard>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">A. Mi predicción</h3>
-              <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                {completedMatches === 104 ? "Ver resumen" : "Continuar cargando"}
-              </Link>
-            </div>
-            <p className="text-[#6e6e73] text-[13px] leading-relaxed mb-4">
-              Llevas cargados {completedMatches} de los 104 partidos del fixture. Tu borrador se actualiza automáticamente a medida que cargas resultados.
-            </p>
-            <div className="w-full bg-[#f5f5f7] rounded-full h-2 overflow-hidden">
-              <div className="bg-[#0071e3] h-full rounded-full transition-all duration-500" style={{ width: `${(completedMatches / 104) * 100}%` }}></div>
-            </div>
-          </PremiumCard>
-
-          {/* Section B: Tablas por grupo */}
-          <PremiumCard>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">B. Tablas por grupo</h3>
-              <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                Ver tablas completas
-              </Link>
-            </div>
-            <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-              Las tablas de posiciones provisionales se calculan al instante a partir de tus marcadores cargados en el fixture.
-            </p>
-          </PremiumCard>
-
-          {/* Section C: Goleador y campeón */}
-          <PremiumCard>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">C. Goleador y campeón</h3>
-              <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                Completar pronósticos
-              </Link>
-            </div>
-            <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-              Elegí a tu goleador del torneo y la selección campeona del mundo. Estos pronósticos otorgan puntos especiales en la tabla global.
-            </p>
-          </PremiumCard>
-
-          {/* Section D: Premio acumulado */}
-          <PremiumCard>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">D. Premio acumulado</h3>
-              <Link href="/premios" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                Ver bolsa actual
-              </Link>
-            </div>
-            <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-              El premio acumulado crece con cada nuevo participante oficial. Se distribuyen premios al finalizar la fase de grupos y la final del torneo.
-            </p>
-          </PremiumCard>
-
-          {/* Section E: Grupos privados */}
-          <PremiumCard>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">E. Grupos privados</h3>
-              {paymentStatus === "activo" ? (
-                <Link href="/grupos" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                  Crear grupo privado
-                </Link>
-              ) : (
-                <span className="text-[12px] font-bold text-[#aeaeb2] bg-[#f5f5f7] px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Requiere activación
-                </span>
+              {/* Local draft recovery block */}
+              {localCompleted > 0 && (
+                <div className="bg-[rgba(255,159,10,0.03)] border border-[rgba(255,159,10,0.12)] rounded-[24px] p-6 shadow-sm space-y-4">
+                  <div className="flex items-center gap-3 text-[#ff9f0a]">
+                    <span className="material-symbols-outlined text-[24px]">warning</span>
+                    <span className="font-bold text-[15px]">Borrador temporal detectado</span>
+                  </div>
+                  <p className="text-[#6e6e73] text-[13.5px] leading-relaxed">
+                    Tenés una predicción de <span className="font-bold text-[#1d1d1f]">{localCompleted} partidos</span> cargada de forma local en este dispositivo. Activá tu participación para guardarla como predicción oficial en tu cuenta.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button
+                      onClick={scrollToPaymentOptions}
+                      className="h-11 px-6 rounded-full bg-[#ff9f0a] hover:bg-[#e08905] text-white font-bold text-[13px] flex items-center justify-center transition-all active:scale-[0.98] shadow-sm"
+                    >
+                      Activar y guardar mi predicción
+                    </button>
+                    <Link
+                      href="/mi-prediccion"
+                      className="h-11 px-6 rounded-full bg-white border border-[rgba(0,0,0,0.1)] text-[#1d1d1f] font-bold text-[13px] flex items-center justify-center hover:bg-[#f5f5f7] transition-all"
+                    >
+                      Seguir probando predicción local
+                    </Link>
+                  </div>
+                </div>
               )}
             </div>
-            <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-              Competí en tablas paralelas exclusivas con tu grupo de amigos, compañeros de oficina o familia.
-            </p>
-          </PremiumCard>
+          ) : (
+            <div className="space-y-6 animate-fadeIn">
+              {/* Section A: Mi predicción */}
+              <PremiumCard>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">A. Mi predicción</h3>
+                  <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
+                    {completedMatches === 104 ? "Ver resumen" : "Continuar cargando"}
+                  </Link>
+                </div>
+                <p className="text-[#6e6e73] text-[13px] leading-relaxed mb-4">
+                  Tu predicción oficial está guardada. Llevas cargados {completedMatches} de los 104 partidos del fixture.
+                </p>
+                <div className="w-full bg-[#f5f5f7] rounded-full h-2 overflow-hidden">
+                  <div className="bg-[#0071e3] h-full rounded-full transition-all duration-500" style={{ width: `${(completedMatches / 104) * 100}%` }}></div>
+                </div>
+              </PremiumCard>
+
+              {/* Section B: Tablas por grupo */}
+              <PremiumCard>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">B. Tablas por grupo</h3>
+                  <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
+                    Ver tablas completas
+                  </Link>
+                </div>
+                <p className="text-[#6e6e73] text-[13px] leading-relaxed">
+                  Las tablas de posiciones oficiales se calculan al instante a partir de tus marcadores cargados en el fixture.
+                </p>
+              </PremiumCard>
+
+              {/* Section C: Goleador y campeón */}
+              <PremiumCard>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">C. Goleador y campeón</h3>
+                  <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
+                    Completar pronósticos
+                  </Link>
+                </div>
+                <p className="text-[#6e6e73] text-[13px] leading-relaxed">
+                  Elegí a tu goleador del torneo y la selección campeona del mundo. Estos pronósticos otorgan puntos especiales en la tabla global.
+                </p>
+              </PremiumCard>
+
+              {/* Section D: Premio acumulado */}
+              <PremiumCard>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">D. Premio acumulado</h3>
+                  <Link href="/premios" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
+                    Ver bolsa actual
+                  </Link>
+                </div>
+                <p className="text-[#6e6e73] text-[13px] leading-relaxed">
+                  El premio acumulado crece con cada nuevo participante oficial. Se distribuyen premios al finalizar la fase de grupos y la final del torneo.
+                </p>
+              </PremiumCard>
+
+              {/* Section E: Grupos privados */}
+              <PremiumCard>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">E. Grupos privados</h3>
+                  <Link href="/grupos" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
+                    Crear grupo privado
+                  </Link>
+                </div>
+                <p className="text-[#6e6e73] text-[13px] leading-relaxed">
+                  Competí en tablas paralelas exclusivas con tu grupo de amigos, compañeros de oficina o familia.
+                </p>
+              </PremiumCard>
+            </div>
+          )}
 
           {/* Sign out */}
           <div className="flex justify-end pt-2">
