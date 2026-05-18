@@ -1008,7 +1008,7 @@
   margin: 0 auto;
   padding: 0 24px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 24px;
   box-sizing: border-box;
 }
@@ -1114,8 +1114,46 @@
   font-size: 18px;
   line-height: 1.5;
   color: rgba(255,255,255,0.85);
-  margin: 0 0 32px;
+  margin: 0 0 28px;
   max-width: 600px;
+}
+
+.poolExamples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 32px;
+}
+
+.poolExamples div {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.poolExamples strong {
+  color: #ffffff;
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 850;
+}
+
+.poolExamples span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.poolExamples b {
+  color: #ffffff;
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 800;
 }
 
 .prizeBullets {
@@ -1138,6 +1176,14 @@
 .prizeBullets li span {
   color: #0071e3;
   font-size: 20px;
+}
+
+.poolNote {
+  max-width: 680px !important;
+  margin: -12px 0 34px !important;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
 }
 
 .prizeActions {
@@ -1293,6 +1339,18 @@
   text-align: center;
 }
 
+.comingSoonBadge {
+  width: fit-content;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  background: #e8f0fd;
+  color: #0071e3;
+  padding: 8px 14px;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 800;
+}
+
 .groupsHeader h2 {
   font-size: clamp(38px, 5vw, 56px);
   font-weight: 750;
@@ -1349,6 +1407,17 @@
 
 .groupsAction {
   text-align: center;
+}
+
+.btnDisabled {
+  height: 48px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: #dcdce0;
+  color: #6e6e73;
+  font-weight: 800;
+  cursor: not-allowed;
 }
 
 /* Final CTA */
@@ -1409,6 +1478,20 @@
   .howItWorksGrid3, .predictionGrid, .groupsGrid, .mockupGrid {
     grid-template-columns: 1fr;
   }
+
+  .predictionScope,
+  .prizeAccumulated,
+  .profileSection,
+  .privateGroups {
+    padding: 72px 0;
+  }
+
+  .howItWorksGrid3,
+  .predictionGrid,
+  .groupsGrid {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   
   .heroContentRight {
     flex-direction: column;
@@ -1424,8 +1507,13 @@
   }
 
   .prizeAccumulatedContent {
-    padding: 40px 24px;
+    padding: 36px 22px;
     text-align: left;
+    border-radius: 24px;
+  }
+
+  .poolExamples {
+    grid-template-columns: 1fr;
   }
 
   .prizeActions {
@@ -1436,9 +1524,14 @@
   .prizeActions .btnPrimary {
     width: 100%;
   }
+
+  .btnDisabled {
+    width: calc(100% - 40px);
+    max-width: 340px;
+  }
   
   .profileMockup {
-    margin: 0 24px;
+    margin: 0 20px;
     padding: 24px;
   }
 

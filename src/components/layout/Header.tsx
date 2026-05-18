@@ -38,7 +38,7 @@ export function Header() {
         </Link>
 
         <div className="hidden md:flex justify-center items-center gap-[30px]">
-          <Link href="/#como-funciona" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/#como-funciona" ? "text-black" : "text-black/75 hover:text-black")}>Cómo funciona</Link>
+          <Link href="/" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/" ? "text-black" : "text-black/75 hover:text-black")}>Inicio</Link>
           <Link href="/equipos" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/equipos" ? "text-black" : "text-black/75 hover:text-black")}>Equipos</Link>
           <Link href="/ranking" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/ranking" ? "text-black" : "text-black/75 hover:text-black")}>Ranking</Link>
           <Link href="/premios" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/premios" ? "text-black" : "text-black/75 hover:text-black")}>Premios</Link>
@@ -85,11 +85,11 @@ export function Header() {
         )}
       >
         <Link href="/" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Inicio</Link>
-        <Link href="/#como-funciona" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
         <Link href="/equipos" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Equipos</Link>
         <Link href="/ranking" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Ranking</Link>
         <Link href="/premios" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Premios</Link>
         <Link href="/reglas" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Reglas</Link>
+        <Link href="/mi-prediccion" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
         
         <div className="mt-4 pt-4 border-t border-black/10 flex flex-col gap-4">
           {user ? (
