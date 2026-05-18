@@ -123,7 +123,54 @@ No se detectaron constantes backend `6/3/2/10` para scoring oficial.
 ## Correcciones hechas
 
 - `src/lib/worldcup/matches.ts`
-  - `getMatches()` ahora filtra `stage = GROUP`, blindando `/mi-prediccion` para etapa actual.
+  - `getMatches()` ahora filtra partidos de fase de grupos, blindando `/mi-prediccion` para etapa actual.
+
+## Fix urgente posterior: fixture vacío por casing de stage
+
+Después del deploy del fix anterior, `/mi-prediccion` quedó mostrando `Fixture en actualización`.
+
+Valores reales encontrados en `public.matches`:
+
+- Total raw: 104 partidos.
+- `stage = group`: 72 partidos.
+- `stage = ROUND_OF_32`: 16 partidos.
+- `stage = ROUND_OF_16`: 8 partidos.
+- `stage = QUARTER_FINAL`: 4 partidos.
+- `stage = SEMI_FINAL`: 2 partidos.
+- `stage = THIRD_PLACE`: 1 partido.
+- `stage = FINAL`: 1 partido.
+- `stage_label = Fase de grupos`: 72 partidos.
+- `is_knockout = false`: 72 partidos.
+- `is_knockout = true`: 32 partidos.
+
+Muestra:
+
+- Partido 1: México vs Sudáfrica, `stage = group`, `stage_label = Fase de grupos`, `group_letter = A`.
+- Partido 72: Congo DR vs Uzbekistan, `stage = group`, `stage_label = Fase de grupos`, `group_letter = K`.
+- Partido 104: Final, `stage = FINAL`.
+
+Causa:
+
+- El filtro rígido `.eq("stage", "GROUP")` no coincidía con Supabase real, donde el valor es `group` en minúscula.
+
+Corrección:
+
+- `getMatches()` ya no usa filtro rígido SQL por `stage = GROUP`.
+- Ahora lee los partidos ordenados y filtra en código con `isGroupStageMatch()`, aceptando:
+  - `stage`, `phase`, `round`
+  - `stage_name`, `phase_name`, `round_name`
+  - `stage_label`
+  - `group_name`, `group_id`, `group_letter`
+  - `is_knockout === false`
+- Si por algún cambio futuro el filtro no detecta grupos pero hay partidos en la tabla, usa fallback seguro a los primeros 72 partidos ordenados.
+- `getGroupMatches()` y `getKnockoutMatches()` también usan el helper robusto para evitar repetir el bug.
+
+Resultado esperado:
+
+- Raw total: 104.
+- Fase grupos filtrada: 72.
+- Fallback `slice(0,72)`: no usado con los datos actuales.
+- Resultado final de `getMatches()`: 72.
 
 ## Pendientes fuera de alcance de esta auditoría
 
