@@ -6,11 +6,7 @@
 
 ## Contexto
 
-Se verifico Supabase real antes de probar checkout Mercado Pago / PayPal.
-
-La migracion requerida es:
-
-`supabase/migrations/009_payment_participation_schema.sql`
+Se verifico Supabase real despues de aplicar `supabase/migrations/009_payment_participation_schema.sql`.
 
 ## Variables disponibles localmente
 
@@ -22,16 +18,16 @@ Verificadas sin imprimir secretos completos:
 | `NEXT_PUBLIC_SUPABASE_URL` | presente |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | presente |
 | `SUPABASE_SERVICE_ROLE_KEY` | presente |
-| `MERCADOPAGO_ACCESS_TOKEN` | faltante |
-| `MERCADOPAGO_PUBLIC_KEY` | faltante |
-| `MERCADOPAGO_WEBHOOK_SECRET` | faltante |
-| `PAYPAL_CLIENT_ID` | faltante |
-| `PAYPAL_CLIENT_SECRET` | faltante |
-| `PAYPAL_ENV` | faltante |
-| `PRIZE_ENTRY_AMOUNT_ARS` | faltante |
-| `PRIZE_ENTRY_CURRENCY_ARS` | faltante |
-| `PRIZE_ENTRY_AMOUNT_USD` | faltante |
-| `PRIZE_ENTRY_CURRENCY_USD` | faltante |
+| `MERCADOPAGO_ACCESS_TOKEN` | presente |
+| `MERCADOPAGO_PUBLIC_KEY` | presente |
+| `MERCADOPAGO_WEBHOOK_SECRET` | faltante, aceptado por ahora |
+| `PAYPAL_CLIENT_ID` | presente |
+| `PAYPAL_CLIENT_SECRET` | presente |
+| `PAYPAL_ENV` | presente: `live` |
+| `PRIZE_ENTRY_AMOUNT_ARS` | presente: `5000` |
+| `PRIZE_ENTRY_CURRENCY_ARS` | presente: `ARS` |
+| `PRIZE_ENTRY_AMOUNT_USD` | presente: `5` |
+| `PRIZE_ENTRY_CURRENCY_USD` | presente: `USD` |
 
 ## Verificacion runtime en Supabase real
 
@@ -39,46 +35,45 @@ Consulta realizada con `SUPABASE_SERVICE_ROLE_KEY`, sin imprimir secretos.
 
 | Recurso | Estado runtime |
 | --- | --- |
-| `payments.product_code` | falta |
+| `payments.product_code` | existe |
 | `payments.provider_order_id` | existe |
 | `payments.provider_preference_id` | existe |
-| `payments.provider_capture_id` | falta |
+| `payments.provider_capture_id` | existe |
+| `payments.paid_at` | existe |
 | `payments.raw_payload` | existe |
-| `user_participation.payment_provider` | no disponible en schema cache |
-| `user_participation.payment_reference` | no disponible en schema cache |
-| `user_participation.payment_status` | no disponible en schema cache |
-| `user_participation.paid` | no disponible en schema cache |
-| `user_participation.paid_at` | no disponible en schema cache |
-
-Errores observados:
-
-- `column payments.product_code does not exist`
-- `column payments.provider_capture_id does not exist`
-- `Could not find the table 'public.user_participation' in the schema cache`
+| `user_participation.paid` | existe |
+| `user_participation.paid_at` | existe |
+| `user_participation.payment_provider` | existe |
+| `user_participation.payment_reference` | existe |
+| `user_participation.payment_status` | existe |
 
 ## Resultado
 
-La migracion 009 es necesaria y no esta aplicada completamente en Supabase real.
+La migracion 009 quedo aplicada y verificada en Supabase real para las columnas criticas de checkout.
 
-No se continuo con pruebas reales de checkout porque los endpoints de creacion de pagos dependen de `payments.product_code` y de las columnas de participacion. Probar checkout en este estado produciria falsos errores de aplicacion cuando el bloqueo real es de esquema.
+Los endpoints ya pueden escribir:
 
-## Aplicacion de migracion
+- `payments.product_code`
+- `payments.provider_preference_id`
+- `payments.provider_order_id`
+- `payments.provider_capture_id`
+- `payments.raw_payload`
+- `user_participation.payment_provider`
+- `user_participation.payment_reference`
+- `user_participation.payment_status`
+- `user_participation.paid`
+- `user_participation.paid_at`
 
-No se aplico DDL remoto desde Codex porque este entorno no tiene `DATABASE_URL` / `SUPABASE_DB_URL` ni una conexion SQL directa configurada. `SUPABASE_SERVICE_ROLE_KEY` sirve para operaciones REST/admin, pero no para ejecutar `alter table` directamente.
+## Hallazgo de compatibilidad
 
-Para avanzar:
+Durante la prueba runtime, Supabase real devolvio `payments.id` como valor numerico (`1`, `2`, `3`) en vez de UUID.
 
-1. Abrir Supabase SQL Editor.
-2. Ejecutar `supabase/migrations/009_payment_participation_schema.sql`.
-3. Volver a verificar que existan:
-   - `payments.product_code`
-   - `payments.provider_capture_id`
-   - `user_participation.payment_provider`
-   - `user_participation.payment_reference`
-   - `user_participation.payment_status`
-   - `user_participation.paid`
-   - `user_participation.paid_at`
+La columna `user_participation.payment_id` es UUID, por lo que guardar un id numerico ahi falla con:
+
+`invalid input syntax for type uuid: "1"`
+
+Se ajusto `src/lib/server/payments.ts` para escribir `payment_id` solo cuando el id interno del pago tiene formato UUID. La referencia del proveedor se sigue guardando en `payment_reference` cuando el pago queda aprobado.
 
 ## Conclusion
 
-Estado actual: checkout no debe pushearse como probado en produccion hasta aplicar/verificar la migracion 009 y configurar credenciales Mercado Pago / PayPal.
+El esquema requerido para checkout esta disponible. El codigo de pagos quedo ajustado para convivir con el `payments.id` real actual.

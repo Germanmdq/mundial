@@ -115,8 +115,8 @@ Campos usados en `user_participation`:
 - `status`
 - `paid`
 - `payment_status`
-- `provider`
-- `provider_reference`
+- `payment_provider`
+- `payment_reference`
 - `payment_id`
 - `amount`
 - `currency`

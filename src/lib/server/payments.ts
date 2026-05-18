@@ -19,8 +19,17 @@ type ActivatePaymentInput = {
   providerReference: string;
   amount: number;
   currency: string;
-  paymentId: string;
+  paymentId: string | number;
 };
+
+type PaymentId = string | number;
+
+function getPaymentIdUpdate(paymentId: PaymentId) {
+  const value = String(paymentId);
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+  return isUuid ? { payment_id: value } : {};
+}
 
 export function getAppUrl() {
   return (process.env.NEXT_PUBLIC_APP_URL || "https://mundialentreamigos.online").replace(/\/$/, "");
@@ -89,7 +98,7 @@ export async function createInternalPendingPayment({ userId, provider, amount, c
   const { data: updated, error: updateError } = await supabase
     .from("payments")
     .update({
-      external_reference: payment.id,
+      external_reference: String(payment.id),
       updated_at: new Date().toISOString(),
     })
     .eq("id", payment.id)
@@ -100,7 +109,7 @@ export async function createInternalPendingPayment({ userId, provider, amount, c
   return updated;
 }
 
-export async function markInternalPaymentPending(paymentId: string, fields: Record<string, unknown> = {}) {
+export async function markInternalPaymentPending(paymentId: PaymentId, fields: Record<string, unknown> = {}) {
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("payments")
@@ -117,7 +126,7 @@ export async function markInternalPaymentPending(paymentId: string, fields: Reco
   return data;
 }
 
-export async function markInternalPaymentApproved(paymentId: string, fields: Record<string, unknown> = {}) {
+export async function markInternalPaymentApproved(paymentId: PaymentId, fields: Record<string, unknown> = {}) {
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("payments")
@@ -135,7 +144,7 @@ export async function markInternalPaymentApproved(paymentId: string, fields: Rec
   return data;
 }
 
-export async function markInternalPaymentRejected(paymentId: string, status: Exclude<PaymentStatus, "pending" | "approved"> = "rejected", fields: Record<string, unknown> = {}) {
+export async function markInternalPaymentRejected(paymentId: PaymentId, status: Exclude<PaymentStatus, "pending" | "approved"> = "rejected", fields: Record<string, unknown> = {}) {
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("payments")
@@ -164,7 +173,7 @@ export async function activateUserParticipationFromPayment({ userId, provider, p
       payment_status: "approved",
       payment_provider: provider,
       payment_reference: providerReference,
-      payment_id: paymentId,
+      ...getPaymentIdUpdate(paymentId),
       amount,
       currency,
       paid_at: new Date().toISOString(),
@@ -178,7 +187,7 @@ export async function activateUserParticipationFromPayment({ userId, provider, p
   return data;
 }
 
-export async function markParticipationPendingPayment(userId: string, provider: PaymentProvider, paymentId: string) {
+export async function markParticipationPendingPayment(userId: string, provider: PaymentProvider, paymentId: PaymentId) {
   const supabase = getServiceSupabase();
   await ensureUserParticipation(userId);
 
@@ -189,7 +198,7 @@ export async function markParticipationPendingPayment(userId: string, provider: 
       paid: false,
       payment_status: "pending",
       payment_provider: provider,
-      payment_id: paymentId,
+      ...getPaymentIdUpdate(paymentId),
       updated_at: new Date().toISOString(),
     })
     .eq("user_id", userId)
@@ -200,7 +209,7 @@ export async function markParticipationPendingPayment(userId: string, provider: 
   return data;
 }
 
-export async function getPaymentById(paymentId: string) {
+export async function getPaymentById(paymentId: PaymentId) {
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("payments")
