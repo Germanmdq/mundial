@@ -18,16 +18,23 @@ interface PrizePack {
   disclaimer?: string | null;
 }
 
-export function PremiosClient() {
+interface PremiosClientProps {
+  initialPrizes?: unknown;
+  isLoggedIn?: boolean;
+}
+
+export function PremiosClient({ initialPrizes, isLoggedIn }: PremiosClientProps = {}) {
   const [hasMounted, setHasMounted] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<"borrador" | "pendiente" | "activo">("borrador");
   const [isDebugPayments, setIsDebugPayments] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
-    if (typeof window !== "undefined") {
-      setIsDebugPayments(window.location.search.includes("debugPayments=1"));
-    }
+    setTimeout(() => {
+      setHasMounted(true);
+      if (typeof window !== "undefined") {
+        setIsDebugPayments(window.location.search.includes("debugPayments=1"));
+      }
+    }, 0);
 
     fetch("/api/payments/status")
       .then(res => {

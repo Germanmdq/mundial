@@ -129,11 +129,30 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [paymentStatus, setPaymentStatus] = useState<"borrador" | "pendiente" | "activo">("borrador");
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
-  const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
-  const [showCompletionCard, setShowCompletionCard] = useState<boolean>(false);
+  const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(() => {
+    // Determine the starting index based on initialScores
+    const firstIncompleteIdx = matches.findIndex(m => {
+      const existing = initialScores[m.id];
+      return existing === undefined || existing === null ||
+             existing.home === null || existing.home === undefined ||
+             existing.away === null || existing.away === undefined;
+    });
+    return firstIncompleteIdx === -1 ? matches.length - 1 : firstIncompleteIdx;
+  });
+  const [showCompletionCard, setShowCompletionCard] = useState<boolean>(() => {
+    if (Object.keys(initialScores).length === 0) return false;
+    const allComplete = matches.every(m => {
+      const existing = initialScores[m.id];
+      return existing !== undefined && existing !== null &&
+             existing.home !== null && existing.home !== undefined &&
+             existing.away !== null && existing.away !== undefined;
+    });
+    return allComplete;
+  });
   
   const [isPaymentStatusLoading, setIsPaymentStatusLoading] = useState<boolean>(isLoggedIn);
   const [debugPayments, setDebugPayments] = useState<boolean>(false);
+  const [debugPrediction, setDebugPrediction] = useState<boolean>(false);
   const [debugEmail, setDebugEmail] = useState<string>("");
   const [debugPartStatus, setDebugPartStatus] = useState<string>("");
   const [debugPaid, setDebugPaid] = useState<boolean>(false);
@@ -144,6 +163,9 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       const params = new URLSearchParams(window.location.search);
       if (params.get("debugPayments") === "1" || params.has("debugPayments")) {
         setTimeout(() => setDebugPayments(true), 0);
+      }
+      if (params.get("debugPrediction") === "1" || params.has("debugPrediction")) {
+        setTimeout(() => setDebugPrediction(true), 0);
       }
     }
   }, []);
@@ -182,16 +204,20 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       const res = await fetch("/api/predictions/me");
       if (res.ok) {
         const data = await res.json();
-        if (data.success && Array.isArray(data.predictions)) {
+        const scoresList = data.scores;
+        if (Array.isArray(scoresList)) {
           const officialScores: Record<number, LocalScore> = {};
           const officialCompletedIds = new Set<number>();
           
-          data.predictions.forEach((p: { match_id: number; home_goals: number; away_goals: number }) => {
-            officialScores[p.match_id] = {
-              home: p.home_goals,
-              away: p.away_goals
-            };
-            officialCompletedIds.add(p.match_id);
+          scoresList.forEach((p: { matchId: string | number; homeScore: number; awayScore: number }) => {
+            const mId = Number(p.matchId);
+            if (mId) {
+              officialScores[mId] = {
+                home: p.homeScore,
+                away: p.awayScore
+              };
+              officialCompletedIds.add(mId);
+            }
           });
           
           setScores(prev => ({
@@ -316,7 +342,8 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   // Load localStorage draft after mount only, so hydration starts from deterministic server markup.
   useEffect(() => {
     if (!hasMounted) return;
-    if (isLoggedIn && paymentStatus === "activo") return; // active user uses official database
+    if (isPaymentStatusLoading) return; // Wait for payment status check to complete
+    if (paymentStatus === "activo") return; // Active user uses official database
 
     if (typeof window !== "undefined") {
       const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
@@ -338,18 +365,26 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               return updated;
             });
 
+            const localCompletedIds = new Set<number>();
+            parsedDraft.completedMatchIds.forEach(matchId => {
+              if (matchId) {
+                localCompletedIds.add(matchId);
+              }
+            });
+
             setCompletedMatchIds(prev => {
               const next = new Set(prev);
-              parsedDraft.completedMatchIds.forEach(matchId => {
-                if (matchId) {
-                  next.add(matchId);
-                }
-              });
+              localCompletedIds.forEach(id => next.add(id));
               return next;
             });
 
             setSelectedFilter(parsedDraft.selectedGroup || "Todos");
-            setCurrentMatchIndex(Math.max(0, parsedDraft.currentMatchIndex || 0));
+            
+            // Guest/non-active rule: min(localDraftFirstIncomplete, 5)
+            const firstIncompleteIdx = matches.findIndex(m => !localCompletedIds.has(m.id));
+            const localFirstIncomplete = firstIncompleteIdx === -1 ? matches.length - 1 : firstIncompleteIdx;
+            setCurrentMatchIndex(Math.min(localFirstIncomplete, 5));
+
             if (parsedDraft.completedMatchIds.filter(Boolean).length >= 6) {
               setCtaModalOpen(true);
             }
@@ -359,7 +394,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         }, 0);
       }
     }
-  }, [hasMounted, isLoggedIn, paymentStatus]);
+  }, [hasMounted, isPaymentStatusLoading, paymentStatus, matches]);
 
 
   // Progress Panel Data
@@ -1034,22 +1069,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           </div>
         )}
 
-        {/* TAB: GOLEADOR */}
-        {activeTab === "Goleador" && (
-          <div className="max-w-2xl mx-auto">
-            <PremiumCard className="!p-8 text-center flex flex-col items-center justify-center">
-              <span className="material-symbols-outlined text-[48px] text-[#0071e3] mb-4" style={{ fontVariationSettings: "'FILL' 1" }}>sports_soccer</span>
-              <h2 className="font-display font-extrabold text-[24px] text-[#1d1d1f] mb-2">Elegí tu goleador del torneo</h2>
-              <p className="text-[#6e6e73] text-[15px] leading-relaxed mb-6">
-                Los planteles oficiales todavía están en revisión. Podés dejar este campo pendiente y completarlo más adelante.
-              </p>
-              <div className="w-full max-w-sm mx-auto p-4 bg-[#f5f5f7] rounded-[18px] border border-[rgba(0,0,0,0.06)] text-[#aeaeb2] font-medium flex items-center gap-3">
-                <span className="material-symbols-outlined text-xl">search</span>
-                Buscar jugador...
-              </div>
-            </PremiumCard>
-          </div>
-        )}
+        {/* Goleador tab removed */}
 
       </div>
 
@@ -1563,6 +1583,72 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             <div className="flex justify-between gap-4">
               <span className="text-[#aeaeb2]">Local Draft Count:</span>
               <span className="text-white">{completedMatches}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Predictions Debug Panel */}
+      {debugPrediction && (
+        <div className="fixed bottom-4 left-4 z-50 bg-[#1d1d1f] text-white border border-[rgba(255,255,255,0.15)] rounded-[20px] p-5 shadow-2xl max-w-sm font-sans text-[12px] space-y-3 animate-fadeIn backdrop-blur-md bg-opacity-95">
+          <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.1)] pb-2">
+            <span className="font-extrabold text-[13px] tracking-tight flex items-center gap-1.5 text-[#34a853]">
+              <span className="material-symbols-outlined text-[16px]">bug_report</span>
+              Prediction Debug Panel
+            </span>
+            <button 
+              onClick={() => setDebugPrediction(false)} 
+              className="text-[#aeaeb2] hover:text-white transition-colors"
+            >
+              <span className="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          </div>
+          
+          <div className="space-y-1.5 font-mono">
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">isActive:</span>
+              <span className={paymentStatus === "activo" ? "text-emerald-400 font-bold" : "text-rose-400"}>
+                {paymentStatus === "activo" ? "ACTIVE" : "UNPAID"}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Total Matches Used:</span>
+              <span className="text-white">{totalMatches}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Group Matches Length:</span>
+              <span className="text-white">{matches.length}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Official Completed:</span>
+              <span className="text-white">{paymentStatus === "activo" ? completedMatches : "N/A (unpaid)"}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Local Completed:</span>
+              <span className="text-white">{completedMatches}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Current Index:</span>
+              <span className="text-white">{currentMatchIndex}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Visible Match Number:</span>
+              <span className="text-white">{currentMatchIndex + 1}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">First Incomplete Index:</span>
+              <span className="text-white">
+                {matches.findIndex(m => {
+                  const score = scores[m.id];
+                  return score === undefined || score === null ||
+                         score.home === null || score.home === undefined ||
+                         score.away === null || score.away === undefined;
+                })}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Has Goleador Tab:</span>
+              <span className="text-rose-400 font-bold">false</span>
             </div>
           </div>
         </div>
