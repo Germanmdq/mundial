@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser, UnauthorizedError } from "@/lib/server/auth";
 import { getLatestPaymentForUser, getParticipationForUser } from "@/lib/server/payments";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const user = await getAuthenticatedUser(request, "status");
 
     const [participation, latestPayment] = await Promise.all([
       getParticipationForUser(user.id),
@@ -37,6 +32,17 @@ export async function GET() {
     });
   } catch (error) {
     console.error("[payments:status]", error);
+
+    if (error instanceof UnauthorizedError) {
+      return NextResponse.json(
+        {
+          error: "unauthorized",
+          message: error.message,
+        },
+        { status: 401 },
+      );
+    }
+
     return NextResponse.json({ error: "Could not load payment status" }, { status: 500 });
   }
 }

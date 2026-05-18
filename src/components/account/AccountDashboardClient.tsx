@@ -340,12 +340,6 @@ export function AccountDashboardClient({
                     >
                       Activar y guardar mi predicción
                     </button>
-                    <Link
-                      href="/mi-prediccion"
-                      className="h-11 px-6 rounded-full bg-white border border-[rgba(0,0,0,0.1)] text-[#1d1d1f] font-bold text-[13px] flex items-center justify-center hover:bg-[#f5f5f7] transition-all"
-                    >
-                      Seguir probando predicción local
-                    </Link>
                   </div>
                 </div>
               )}

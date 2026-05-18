@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser, UnauthorizedError } from "@/lib/server/auth";
 import { createPayPalOrder, PayPalApiError } from "@/lib/server/paypal";
 import {
   createInternalPendingPayment,
@@ -14,14 +14,9 @@ type PayPalOrderResponse = {
   links?: Array<{ rel: string; href: string }>;
 };
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const user = await getAuthenticatedUser(request, "paypal");
 
     await ensureUserParticipation(user.id);
 
@@ -66,6 +61,16 @@ export async function POST() {
     });
   } catch (error) {
     console.error("[payments:paypal:create-order]", error);
+
+    if (error instanceof UnauthorizedError) {
+      return NextResponse.json(
+        {
+          error: "unauthorized",
+          message: error.message,
+        },
+        { status: 401 },
+      );
+    }
 
     if (error instanceof PayPalApiError) {
       return NextResponse.json(

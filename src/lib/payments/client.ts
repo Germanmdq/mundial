@@ -1,3 +1,5 @@
+import { createClient } from "@/lib/supabase/client";
+
 export async function startMercadoPagoCheckout(
   setLoadingState?: (loading: boolean) => void,
   setErrorState?: (err: string | null) => void
@@ -6,13 +8,19 @@ export async function startMercadoPagoCheckout(
   if (setErrorState) setErrorState(null);
 
   try {
+    const headers = await getPaymentAuthHeaders();
+    if (!headers) {
+      redirectToLoginForPayment();
+      return;
+    }
+
     const res = await fetch("/api/payments/mercadopago/create-preference", {
       method: "POST",
-      headers: { "Content-Type": "application/json" }
+      headers
     });
 
     if (res.status === 401) {
-      window.location.href = `/login?mode=signup&redirect=${encodeURIComponent("/mi-prediccion")}`;
+      redirectToLoginForPayment();
       return;
     }
 
@@ -40,15 +48,21 @@ export async function startPayPalCheckout(
   if (setErrorState) setErrorState(null);
 
   try {
+    const headers = await getPaymentAuthHeaders();
+    if (!headers) {
+      redirectToLoginForPayment();
+      return;
+    }
+
     const res = await fetch("/api/payments/paypal/create-order", {
       method: "POST",
-      headers: { "Content-Type": "application/json" }
+      headers
     });
 
     const data = await res.json().catch(() => null);
 
     if (res.status === 401) {
-      window.location.href = `/login?mode=signup&redirect=${encodeURIComponent("/mi-prediccion")}`;
+      redirectToLoginForPayment();
       return;
     }
 
@@ -126,4 +140,33 @@ function formatPayPalDetails(details: unknown) {
 
 function formatPayPalDebug({ status, data }: { status: number; data: unknown }) {
   return `Debug PayPal: HTTP ${status} · ${formatPayPalDetails(data)}`;
+}
+
+async function getPaymentAuthHeaders() {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.access_token) {
+    try {
+      localStorage.setItem("worldcup_payment_intent", JSON.stringify({
+        path: window.location.pathname,
+        updatedAt: new Date().toISOString(),
+      }));
+    } catch {
+      // localStorage can be unavailable in private modes; login redirect still works.
+    }
+
+    return null;
+  }
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${session.access_token}`,
+  };
+}
+
+function redirectToLoginForPayment() {
+  window.location.href = `/login?mode=signup&redirect=${encodeURIComponent("/mi-prediccion")}`;
 }

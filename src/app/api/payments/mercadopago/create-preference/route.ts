@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser, UnauthorizedError } from "@/lib/server/auth";
 import { createMercadoPagoPreference } from "@/lib/server/mercadopago";
 import {
   createInternalPendingPayment,
@@ -9,14 +9,9 @@ import {
   PRIZE_PRODUCT_CODE,
 } from "@/lib/server/payments";
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const user = await getAuthenticatedUser(request, "mercadopago");
 
     await ensureUserParticipation(user.id);
 
@@ -46,6 +41,17 @@ export async function POST() {
     });
   } catch (error) {
     console.error("[payments:mercadopago:create-preference]", error);
+
+    if (error instanceof UnauthorizedError) {
+      return NextResponse.json(
+        {
+          error: "unauthorized",
+          message: error.message,
+        },
+        { status: 401 },
+      );
+    }
+
     return NextResponse.json({ error: "Could not create Mercado Pago preference" }, { status: 500 });
   }
 }

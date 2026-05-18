@@ -132,7 +132,22 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(0);
   const [showCompletionCard, setShowCompletionCard] = useState<boolean>(false);
   
-  // CTA modal / validation states
+  const [isPaymentStatusLoading, setIsPaymentStatusLoading] = useState<boolean>(isLoggedIn);
+  const [debugPayments, setDebugPayments] = useState<boolean>(false);
+  const [debugEmail, setDebugEmail] = useState<string>("");
+  const [debugPartStatus, setDebugPartStatus] = useState<string>("");
+  const [debugPaid, setDebugPaid] = useState<boolean>(false);
+  const [debugPaymentStatusField, setDebugPaymentStatusField] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("debugPayments") === "1" || params.has("debugPayments")) {
+        setTimeout(() => setDebugPayments(true), 0);
+      }
+    }
+  }, []);
+
   const [ctaModalOpen, setCtaModalOpen] = useState<boolean>(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
@@ -239,6 +254,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }, 0);
 
     if (isLoggedIn) {
+      setTimeout(() => setIsPaymentStatusLoading(true), 0);
       fetch("/api/payments/status")
         .then((res) => {
           if (res.ok) return res.json();
@@ -246,7 +262,16 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         })
         .then(async (data) => {
           const part = data.participation;
-          const isActive = part && part.status === "active" && part.paid === true && part.payment_status === "approved";
+          const statusVal = part?.status || data.status || "";
+          const paidVal = part?.paid || data.paid || false;
+          const payStatusVal = part?.payment_status || data.payment_status || "";
+          
+          setDebugEmail(data.email || data.user_email || "");
+          setDebugPartStatus(statusVal);
+          setDebugPaid(paidVal);
+          setDebugPaymentStatusField(payStatusVal);
+
+          const isActive = statusVal === "active" && paidVal === true && payStatusVal === "approved";
           
           if (isActive) {
             setPaymentStatus("activo");
@@ -267,8 +292,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               await loadOfficialPredictions(matches);
             }
           } else {
-            const status = part?.status || data.status;
-            if (status === "pending" || status === "pending_payment") {
+            if (statusVal === "pending" || statusVal === "pending_payment") {
               setPaymentStatus("pendiente");
               setSaveStatus("Borrador temporal");
             } else {
@@ -276,10 +300,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               setSaveStatus("Borrador temporal");
             }
           }
+          setIsPaymentStatusLoading(false);
         })
-        .catch(() => {
+        .catch((e) => {
+          console.error("Error checking payment status on mount", e);
           setPaymentStatus("borrador");
           setSaveStatus("Borrador temporal");
+          setIsPaymentStatusLoading(false);
         });
     }
 
@@ -323,6 +350,9 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
             setSelectedFilter(parsedDraft.selectedGroup || "Todos");
             setCurrentMatchIndex(Math.max(0, parsedDraft.currentMatchIndex || 0));
+            if (parsedDraft.completedMatchIds.filter(Boolean).length >= 6) {
+              setCtaModalOpen(true);
+            }
           } catch {
             console.error("Error loading draft");
           }
@@ -626,6 +656,15 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     setShowCompletionCard(false);
   };
 
+  if (isLoggedIn && isPaymentStatusLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8 bg-[#f5f5f7] rounded-[24px] border border-[rgba(0,0,0,0.06)] shadow-sm max-w-[980px] mx-auto my-8">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0071e3] mb-4"></div>
+        <p className="text-[16px] text-[#6e6e73] font-bold">Preparando predicción...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="predictionContent space-y-8 pb-[120px] w-full max-w-full overflow-x-hidden">
       
@@ -732,66 +771,34 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               /* ZONA DE CONVERSIÓN CARD - INLINE (NON-BLOCKING) */
               <div className="conversionCard animate-fadeIn">
                 <h2 className="text-3xl md:text-[44px] font-display font-black text-white mb-4 tracking-tight leading-tight">
-                  Ya tenés tu Mundial armado.
+                  Ya probaste tu Mundial.
                 </h2>
                 <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
-                  Para guardar tu predicción oficial, participar por el premio acumulado, elegir goleador y campeón, y crear grupos privados con tus amigos, activá tu inscripción.
+                  Para completar los 104 partidos, guardar tu predicción oficial y participar por el premio acumulado, activá tu participación.
                 </p>
                 
-                {!isLoggedIn ? (
-                  <>
-                    <div className="space-y-4 mb-8">
-                      <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                        <span className="text-[15px] font-medium text-white">Guardás tu predicción completa.</span>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                        <span className="text-[15px] font-medium text-white">Participás por el premio acumulado.</span>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                        <span className="text-[15px] font-medium text-white">Competís por fase de grupos, goleador y campeón.</span>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-[#0071e3] shrink-0 mt-0.5">check_circle</span>
-                        <span className="text-[15px] font-medium text-white">Creás grupos privados con tus amigos.</span>
-                      </div>
-                    </div>
+                <div className="mb-8 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-[24px] p-6 text-left">
+                  <PrizePaymentOptions compact />
+                </div>
 
-                    <div className="flex flex-col gap-3">
-                      <Link 
-                        href="/login?mode=signup&redirect=/mi-prediccion"
-                        onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
-                        className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
-                      >
-                        Crear cuenta y participar
-                      </Link>
-                      
-                      <button 
-                        onClick={() => setCtaModalOpen(false)}
-                        className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
-                      >
-                        Volver a revisar
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="mb-8 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-[24px] p-6 text-left">
-                      <PrizePaymentOptions compact />
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <button 
-                        onClick={() => setCtaModalOpen(false)}
-                        className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
-                      >
-                        Volver a revisar
-                      </button>
-                    </div>
-                  </>
-                )}
+                <div className="flex flex-col gap-3">
+                  {!isLoggedIn && (
+                    <Link 
+                      href="/login?mode=signup&redirect=/mi-prediccion"
+                      onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
+                      className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
+                    >
+                      Iniciar sesión y participar
+                    </Link>
+                  )}
+                  
+                  <Link 
+                    href="/reglas"
+                    className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
+                  >
+                    Ver reglas
+                  </Link>
+                </div>
               </div>
             ) : showCompletionCard ? (
               /* ZONA DE GRUPOS COMPLETADA CARD */
@@ -1497,6 +1504,62 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           }
         }
       `}</style>
+      {/* Payments Debug Panel */}
+      {debugPayments && (
+        <div className="fixed bottom-4 right-4 z-50 bg-[#1d1d1f] text-white border border-[rgba(255,255,255,0.15)] rounded-[20px] p-5 shadow-2xl max-w-sm font-sans text-[12px] space-y-3 animate-fadeIn backdrop-blur-md bg-opacity-95">
+          <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.1)] pb-2">
+            <span className="font-extrabold text-[13px] tracking-tight flex items-center gap-1.5 text-[#ff9f0a]">
+              <span className="material-symbols-outlined text-[16px]">bug_report</span>
+              Payments Debug Panel
+            </span>
+            <button 
+              onClick={() => setDebugPayments(false)} 
+              className="text-[#aeaeb2] hover:text-white transition-colors"
+            >
+              <span className="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          </div>
+          
+          <div className="space-y-1.5 font-mono">
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Logged In:</span>
+              <span className={isLoggedIn ? "text-emerald-400 font-bold" : "text-rose-400"}>
+                {isLoggedIn ? "Yes" : "No"}
+              </span>
+            </div>
+            {isLoggedIn && (
+              <div className="flex justify-between gap-4">
+                <span className="text-[#aeaeb2]">Email:</span>
+                <span className="text-white truncate max-w-[180px]">{debugEmail || "N/A"}</span>
+              </div>
+            )}
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">API Status:</span>
+              <span className="text-white font-bold">{debugPartStatus || "N/A"}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">API Paid:</span>
+              <span className={debugPaid ? "text-emerald-400 font-bold" : "text-[#aeaeb2]"}>
+                {debugPaid ? "True" : "False"}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">API Pay Status:</span>
+              <span className="text-white font-bold">{debugPaymentStatusField || "N/A"}</span>
+            </div>
+            <div className="flex justify-between gap-4 border-t border-[rgba(255,255,255,0.1)] pt-1.5">
+              <span className="text-[#aeaeb2]">isActive Calc:</span>
+              <span className={paymentStatus === "activo" ? "text-emerald-400 font-black" : "text-rose-400 font-bold"}>
+                {paymentStatus === "activo" ? "ACTIVE" : "UNPAID"}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">Local Draft Count:</span>
+              <span className="text-white">{completedMatches}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
