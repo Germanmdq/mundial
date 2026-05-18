@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import { createClient } from "@/lib/supabase/client";
@@ -16,16 +16,56 @@ type AuthTabsProps = {
 export function AuthTabs({ mode = "login", redirectTo = "/mi-prediccion" }: AuthTabsProps) {
   const [activeTab, setActiveTab] = useState<"login" | "register">(mode === "signup" ? "register" : "login");
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
+  const [authDebug, setAuthDebug] = useState<{
+    origin: string;
+    redirectTo: string;
+    callbackUrl: string;
+    appUrl: string;
+    userAgent: string;
+  } | null>(null);
   const supabase = createClient();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.location.search.includes("debugAuth=1")) return;
+
+    const timer = window.setTimeout(() => {
+      setAuthDebug({
+        origin: window.location.origin,
+        redirectTo,
+        callbackUrl: getAuthCallbackUrl(redirectTo),
+        appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "",
+        userAgent: window.navigator.userAgent,
+      });
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [redirectTo]);
 
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
-    await supabase.auth.signInWithOAuth({
+    setGoogleError(null);
+    const callbackUrl = getAuthCallbackUrl(redirectTo);
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: getAuthCallbackUrl(redirectTo)
+        redirectTo: callbackUrl,
+        queryParams: {
+          prompt: "select_account",
+        },
       }
     });
+
+    if (error) {
+      console.error("[auth:google:error]", {
+        message: error.message,
+        redirectTo: callbackUrl,
+        origin: typeof window !== "undefined" ? window.location.origin : null,
+      });
+      setGoogleError("No pudimos iniciar sesión con Google. Probá nuevamente o usá email.");
+      setIsGoogleLoading(false);
+    }
   };
 
   return (
@@ -67,6 +107,21 @@ export function AuthTabs({ mode = "login", redirectTo = "/mi-prediccion" }: Auth
             </>
           )}
         </button>
+        {googleError && (
+          <p className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-[13px] font-semibold leading-relaxed text-red-700">
+            {googleError}
+          </p>
+        )}
+
+        {authDebug && (
+          <div className="mb-5 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-left text-[11px] leading-relaxed text-blue-900">
+            <div><strong>origin:</strong> {authDebug.origin}</div>
+            <div><strong>redirectTo:</strong> {authDebug.redirectTo}</div>
+            <div className="break-all"><strong>callbackUrl:</strong> {authDebug.callbackUrl}</div>
+            <div className="break-all"><strong>NEXT_PUBLIC_APP_URL:</strong> {authDebug.appUrl || "(vacío)"}</div>
+            <div className="break-all"><strong>userAgent:</strong> {authDebug.userAgent}</div>
+          </div>
+        )}
 
         <div className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-[1px] bg-[#e5e5e7]"></div>
