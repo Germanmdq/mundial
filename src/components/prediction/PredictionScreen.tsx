@@ -12,14 +12,7 @@ type PredictionScreenProps = {
 export async function PredictionScreen({ debugPrediction = false }: PredictionScreenProps) {
   const user = await getUser();
   const matches = await getMatches();
-
-  if (debugPrediction || process.env.NODE_ENV !== "production") {
-    console.info("[mi-prediccion:page]", {
-      matchesLength: matches.length,
-      firstMatch: matches[0]?.home_team ?? null,
-      lastMatch: matches[matches.length - 1]?.away_team ?? null,
-    });
-  }
+  const matchIds = new Set(matches.map((match) => Number(match.id)));
 
   const initialScores: Record<number, { home: number; away: number }> = {};
   if (user) {
@@ -31,9 +24,21 @@ export async function PredictionScreen({ debugPrediction = false }: PredictionSc
       
     if (predictions) {
       predictions.forEach(p => {
-        initialScores[p.match_id] = { home: p.home_goals, away: p.away_goals };
+        const matchId = Number(p.match_id);
+        if (matchIds.has(matchId)) {
+          initialScores[matchId] = { home: p.home_goals, away: p.away_goals };
+        }
       });
     }
+  }
+
+  if (debugPrediction || process.env.NODE_ENV !== "production") {
+    console.info("[mi-prediccion:page]", {
+      matchesLength: matches.length,
+      initialScoresCount: Object.keys(initialScores).length,
+      firstMatch: matches[0]?.home_team ?? null,
+      lastMatch: matches[matches.length - 1]?.away_team ?? null,
+    });
   }
 
   if (!matches || matches.length === 0) {

@@ -1,15 +1,56 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./AppleReplicaLanding.module.css";
 import { WorldCupCountdown } from "../home/WorldCupCountdown";
 import { PrizePoolBanner } from "../prizes/PrizePoolBanner";
 
+type PrizePoolState = {
+  participants: number;
+  poolARS: number;
+  entryAmountARS: number;
+};
+
+const fallbackPrizePool: PrizePoolState = {
+  participants: 47,
+  poolARS: 235000,
+  entryAmountARS: 5000,
+};
+
+const formatARS = (value: number) => `$${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+
 // HOME PRINCIPAL REAL.
 // src/app/page.tsx renderiza este componente.
 // HomeHero/HowItWorks/FinalCTA fueron eliminados para evitar duplicación.
 export function AppleReplicaLanding() {
+  const [prizePool, setPrizePool] = useState<PrizePoolState>(fallbackPrizePool);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/prize-pool")
+      .then((res) => {
+        if (!res.ok) throw new Error("Could not load prize pool");
+        return res.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setPrizePool({
+          participants: Number(data.participants) || fallbackPrizePool.participants,
+          poolARS: Number(data.poolARS) || fallbackPrizePool.poolARS,
+          entryAmountARS: Number(data.entryAmountARS) || fallbackPrizePool.entryAmountARS,
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setPrizePool(fallbackPrizePool);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <main className={styles.page}>
       {/* 1. HERO */}
@@ -143,11 +184,20 @@ export function AppleReplicaLanding() {
         <div className={styles.prizeAccumulatedInner}>
           <div className={styles.prizeAccumulatedContent}>
             <h2>El premio crece con cada participación.</h2>
-            <p>Ya somos 47 participantes. Cada nueva participación activa suma $5.000 al pozo oficial.</p>
-            <div className={styles.poolExamples} aria-label="Ejemplos de crecimiento del premio">
-              <div><strong>47</strong><span>participantes</span><b>$235.000</b></div>
-              <div><strong>48</strong><span>participantes</span><b>$240.000</b></div>
-              <div><strong>49</strong><span>participantes</span><b>$245.000</b></div>
+            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} al pozo oficial.</p>
+            <div className={styles.poolMetrics} aria-label="Contador del premio acumulado">
+              <div>
+                <span>Participantes</span>
+                <strong>{prizePool.participants}</strong>
+              </div>
+              <div>
+                <span>Pozo acumulado</span>
+                <strong>{formatARS(prizePool.poolARS)}</strong>
+              </div>
+              <div>
+                <span>Suma por participante</span>
+                <strong>{formatARS(prizePool.entryAmountARS)}</strong>
+              </div>
             </div>
             <ul className={styles.prizeBullets}>
               <li><span className="material-symbols-outlined">check_circle</span> Participás del premio general.</li>

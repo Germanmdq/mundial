@@ -99,14 +99,14 @@ async function assertMatchCanBeEdited(matchId: number) {
   const supabase = getServiceSupabase();
   const { data: match, error } = await supabase
     .from("matches")
-    .select("id, kickoff_at, stage")
+    .select("id, kickoff_at, stage, stage_label, group_letter, group_name, is_knockout")
     .eq("id", matchId)
     .maybeSingle();
 
   if (error) throw error;
   if (!match) throw new PredictionValidationError("Partido inexistente.");
 
-  if (!isGroupStageValue(match.stage)) {
+  if (!isServerGroupStageMatch(match)) {
     throw new PredictionStageLockedError();
   }
 
@@ -115,19 +115,52 @@ async function assertMatchCanBeEdited(matchId: number) {
   }
 }
 
-function isGroupStageValue(value: unknown) {
-  return String(value ?? "").trim().toLowerCase().replace(/[\s-]+/g, "_") === "group";
+function normalizeStageText(value: unknown) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function isServerGroupStageMatch(match: {
+  stage?: string | null;
+  stage_label?: string | null;
+  group_letter?: string | null;
+  group_name?: string | null;
+  is_knockout?: boolean | null;
+}) {
+  const raw = [
+    match.stage,
+    match.stage_label,
+    match.group_letter,
+    match.group_name,
+  ]
+    .filter(Boolean)
+    .map(normalizeStageText)
+    .join(" ");
+
+  return (
+    match.is_knockout === false
+    || raw.includes("group")
+    || raw.includes("grupo")
+    || raw.includes("fase de grupos")
+  );
 }
 
 async function getGroupMatchIds() {
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("matches")
-    .select("id, stage")
-    .eq("stage", "GROUP");
+    .select("id, stage, stage_label, group_letter, group_name, is_knockout, match_number")
+    .order("match_number", { ascending: true, nullsFirst: false });
 
   if (error) throw error;
-  return (data ?? []).map((match) => Number(match.id)).filter((id) => Number.isInteger(id) && id > 0);
+  return (data ?? [])
+    .filter(isServerGroupStageMatch)
+    .slice(0, CURRENT_STAGE_TOTAL_MATCHES)
+    .map((match) => Number(match.id))
+    .filter((id) => Number.isInteger(id) && id > 0);
 }
 
 async function countCompletedMatches(userId: string) {
@@ -263,6 +296,12 @@ export async function getOfficialPrediction(userId: string) {
       if (fallback.error) throw fallback.error;
       const rows = fallback.data ?? [];
       const completedMatches = rows.length;
+      console.info("[predictions:me:debug]", {
+        userId,
+        groupMatchIdsCount: groupMatchIds.length,
+        scoresCount: rows.length,
+        completedMatches,
+      });
       return {
         scores: rows.map((row) => ({
           matchId: String(row.match_id),
@@ -282,6 +321,13 @@ export async function getOfficialPrediction(userId: string) {
 
   const rows = data ?? [];
   const completedMatches = rows.filter((row) => row.completed ?? true).length;
+  console.info("[predictions:me:debug]", {
+    userId,
+    groupMatchIdsCount: groupMatchIds.length,
+    scoresCount: rows.length,
+    completedMatches,
+  });
+
   return {
     scores: rows.map((row) => ({
       matchId: String(row.match_id),

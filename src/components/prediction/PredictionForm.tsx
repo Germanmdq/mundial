@@ -51,6 +51,17 @@ const getScoreValue = (value: number | undefined | null): number => {
   return typeof value === "number" ? value : 0;
 };
 
+const hasCompleteScore = (score: { home?: number | null; away?: number | null } | undefined | null) => {
+  return (
+    score !== undefined
+    && score !== null
+    && score.home !== null
+    && score.home !== undefined
+    && score.away !== null
+    && score.away !== undefined
+  );
+};
+
 const parseDraft = (rawDraft: string | null): PredictionDraft | null => {
   if (!rawDraft) return null;
 
@@ -89,21 +100,6 @@ const parseDraft = (rawDraft: string | null): PredictionDraft | null => {
   }
 };
 
-const buildDraftItems = (draft: PredictionDraft): DraftPredictionItem[] => {
-  return draft.completedMatchIds
-    .map((matchId) => {
-      const score = draft.scores[matchId];
-      if (!score) return null;
-      return {
-        matchId,
-        homeScore: getScoreValue(score.home),
-        awayScore: getScoreValue(score.away),
-        updatedAt: draft.updatedAt,
-      };
-    })
-    .filter((item): item is DraftPredictionItem => Boolean(item));
-};
-
 export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: PredictionFormProps) {
   const [scores, setScores] = useState<Record<number, LocalScore>>(() => {
     return matches.reduce((acc, match) => {
@@ -130,12 +126,9 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [activeTab, setActiveTab] = useState<TabOption>("Partidos");
   const [selectedFilter, setSelectedFilter] = useState<string>("Todos");
   const [currentMatchIndex, setCurrentMatchIndex] = useState<number>(() => {
-    // Determine the starting index based on initialScores
     const firstIncompleteIdx = matches.findIndex(m => {
       const existing = initialScores[m.id];
-      return existing === undefined || existing === null ||
-             existing.home === null || existing.home === undefined ||
-             existing.away === null || existing.away === undefined;
+      return !hasCompleteScore(existing);
     });
     return firstIncompleteIdx === -1 ? matches.length - 1 : firstIncompleteIdx;
   });
@@ -143,9 +136,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     if (Object.keys(initialScores).length === 0) return false;
     const allComplete = matches.every(m => {
       const existing = initialScores[m.id];
-      return existing !== undefined && existing !== null &&
-             existing.home !== null && existing.home !== undefined &&
-             existing.away !== null && existing.away !== undefined;
+      return hasCompleteScore(existing);
     });
     return allComplete;
   });
@@ -208,10 +199,11 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
         if (Array.isArray(scoresList)) {
           const officialScores: Record<number, LocalScore> = {};
           const officialCompletedIds = new Set<number>();
+          const validMatchIds = new Set(allMatches.map((match) => Number(match.id)));
           
           scoresList.forEach((p: { matchId: string | number; homeScore: number; awayScore: number }) => {
             const mId = Number(p.matchId);
-            if (mId) {
+            if (mId && validMatchIds.has(mId)) {
               officialScores[mId] = {
                 home: p.homeScore,
                 away: p.awayScore
@@ -219,21 +211,24 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               officialCompletedIds.add(mId);
             }
           });
+
+          const nextScores = allMatches.reduce((acc, match) => {
+            const existing = officialScores[match.id];
+            acc[match.id] = {
+              home: typeof existing?.home === "number" ? existing.home : 0,
+              away: typeof existing?.away === "number" ? existing.away : 0,
+            };
+            return acc;
+          }, {} as Record<number, LocalScore>);
           
-          setScores(prev => ({
-            ...prev,
-            ...officialScores
-          }));
-          setCompletedMatchIds(prev => {
-            const next = new Set(prev);
-            officialCompletedIds.forEach(id => next.add(id));
-            return next;
-          });
+          setScores(nextScores);
+          setCompletedMatchIds(officialCompletedIds);
           
           // Find first incomplete match index
-          const firstIncompleteIdx = allMatches.findIndex(m => !officialCompletedIds.has(m.id));
+          const firstIncompleteIdx = allMatches.findIndex(m => !hasCompleteScore(officialScores[m.id]));
           if (firstIncompleteIdx !== -1) {
             setCurrentMatchIndex(firstIncompleteIdx);
+            setShowCompletionCard(false);
           } else {
             setCurrentMatchIndex(allMatches.length - 1);
             setShowCompletionCard(true);
@@ -245,30 +240,6 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       console.error("Error loading official predictions", e);
     }
     return null;
-  };
-
-  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
-    if (!isLoggedIn) return;
-    try {
-      setSaveStatus("Guardando...");
-      const res = await fetch("/api/predictions/sync-draft", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draftItems)
-      });
-      if (res.ok) {
-        localStorage.removeItem(PREDICTION_DRAFT_KEY);
-        setSaveStatus("Participación activa");
-        await loadOfficialPredictions(matches);
-      } else {
-        const errJson = await res.json().catch(() => ({}));
-        console.error("[api:predictions:sync-draft] failed:", res.status, errJson);
-        setSaveStatus("Error al guardar");
-      }
-    } catch (e) {
-      console.error("Error syncing draft", e);
-      setSaveStatus("Error al guardar");
-    }
   };
 
   useEffect(() => {
@@ -302,21 +273,8 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           if (isActive) {
             setPaymentStatus("activo");
             setSaveStatus("Participación activa");
-            
-            // Sync local draft immediately since user is active
-            const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
-            const parsedDraft = parseDraft(rawDraft);
-            
-            if (parsedDraft) {
-              const draftItems = buildDraftItems(parsedDraft);
-              if (draftItems.length > 0) {
-                await syncDraftToSupabase(draftItems);
-              } else {
-                await loadOfficialPredictions(matches);
-              }
-            } else {
-              await loadOfficialPredictions(matches);
-            }
+            await loadOfficialPredictions(matches);
+            localStorage.removeItem(PREDICTION_DRAFT_KEY);
           } else {
             if (statusVal === "pending" || statusVal === "pending_payment") {
               setPaymentStatus("pendiente");
@@ -424,6 +382,14 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
     return matches;
   }, [matches, selectedFilter]);
+
+  const firstIncompleteIndex = useMemo(() => {
+    return matches.findIndex((match) => !completedMatchIds.has(match.id));
+  }, [matches, completedMatchIds]);
+
+  const initialScoresCount = useMemo(() => {
+    return matches.filter((match) => hasCompleteScore(initialScores[match.id])).length;
+  }, [matches, initialScores]);
 
   const groupTables = useMemo(() => {
     const tables: Record<string, Record<string, {
@@ -1612,20 +1578,24 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-[#aeaeb2]">Total Matches Used:</span>
+              <span className="text-[#aeaeb2]">matchesLength:</span>
               <span className="text-white">{totalMatches}</span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-[#aeaeb2]">Group Matches Length:</span>
-              <span className="text-white">{matches.length}</span>
+              <span className="text-[#aeaeb2]">initialScoresCount:</span>
+              <span className="text-white">{initialScoresCount}</span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-[#aeaeb2]">Official Completed:</span>
-              <span className="text-white">{paymentStatus === "activo" ? completedMatches : "N/A (unpaid)"}</span>
+              <span className="text-[#aeaeb2]">completedMatchIdsCount:</span>
+              <span className="text-white">{completedMatchIds.size}</span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-[#aeaeb2]">Local Completed:</span>
-              <span className="text-white">{completedMatches}</span>
+              <span className="text-[#aeaeb2]">paymentStatus:</span>
+              <span className="text-white">{paymentStatus}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-[#aeaeb2]">isLoggedIn:</span>
+              <span className="text-white">{isLoggedIn ? "true" : "false"}</span>
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-[#aeaeb2]">Current Index:</span>
@@ -1637,14 +1607,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-[#aeaeb2]">First Incomplete Index:</span>
-              <span className="text-white">
-                {matches.findIndex(m => {
-                  const score = scores[m.id];
-                  return score === undefined || score === null ||
-                         score.home === null || score.home === undefined ||
-                         score.away === null || score.away === undefined;
-                })}
-              </span>
+              <span className="text-white">{firstIncompleteIndex}</span>
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-[#aeaeb2]">Has Goleador Tab:</span>
