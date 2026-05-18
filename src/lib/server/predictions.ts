@@ -146,7 +146,11 @@ async function upsertScores(userId: string, scores: PredictionScoreInput[]) {
   if (!error) return;
 
   if (String(error.message).includes("completed")) {
-    const fallbackPayload = payload.map(({ completed: _completed, ...row }) => row);
+    const fallbackPayload = payload.map((row) => {
+      const { completed, ...rest } = row;
+      void completed;
+      return rest;
+    });
     const fallback = await supabase
       .from("prediction_match_scores")
       .upsert(fallbackPayload, { onConflict: "user_id,match_id" });
