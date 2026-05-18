@@ -38,7 +38,7 @@ export function Header() {
         </Link>
 
         <div className="hidden md:flex justify-center items-center gap-[30px]">
-          <Link href="/" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/" ? "text-black" : "text-black/75 hover:text-black")}>Cómo funciona</Link>
+          <Link href="/#como-funciona" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/#como-funciona" ? "text-black" : "text-black/75 hover:text-black")}>Cómo funciona</Link>
           <Link href="/equipos" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/equipos" ? "text-black" : "text-black/75 hover:text-black")}>Equipos</Link>
           <Link href="/ranking" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/ranking" ? "text-black" : "text-black/75 hover:text-black")}>Ranking</Link>
           <Link href="/premios" className={cn("text-[13px] font-medium leading-none whitespace-nowrap transition-colors", path === "/premios" ? "text-black" : "text-black/75 hover:text-black")}>Premios</Link>
@@ -84,7 +84,7 @@ export function Header() {
           menuOpen ? "top-[56px] opacity-100 pointer-events-auto translate-y-0" : "top-[56px] opacity-0 pointer-events-none -translate-y-4"
         )}
       >
-        <Link href="/" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
+        <Link href="/#como-funciona" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
         <Link href="/equipos" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Equipos</Link>
         <Link href="/ranking" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Ranking</Link>
         <Link href="/premios" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Premios</Link>

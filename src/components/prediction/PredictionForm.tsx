@@ -604,10 +604,10 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           <div className="col-span-full mt-4 bg-[rgba(255,159,10,0.04)] border border-[rgba(255,159,10,0.12)] rounded-[20px] p-5 text-center flex flex-col justify-center items-center gap-2 animate-fadeIn">
             <div className="flex items-center gap-2 text-[#ff9f0a] font-bold text-[14.5px]">
               <span className="text-[18px]">⚠️</span>
-              <span>Podés probar tu predicción en este dispositivo.</span>
+              <span>Borrador temporal</span>
             </div>
             <p className="text-[13px] text-[#6e6e73] font-medium leading-relaxed max-w-[640px] mx-auto">
-              Tu predicción oficial se guarda después de activar la participación. Para guardar tu Mundial y participar por el premio acumulado, activá tu inscripción.
+              Se guarda solo en este dispositivo. Para guardar tu predicción oficial y competir por el premio acumulado, activá tu participación.
             </p>
           </div>
         )}
@@ -1338,14 +1338,19 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           color: #1d1d1f;
         }
 
-        @media (max-width: 734px) {
+        @media (max-width: 768px) {
           .predictionSingleFlow {
-            width: calc(100vw - 28px);
+            width: calc(100% - 24px);
+            margin: 0 auto;
           }
 
           .matchFocusCard {
-            padding: 22px 16px;
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
             border-radius: 28px;
+            padding: 24px 18px;
           }
 
           .matchFocusMeta {
@@ -1395,18 +1400,24 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           }
 
           .flowActions {
-            width: calc(100vw - 28px);
+            width: calc(100% - 24px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .flowButton {
-            flex: 1;
-            height: 50px;
-            padding: 0 16px;
+            width: 100%;
+            min-height: 52px;
+            white-space: nowrap;
           }
 
           /* SUMMARY MOBILE */
           .predictionSummary {
-            width: calc(100vw - 28px);
+            width: calc(100% - 24px);
+            margin: 0 auto;
           }
 
           .summaryGroup {

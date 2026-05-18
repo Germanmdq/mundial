@@ -1,56 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import styles from "./AppleReplicaLanding.module.css";
-
+import { WorldCupCountdown } from "../home/WorldCupCountdown";
+import { PrizePoolBanner } from "../prizes/PrizePoolBanner";
 
 export function AppleReplicaLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <main className={styles.page}>
-      <header className={styles.globalNav}>
-        <nav className={styles.globalNavInner} aria-label="Menú principal">
-          <Link href="/" className={styles.brand}>
-            Mundial entre Amigos
-          </Link>
-
-          <div className={styles.desktopLinks}>
-            <Link href="#como-funciona">Cómo funciona</Link>
-            <Link href="/equipos">Equipos</Link>
-            <Link href="/ranking">Ranking</Link>
-            <Link href="/premios">Premios</Link>
-            <Link href="/reglas">Reglas</Link>
-          </div>
-
-          <div className={styles.desktopActions}>
-            <Link href="/login" className={styles.loginLink}>Ingresar</Link>
-            <Link href="/mi-prediccion" className={styles.navCta}>Crear mi predicción</Link>
-          </div>
-
-          <button
-            className={styles.mobileMenuButton}
-            type="button"
-            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((value) => !value)}
-          >
-            <span></span>
-            <span></span>
-          </button>
-        </nav>
-
-        <div className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}>
-          <Link href="#como-funciona" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
-          <Link href="/equipos" onClick={() => setMenuOpen(false)}>Equipos</Link>
-          <Link href="/ranking" onClick={() => setMenuOpen(false)}>Ranking</Link>
-          <Link href="/premios" onClick={() => setMenuOpen(false)}>Premios</Link>
-          <Link href="/reglas" onClick={() => setMenuOpen(false)}>Reglas</Link>
-          <Link href="/mi-prediccion" className={styles.mobileMenuCta} onClick={() => setMenuOpen(false)}>Crear mi predicción</Link>
-        </div>
-      </header>
-
       {/* 1. HERO */}
       <section className={styles.hero} id="hero-section">
         <video
@@ -83,6 +41,10 @@ export function AppleReplicaLanding() {
           </div>
         </div>
       </section>
+
+      {/* 1.5 BANNERS PRESTACIONES DE CONVERSIÓN */}
+      <WorldCupCountdown />
+      <PrizePoolBanner />
 
       {/* 2. CÓMO PARTICIPAR */}
       <section className={styles.howItWorks} id="como-funciona">

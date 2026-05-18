@@ -7,6 +7,7 @@ import { PageSection } from "@/components/ui/PageSection";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PrizePaymentOptions } from "@/components/payments/PrizePaymentOptions";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { PrizePoolBanner } from "@/components/prizes/PrizePoolBanner";
 
 interface PrizePack {
   id: string;
@@ -66,6 +67,9 @@ export function PremiosClient({ initialPrizes, isLoggedIn }: PremiosClientProps)
       />
 
       <PageSection>
+        {/* Dynamic Real-time Prize Pool Accumulator */}
+        <PrizePoolBanner />
+
         {/* Payment CTA Banner */}
         {hasMounted && (
           <div className="mb-10 max-w-[720px] mx-auto animate-fade-in">

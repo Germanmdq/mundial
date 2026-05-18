@@ -1,5 +1,10 @@
+import { AppShell } from "@/components/layout/AppShell";
 import { AppleReplicaLanding } from "@/components/apple-replica/AppleReplicaLanding";
 
 export default function Home() {
-  return <AppleReplicaLanding />;
+  return (
+    <AppShell>
+      <AppleReplicaLanding />
+    </AppShell>
+  );
 }

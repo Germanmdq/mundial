@@ -6,6 +6,7 @@ import { PremiumCard } from "@/components/ui/PremiumCard";
 import { PremiumButton } from "@/components/ui/PremiumButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PrizePaymentOptions } from "@/components/payments/PrizePaymentOptions";
+import { PrizePoolBanner } from "@/components/prizes/PrizePoolBanner";
 
 const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
 
@@ -105,7 +106,8 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
     const localRemaining = 104 - localCompleted;
 
     return (
-      <div className="max-w-[820px] mx-auto px-5 md:px-6 py-10 md:py-16">
+      <div className="max-w-[820px] mx-auto px-5 md:px-6 py-10 md:py-16 space-y-8">
+        <PrizePoolBanner />
         <div className="text-center mb-10">
           <h1 className="font-display font-extrabold text-[#1d1d1f] text-[32px] tracking-tight mb-2">Mi cuenta</h1>
           <p className="text-[#6e6e73] text-[15px] max-w-sm mx-auto leading-relaxed">
@@ -176,7 +178,8 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
   };
 
   return (
-    <div className="max-w-[1040px] mx-auto px-5 md:px-6 py-10 md:py-16">
+    <div className="max-w-[1040px] mx-auto px-5 md:px-6 py-10 md:py-16 space-y-6">
+      {!isActive && <PrizePoolBanner />}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         
         {/* LEFT COLUMN: Profile & Status */}

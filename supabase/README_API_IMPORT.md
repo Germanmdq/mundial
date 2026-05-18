@@ -43,6 +43,8 @@ WC2026 API es la fuente principal actual para:
 
 No provee jugadores, fotos de jugadores, escudos/logos ni flags pobladas. Esos assets siguen con placeholders premium y fuentes secundarias futuras.
 
+`WC2026_API_KEY` solo se usa para import/sync manual desde scripts admin. No es necesaria en runtime de Next/Vercel y no hace falta agregarla a Vercel para que la app funcione en produccion.
+
 Variables:
 
 ```env
