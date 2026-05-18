@@ -13,8 +13,36 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Mi Predicción Mundial 2026",
-  description: "Armá tu Mundial. Predecí cada partido. Sumá puntos. Ganá premios.",
+  metadataBase: new URL("https://www.mundialentreamigos.online"),
+  title: "Mundial entre Amigos",
+  description: "Armá tu predicción del Mundial 2026, competí con amigos y participá por el pozo acumulado.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Mundial entre Amigos",
+    description: "Armá tu predicción del Mundial 2026 y participá por el pozo acumulado.",
+    url: "https://www.mundialentreamigos.online",
+    siteName: "Mundial entre Amigos",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Mundial entre Amigos",
+      },
+    ],
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mundial entre Amigos",
+    description: "Armá tu predicción del Mundial 2026 y participá por el pozo acumulado.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RootLayout({

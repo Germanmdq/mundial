@@ -30,11 +30,17 @@ export function calculatePrizePool({
     dolarBlueVenta && dolarBlueVenta > 0
       ? poolARS / dolarBlueVenta
       : null;
+  const entryAmountUSDApprox =
+    dolarBlueVenta && dolarBlueVenta > 0
+      ? ENTRY_AMOUNT_ARS / dolarBlueVenta
+      : null;
 
   return {
     participants,
     poolARS,
     poolUSDBlue,
+    poolUSDApprox: poolUSDBlue,
+    entryAmountUSDApprox,
     blueRate: dolarBlueVenta ?? null,
     rankingPrizeARS,
     championPrizeARS,

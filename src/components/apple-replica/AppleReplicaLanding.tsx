@@ -9,15 +9,26 @@ type PrizePoolState = {
   participants: number;
   poolARS: number;
   entryAmountARS: number;
+  usdBlueRate: number;
+  poolUSDApprox: number;
+  entryAmountUSDApprox: number;
 };
 
 const fallbackPrizePool: PrizePoolState = {
   participants: 47,
   poolARS: 235000,
   entryAmountARS: 5000,
+  usdBlueRate: 1415,
+  poolUSDApprox: 235000 / 1415,
+  entryAmountUSDApprox: 5000 / 1415,
 };
 
 const formatARS = (value: number) => `$${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+const formatUSD = (value: number) =>
+  `USD aprox. ${value.toLocaleString("es-AR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 
 // HOME PRINCIPAL REAL.
 // src/app/page.tsx renderiza este componente.
@@ -39,6 +50,9 @@ export function AppleReplicaLanding() {
           participants: Number(data.participants) || fallbackPrizePool.participants,
           poolARS: Number(data.poolARS) || fallbackPrizePool.poolARS,
           entryAmountARS: Number(data.entryAmountARS) || fallbackPrizePool.entryAmountARS,
+          usdBlueRate: Number(data.usdBlueRate ?? data.blueRate) || fallbackPrizePool.usdBlueRate,
+          poolUSDApprox: Number(data.poolUSDApprox ?? data.poolUSDBlue) || fallbackPrizePool.poolUSDApprox,
+          entryAmountUSDApprox: Number(data.entryAmountUSDApprox) || fallbackPrizePool.entryAmountUSDApprox,
         });
       })
       .catch(() => {
@@ -101,13 +115,16 @@ export function AppleReplicaLanding() {
               </div>
               <div>
                 <span>Pozo acumulado</span>
-                <strong>{formatARS(prizePool.poolARS)}</strong>
+                <strong>{formatARS(prizePool.poolARS)} ARS</strong>
+                <small>{formatUSD(prizePool.poolUSDApprox)}</small>
               </div>
               <div>
                 <span>Suma por participante</span>
-                <strong>{formatARS(prizePool.entryAmountARS)}</strong>
+                <strong>{formatARS(prizePool.entryAmountARS)} ARS</strong>
+                <small>{formatUSD(prizePool.entryAmountUSDApprox)}</small>
               </div>
             </div>
+            <p className={styles.blueRateLine}>Dólar blue venta: {formatARS(prizePool.usdBlueRate)}</p>
             <p className={styles.poolNote}>El equivalente en dólar blue es aproximado y se calcula con la cotización de venta disponible.</p>
             <div className={styles.prizeActions}>
               <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar por el premio</Link>

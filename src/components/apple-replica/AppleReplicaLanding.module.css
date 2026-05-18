@@ -1137,7 +1137,7 @@
 
 .poolMetrics strong {
   color: #ffffff;
-  font-size: 32px;
+  font-size: clamp(24px, 3vw, 32px);
   line-height: 1;
   font-weight: 850;
 }
@@ -1147,6 +1147,22 @@
   font-size: 13px;
   line-height: 1.2;
   font-weight: 700;
+}
+
+.poolMetrics small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 750;
+}
+
+.blueRateLine {
+  max-width: none !important;
+  margin: -14px 0 28px !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+  font-size: 15px !important;
+  line-height: 1.35 !important;
+  font-weight: 800 !important;
 }
 
 .prizeBullets {

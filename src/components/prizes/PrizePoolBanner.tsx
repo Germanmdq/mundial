@@ -41,13 +41,8 @@ export function PrizePoolBanner() {
   }, []);
 
   // Format currency helpers
-  const formatARS = (amount: number) => {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
+  const formatARS = (amount: number) => `$${Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} ARS`;
+  const formatRate = (amount: number) => `$${Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 
   const formatUSD = (amount: number) => {
     return new Intl.NumberFormat("es-AR", {
@@ -111,23 +106,32 @@ export function PrizePoolBanner() {
           <span className="metricValue text-white">
             {formatARS(stats.poolARS)}
           </span>
-          <span className="metricDesc">Suma $5.000 por persona</span>
+          <span className="metricDesc">
+            {stats.poolUSDBlue !== null
+              ? `USD aprox. ${formatUSD(stats.poolUSDBlue)}`
+              : "USD blue en actualización"}
+          </span>
         </div>
 
         {/* Metric 3: USD Blue Equivalent */}
         <div className="metricCard">
-          <span className="metricLabel">Equivalente dólar blue</span>
+          <span className="metricLabel">Suma por persona</span>
           <span className="metricValue text-[#30d158]">
             {loading ? (
               <span className="text-sm font-semibold opacity-70">Cargando...</span>
-            ) : stats.poolUSDBlue !== null ? (
-              `USD aprox. ${formatUSD(stats.poolUSDBlue)}`
+            ) : stats.entryAmountUSDApprox !== null ? (
+              <>
+                {formatARS(stats.entryAmountARS)}
+                <small className="block text-sm font-bold text-[#8e8e93] mt-1">
+                  USD aprox. {formatUSD(stats.entryAmountUSDApprox)}
+                </small>
+              </>
             ) : (
               <span className="text-sm font-semibold opacity-70 text-amber-500">Cargando...</span>
             )}
           </span>
           <span className="metricDesc text-[#8e8e93]">
-            {blueRate ? `Cotización venta: $${blueRate}` : "Recuperando cotización..."}
+            {blueRate ? `Dólar blue venta: ${formatRate(blueRate)}` : "Recuperando cotización..."}
           </span>
         </div>
       </div>
