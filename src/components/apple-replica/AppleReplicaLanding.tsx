@@ -405,6 +405,9 @@ export function AppleReplicaLanding() {
           <div className={styles.footerCopyright}>
             © 2026 Mundial entre Amigos. Todos los derechos reservados.
           </div>
+          <div className={styles.footerDisclaimer}>
+            Mundial entre Amigos es una experiencia recreativa de predicción y ranking social.
+          </div>
         </div>
       </footer>
     </main>

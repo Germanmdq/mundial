@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const RULES_SECTIONS = [
   {
     title: "Naturaleza de la competencia",
-    content: "Mundial entre Amigos es una competencia de habilidad basada en la predicción de resultados deportivos de la Copa Mundial de la FIFA 2026. No constituye un juego de azar ni apuestas."
+    content: "Mundial entre Amigos es una competencia de habilidad basada en la predicción de resultados deportivos de la Copa Mundial de la FIFA 2026. No constituye un juego de azar."
   },
   {
     title: "Participación",

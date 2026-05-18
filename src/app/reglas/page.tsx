@@ -28,6 +28,9 @@ export default function ReglasPage() {
               <p className="text-[15px] font-semibold leading-7 text-[#5f6065]">
                 No se trata de una apuesta contra la plataforma. La plataforma organiza el juego, registra las predicciones, calcula el ranking y administra el pozo acumulado según las reglas informadas.
               </p>
+              <p className="text-[14px] font-bold leading-6 text-[#1d1d1f]">
+                Participá con responsabilidad y solo si entendés las reglas del juego.
+              </p>
             </div>
           </PremiumCard>
           <PremiumCard noPadding>
