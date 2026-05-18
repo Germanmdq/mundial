@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   PaymentRequiredError,
+  PredictionStageLockedError,
   PredictionValidationError,
   saveOfficialMatchPrediction,
 } from "@/lib/server/predictions";
@@ -29,6 +30,13 @@ export async function POST(request: NextRequest) {
     if (error instanceof PaymentRequiredError) {
       return NextResponse.json(
         { error: "payment_required", message: error.message },
+        { status: 403 },
+      );
+    }
+
+    if (error instanceof PredictionStageLockedError) {
+      return NextResponse.json(
+        { error: "prediction_stage_locked", message: error.message },
         { status: 403 },
       );
     }

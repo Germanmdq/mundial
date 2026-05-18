@@ -63,6 +63,11 @@ export async function GET(request: Request) {
         {
           error: "unauthorized",
           message: error.message,
+          loggedIn: false,
+          user: null,
+          participation: null,
+          isActive: false,
+          canStartPayment: false,
         },
         { status: 401 },
       );

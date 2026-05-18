@@ -2,6 +2,13 @@ import { getServiceSupabase } from "@/lib/server/payments";
 
 export type MatchOutcome = "home" | "away" | "draw";
 
+export const OFFICIAL_MATCH_SCORING = {
+  exactScore: 5,
+  correctOutcomeAndGoalDifference: 4,
+  correctOutcome: 3,
+  incorrect: 0,
+} as const;
+
 export type MatchPointsResult = {
   points: number;
   exactScore: boolean;
@@ -70,9 +77,9 @@ export function calculateMatchPoints(
   const goalError = Math.abs(predHome - realHome) + Math.abs(predAway - realAway);
 
   let points = 0;
-  if (exactScore) points = 5;
-  else if (correctOutcome && correctGoalDifference) points = 4;
-  else if (correctOutcome) points = 3;
+  if (exactScore) points = OFFICIAL_MATCH_SCORING.exactScore;
+  else if (correctOutcome && correctGoalDifference) points = OFFICIAL_MATCH_SCORING.correctOutcomeAndGoalDifference;
+  else if (correctOutcome) points = OFFICIAL_MATCH_SCORING.correctOutcome;
 
   return {
     points,

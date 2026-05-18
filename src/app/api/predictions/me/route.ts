@@ -17,7 +17,17 @@ export async function GET() {
     return NextResponse.json(prediction);
   } catch (error) {
     if (error instanceof PaymentRequiredError) {
-      return NextResponse.json({ status: "payment_required", scores: [], completedMatches: 0 }, { status: 403 });
+      return NextResponse.json(
+        {
+          status: "payment_required",
+          scores: [],
+          completedMatches: 0,
+          totalMatches: 72,
+          remainingMatches: 72,
+          currentStage: "group_stage",
+        },
+        { status: 403 },
+      );
     }
 
     console.error("[predictions:me]", error);

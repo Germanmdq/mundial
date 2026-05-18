@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDolarBlueRate } from "@/lib/currency/dolar-blue";
-import { calculatePrizePool } from "@/lib/prize-pool";
+import { calculatePrizePool, FALLBACK_DOLAR_BLUE_VENTA } from "@/lib/prize-pool";
 import { getServiceSupabase } from "@/lib/server/payments";
 
 async function getActivePaidUsersCount() {
@@ -22,15 +22,21 @@ export async function GET() {
       getActivePaidUsersCount(),
       getDolarBlueRate(),
     ]);
+    const usdBlueRate = blueRate?.venta ?? FALLBACK_DOLAR_BLUE_VENTA;
+    const source = blueRate?.venta ? "DolarAPI" : "fallback";
 
     const pool = calculatePrizePool({
       activeParticipants: activePaidUsersCount,
-      dolarBlueVenta: blueRate?.venta ?? null,
+      dolarBlueVenta: usdBlueRate,
     });
 
     return NextResponse.json({
       ...pool,
       activePaidUsersCount,
+      usdBlueRate,
+      poolUSDApprox: pool.poolUSDBlue,
+      source,
+      updatedAt: blueRate?.fechaActualizacion ?? new Date().toISOString(),
       blueRate: pool.blueRate,
       blueRateUpdatedAt: blueRate?.fechaActualizacion ?? null,
     });
@@ -38,13 +44,17 @@ export async function GET() {
     console.error("[public:prize-pool]", error);
     const pool = calculatePrizePool({
       activeParticipants: null,
-      dolarBlueVenta: null,
+      dolarBlueVenta: FALLBACK_DOLAR_BLUE_VENTA,
     });
 
     return NextResponse.json({
       ...pool,
       activePaidUsersCount: null,
-      blueRate: null,
+      usdBlueRate: FALLBACK_DOLAR_BLUE_VENTA,
+      poolUSDApprox: pool.poolUSDBlue,
+      source: "fallback",
+      updatedAt: new Date().toISOString(),
+      blueRate: FALLBACK_DOLAR_BLUE_VENTA,
       blueRateUpdatedAt: null,
     });
   }

@@ -1,6 +1,7 @@
 export const BASE_PARTICIPANTS = 47;
 export const ENTRY_AMOUNT_ARS = 5000;
 export const ENTRY_AMOUNT_USD = 5;
+export const FALLBACK_DOLAR_BLUE_VENTA = 1415;
 export const PRIZE_DISTRIBUTION = {
   ranking: 70,
   champion: 15,

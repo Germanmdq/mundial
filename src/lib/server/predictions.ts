@@ -1,5 +1,8 @@
 import { getServiceSupabase, isUserParticipationActive } from "@/lib/server/payments";
 
+export const CURRENT_PREDICTION_STAGE = "group_stage";
+export const CURRENT_STAGE_TOTAL_MATCHES = 72;
+
 export type PredictionScoreInput = {
   matchId: string | number;
   homeScore: number;
@@ -11,6 +14,9 @@ type SaveOfficialPredictionResult = {
   saved: true;
   matchId?: string;
   completedMatches: number;
+  totalMatches: number;
+  remainingMatches: number;
+  currentStage: typeof CURRENT_PREDICTION_STAGE;
 };
 
 export class PaymentRequiredError extends Error {
@@ -24,6 +30,13 @@ export class PredictionValidationError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "PredictionValidationError";
+  }
+}
+
+export class PredictionStageLockedError extends Error {
+  constructor(message = "Por ahora solo se pueden cargar partidos de fase de grupos.") {
+    super(message);
+    this.name = "PredictionStageLockedError";
   }
 }
 
@@ -86,32 +99,56 @@ async function assertMatchCanBeEdited(matchId: number) {
   const supabase = getServiceSupabase();
   const { data: match, error } = await supabase
     .from("matches")
-    .select("id, kickoff_at")
+    .select("id, kickoff_at, stage")
     .eq("id", matchId)
     .maybeSingle();
 
   if (error) throw error;
   if (!match) throw new PredictionValidationError("Partido inexistente.");
 
+  if (!isGroupStageValue(match.stage)) {
+    throw new PredictionStageLockedError();
+  }
+
   if (match.kickoff_at && new Date(match.kickoff_at).getTime() <= Date.now()) {
     throw new PredictionValidationError("Este partido ya está bloqueado.");
   }
 }
 
+function isGroupStageValue(value: unknown) {
+  return String(value ?? "").trim().toLowerCase().replace(/[\s-]+/g, "_") === "group";
+}
+
+async function getGroupMatchIds() {
+  const supabase = getServiceSupabase();
+  const { data, error } = await supabase
+    .from("matches")
+    .select("id, stage")
+    .eq("stage", "GROUP");
+
+  if (error) throw error;
+  return (data ?? []).map((match) => Number(match.id)).filter((id) => Number.isInteger(id) && id > 0);
+}
+
 async function countCompletedMatches(userId: string) {
   const supabase = getServiceSupabase();
+  const groupMatchIds = await getGroupMatchIds();
+  if (groupMatchIds.length === 0) return 0;
+
   const withCompleted = await supabase
     .from("prediction_match_scores")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId)
-    .eq("completed", true);
+    .eq("completed", true)
+    .in("match_id", groupMatchIds);
 
   if (!withCompleted.error) return withCompleted.count ?? 0;
 
   const fallback = await supabase
     .from("prediction_match_scores")
     .select("id", { count: "exact", head: true })
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .in("match_id", groupMatchIds);
 
   if (fallback.error) throw fallback.error;
   return fallback.count ?? 0;
@@ -165,34 +202,53 @@ async function upsertScores(userId: string, scores: PredictionScoreInput[]) {
 export async function saveOfficialMatchPrediction(userId: string, input: PredictionScoreInput): Promise<SaveOfficialPredictionResult> {
   await assertActiveParticipant(userId);
   await upsertScores(userId, [input]);
+  const completedMatches = await countCompletedMatches(userId);
 
   return {
     ok: true,
     saved: true,
     matchId: String(input.matchId),
-    completedMatches: await countCompletedMatches(userId),
+    completedMatches,
+    totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+    remainingMatches: Math.max(0, CURRENT_STAGE_TOTAL_MATCHES - completedMatches),
+    currentStage: CURRENT_PREDICTION_STAGE,
   };
 }
 
 export async function syncOfficialPredictionDraft(userId: string, scores: PredictionScoreInput[]): Promise<SaveOfficialPredictionResult> {
   await assertActiveParticipant(userId);
   await upsertScores(userId, scores);
+  const completedMatches = await countCompletedMatches(userId);
 
   return {
     ok: true,
     saved: true,
-    completedMatches: await countCompletedMatches(userId),
+    completedMatches,
+    totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+    remainingMatches: Math.max(0, CURRENT_STAGE_TOTAL_MATCHES - completedMatches),
+    currentStage: CURRENT_PREDICTION_STAGE,
   };
 }
 
 export async function getOfficialPrediction(userId: string) {
   await assertActiveParticipant(userId);
   const supabase = getServiceSupabase();
+  const groupMatchIds = await getGroupMatchIds();
+  if (groupMatchIds.length === 0) {
+    return {
+      scores: [],
+      completedMatches: 0,
+      totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+      remainingMatches: CURRENT_STAGE_TOTAL_MATCHES,
+      currentStage: CURRENT_PREDICTION_STAGE,
+    };
+  }
 
   const { data, error } = await supabase
     .from("prediction_match_scores")
     .select("match_id, home_goals, away_goals, completed, updated_at")
     .eq("user_id", userId)
+    .in("match_id", groupMatchIds)
     .order("match_id", { ascending: true });
 
   if (error) {
@@ -201,10 +257,12 @@ export async function getOfficialPrediction(userId: string) {
         .from("prediction_match_scores")
         .select("match_id, home_goals, away_goals, updated_at")
         .eq("user_id", userId)
+        .in("match_id", groupMatchIds)
         .order("match_id", { ascending: true });
 
       if (fallback.error) throw fallback.error;
       const rows = fallback.data ?? [];
+      const completedMatches = rows.length;
       return {
         scores: rows.map((row) => ({
           matchId: String(row.match_id),
@@ -212,7 +270,10 @@ export async function getOfficialPrediction(userId: string) {
           awayScore: row.away_goals,
           completed: true,
         })),
-        completedMatches: rows.length,
+        completedMatches,
+        totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+        remainingMatches: Math.max(0, CURRENT_STAGE_TOTAL_MATCHES - completedMatches),
+        currentStage: CURRENT_PREDICTION_STAGE,
       };
     }
 
@@ -220,6 +281,7 @@ export async function getOfficialPrediction(userId: string) {
   }
 
   const rows = data ?? [];
+  const completedMatches = rows.filter((row) => row.completed ?? true).length;
   return {
     scores: rows.map((row) => ({
       matchId: String(row.match_id),
@@ -227,7 +289,10 @@ export async function getOfficialPrediction(userId: string) {
       awayScore: row.away_goals,
       completed: row.completed ?? true,
     })),
-    completedMatches: rows.filter((row) => row.completed ?? true).length,
+    completedMatches,
+    totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+    remainingMatches: Math.max(0, CURRENT_STAGE_TOTAL_MATCHES - completedMatches),
+    currentStage: CURRENT_PREDICTION_STAGE,
   };
 }
 
@@ -236,7 +301,9 @@ export async function getOfficialPredictionSummary(userId: string) {
 
   return {
     completedMatches,
-    remainingMatches: Math.max(0, 104 - completedMatches),
+    totalMatches: CURRENT_STAGE_TOTAL_MATCHES,
+    remainingMatches: Math.max(0, CURRENT_STAGE_TOTAL_MATCHES - completedMatches),
+    currentStage: CURRENT_PREDICTION_STAGE,
     groupsCompleted: Math.floor(completedMatches / 6),
   };
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   PaymentRequiredError,
+  PredictionStageLockedError,
   PredictionValidationError,
   syncOfficialPredictionDraft,
 } from "@/lib/server/predictions";
@@ -52,7 +53,14 @@ export async function POST(req: Request) {
     );
 
     if (payload.length === 0) {
-      return NextResponse.json({ ok: true, saved: false, completedMatches: 0 });
+      return NextResponse.json({
+        ok: true,
+        saved: false,
+        completedMatches: 0,
+        totalMatches: 72,
+        remainingMatches: 72,
+        currentStage: "group_stage",
+      });
     }
 
     const result = await syncOfficialPredictionDraft(
@@ -69,6 +77,13 @@ export async function POST(req: Request) {
     if (error instanceof PaymentRequiredError) {
       return NextResponse.json(
         { error: "payment_required", message: error.message },
+        { status: 403 },
+      );
+    }
+
+    if (error instanceof PredictionStageLockedError) {
+      return NextResponse.json(
+        { error: "prediction_stage_locked", message: error.message },
         { status: 403 },
       );
     }
