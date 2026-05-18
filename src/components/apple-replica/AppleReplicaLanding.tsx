@@ -120,7 +120,49 @@ export function AppleReplicaLanding() {
       {/* 2. CUENTA REGRESIVA */}
       <WorldCupCountdown />
 
-      {/* 3. PREMIO ACUMULADO */}
+      {/* 3. FORMATO MUNDIAL 2026 */}
+      <section className={styles.worldCupFormat}>
+        <div className={styles.worldCupFormatHeader}>
+          <p className={styles.sectionEyebrow}>FORMATO DEL TORNEO</p>
+          <h2>Cómo funciona el Mundial 2026</h2>
+          <p className={styles.worldCupFormatSubtitle}>Primero se juega la fase de grupos. Después llegan las eliminatorias.</p>
+          <div className={styles.worldCupFormatText}>
+            <p>El Mundial 2026 tiene 48 selecciones, 12 grupos de 4 equipos y 104 partidos totales. En la fase de grupos cada equipo juega 3 partidos, y esa primera etapa suma 72 partidos.</p>
+            <p>En Mundial entre Amigos arrancamos igual: primero se juega la fase de grupos. En esta etapa cargás tus 72 predicciones y competís por el ranking de fase de grupos.</p>
+            <p>Ese ranking define el premio principal: el 70% del pozo acumulado.</p>
+            <p>Después, en una segunda etapa, se habilitan las eliminatorias y los pronósticos especiales: Campeón del Mundial y Goleador del torneo. Esos dos premios son independientes y reparten el 15% del pozo cada uno.</p>
+          </div>
+        </div>
+        <div className={styles.worldCupFormatGrid}>
+          <div className={styles.worldCupFormatCard}>
+            <strong>48</strong>
+            <h3>selecciones</h3>
+            <p>El Mundial más grande hasta ahora.</p>
+          </div>
+          <div className={styles.worldCupFormatCard}>
+            <strong>12</strong>
+            <h3>grupos</h3>
+            <p>Cada grupo tiene 4 equipos.</p>
+          </div>
+          <div className={styles.worldCupFormatCard}>
+            <strong>72</strong>
+            <h3>partidos de grupos</h3>
+            <p>Es la primera etapa que cargás en tu predicción.</p>
+          </div>
+          <div className={styles.worldCupFormatCard}>
+            <strong>70%</strong>
+            <h3>ranking de grupos</h3>
+            <p>Define el premio principal del pozo.</p>
+          </div>
+          <div className={styles.worldCupFormatCard}>
+            <strong>2</strong>
+            <h3>segunda etapa</h3>
+            <p>Eliminatorias, campeón y goleador se habilitan más adelante.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. PREMIO ACUMULADO */}
       <section className={styles.prizeAccumulated}>
         <div className={styles.prizeAccumulatedInner}>
           <div className={styles.prizeAccumulatedContent}>
@@ -156,7 +198,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 4. DISTRIBUCIÓN DEL POZO */}
+      {/* 5. DISTRIBUCIÓN DEL POZO */}
       <section className={styles.prizeDistribution}>
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>DISTRIBUCIÓN DEL POZO ACUMULADO</p>
@@ -183,7 +225,7 @@ export function AppleReplicaLanding() {
         <p className={styles.distributionNote}>La primera etapa se cierra con la fase de grupos. Las eliminatorias, campeón y goleador se habilitarán más adelante para que todos puedan elegir con más información.</p>
       </section>
 
-      {/* 5. PUNTUACIÓN Y REGLAS */}
+      {/* 6. PUNTUACIÓN Y REGLAS */}
       <section className={styles.scoringRules}>
         <div className={styles.scoringCard}>
           <p className={styles.sectionEyebrow}>SISTEMA DE PUNTUACIÓN</p>
@@ -246,7 +288,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 6. NATURALEZA DEL JUEGO */}
+      {/* 7. NATURALEZA DEL JUEGO */}
       <section className={styles.socialGame}>
         <div className={styles.socialGameHeader}>
           <h2>Un juego entre amigos para vivir el Mundial distinto.</h2>
@@ -281,7 +323,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 7. CÓMO PARTICIPAR */}
+      {/* 8. CÓMO PARTICIPAR */}
       <section className={styles.howItWorks} id="como-funciona">
         <div className={styles.howItWorksHeader}>
           <h2 className={styles.howItWorksTitle}>Cómo funciona.</h2>
@@ -341,7 +383,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 8. QUÉ SE PREDICE */}
+      {/* 9. QUÉ SE PREDICE */}
       <section className={styles.predictionScope}>
         <div className={styles.predictionHeader}>
           <h2 className={styles.predictionTitle}>Tu predicción, etapa por etapa.</h2>
@@ -370,7 +412,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 9. GRUPOS PRIVADOS */}
+      {/* 10. GRUPOS PRIVADOS */}
       <section className={styles.privateGroups}>
         <div className={styles.groupsHeader}>
           <div className={styles.comingSoonBadge}>Próximamente</div>
@@ -399,7 +441,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 10. CTA FINAL */}
+      {/* 11. CTA FINAL */}
       <section className={styles.finalCtaSection}>
         <div className={styles.finalCtaContent}>
           <h2 className={styles.finalCtaTitle}>Tu Mundial empieza con una predicción.</h2>

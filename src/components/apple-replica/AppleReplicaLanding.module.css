@@ -1092,7 +1092,97 @@
   font-weight: 500;
 }
 
-/* 4. Prize Accumulated */
+/* 4. World Cup Format */
+.worldCupFormat {
+  width: 100%;
+  background: #ffffff;
+  padding: 100px 24px;
+  box-sizing: border-box;
+}
+
+.worldCupFormatHeader {
+  max-width: 980px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.worldCupFormatHeader h2 {
+  margin: 0;
+  color: #1d1d1f;
+  font-size: clamp(34px, 4.6vw, 58px);
+  line-height: 1.06;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.worldCupFormatSubtitle {
+  margin: 14px auto 0;
+  max-width: 680px;
+  color: #6e6e73;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.worldCupFormatText {
+  max-width: 820px;
+  margin: 28px auto 0;
+  display: grid;
+  gap: 12px;
+}
+
+.worldCupFormatText p {
+  margin: 0;
+  color: #424245;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 560;
+}
+
+.worldCupFormatGrid {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.worldCupFormatCard {
+  min-width: 0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 26px;
+  background: #f5f5f7;
+  padding: 26px;
+  box-sizing: border-box;
+}
+
+.worldCupFormatCard strong {
+  display: block;
+  color: #0071e3;
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 0.95;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  margin-bottom: 14px;
+}
+
+.worldCupFormatCard h3 {
+  margin: 0 0 8px;
+  color: #1d1d1f;
+  font-size: 19px;
+  line-height: 1.15;
+  font-weight: 850;
+}
+
+.worldCupFormatCard p {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 560;
+}
+
+/* 5. Prize Accumulated */
 .prizeAccumulated {
   width: 100%;
   background: #f5f5f7;
@@ -1772,7 +1862,7 @@
 }
 
 @media (max-width: 1068px) {
-  .howItWorksGrid3, .predictionGrid, .groupsGrid, .socialGameGrid {
+  .howItWorksGrid3, .predictionGrid, .groupsGrid, .socialGameGrid, .worldCupFormatGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1788,11 +1878,12 @@
 }
 
 @media (max-width: 734px) {
-  .howItWorksGrid3, .predictionGrid, .groupsGrid, .mockupGrid, .distributionGrid, .socialGameGrid {
+  .howItWorksGrid3, .predictionGrid, .groupsGrid, .mockupGrid, .distributionGrid, .socialGameGrid, .worldCupFormatGrid {
     grid-template-columns: 1fr;
   }
 
   .predictionScope,
+  .worldCupFormat,
   .prizeAccumulated,
   .profileSection,
   .privateGroups,
@@ -1807,7 +1898,9 @@
   .groupsGrid,
   .distributionGrid,
   .scoringRules,
-  .socialGame {
+  .socialGame,
+  .worldCupFormatGrid,
+  .worldCupFormatHeader {
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -1817,6 +1910,15 @@
   }
 
   .socialGameHeader p {
+    margin-left: 0;
+  }
+
+  .worldCupFormatHeader {
+    text-align: left;
+  }
+
+  .worldCupFormatSubtitle,
+  .worldCupFormatText {
     margin-left: 0;
   }
   
@@ -1865,7 +1967,8 @@
   .distributionCard,
   .scoringCard,
   .rulesCard,
-  .socialGameCard {
+  .socialGameCard,
+  .worldCupFormatCard {
     border-radius: 24px;
     padding: 24px;
   }
