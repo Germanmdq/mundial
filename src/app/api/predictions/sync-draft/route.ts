@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { saveUserPredictions } from "@/app/actions/predictions";
+import { createClient } from "@/lib/supabase/server";
+import {
+  PaymentRequiredError,
+  PredictionValidationError,
+  syncOfficialPredictionDraft,
+} from "@/lib/server/predictions";
 
 interface DraftPredictionItem {
   matchId?: number;
@@ -12,12 +17,21 @@ interface DraftPredictionItem {
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     
     // Accept array or object wrapper
     const draftItems: DraftPredictionItem[] = Array.isArray(body) 
       ? body 
-      : (body.draft || body.predictions || []);
+      : (body.scores || body.draft || body.predictions || []);
 
     const payload = draftItems.map((item: DraftPredictionItem) => {
       const matchId = item.matchId ?? item.match_id;
@@ -38,17 +52,31 @@ export async function POST(req: Request) {
     );
 
     if (payload.length === 0) {
-      return NextResponse.json({ success: true, message: "No valid items to sync" });
+      return NextResponse.json({ ok: true, saved: false, completedMatches: 0 });
     }
 
-    const result = await saveUserPredictions(payload);
+    const result = await syncOfficialPredictionDraft(
+      user.id,
+      payload.map((item) => ({
+        matchId: item.match_id,
+        homeScore: item.home_goals,
+        awayScore: item.away_goals,
+      })),
+    );
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json(result);
   } catch (error) {
+    if (error instanceof PaymentRequiredError) {
+      return NextResponse.json(
+        { error: "payment_required", message: error.message },
+        { status: 403 },
+      );
+    }
+
+    if (error instanceof PredictionValidationError) {
+      return NextResponse.json({ error: "invalid_prediction", message: error.message }, { status: 400 });
+    }
+
     console.error("[api:predictions:sync-draft]", error);
     return NextResponse.json({ error: "Could not sync draft" }, { status: 500 });
   }
