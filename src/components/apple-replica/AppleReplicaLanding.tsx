@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./AppleReplicaLanding.module.css";
 import { WorldCupCountdown } from "../home/WorldCupCountdown";
-import { PrizePoolBanner } from "../prizes/PrizePoolBanner";
 
 type PrizePoolState = {
   participants: number;
@@ -86,11 +85,129 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 1.5 BANNERS PRESTACIONES DE CONVERSIÓN */}
+      {/* 2. CUENTA REGRESIVA */}
       <WorldCupCountdown />
-      <PrizePoolBanner />
 
-      {/* 2. CÓMO PARTICIPAR */}
+      {/* 3. PREMIO ACUMULADO */}
+      <section className={styles.prizeAccumulated}>
+        <div className={styles.prizeAccumulatedInner}>
+          <div className={styles.prizeAccumulatedContent}>
+            <h2>El premio crece con cada participación.</h2>
+            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} al pozo oficial.</p>
+            <div className={styles.poolMetrics} aria-label="Contador del premio acumulado">
+              <div>
+                <span>Participantes</span>
+                <strong>{prizePool.participants}</strong>
+              </div>
+              <div>
+                <span>Pozo acumulado</span>
+                <strong>{formatARS(prizePool.poolARS)}</strong>
+              </div>
+              <div>
+                <span>Suma por participante</span>
+                <strong>{formatARS(prizePool.entryAmountARS)}</strong>
+              </div>
+            </div>
+            <p className={styles.poolNote}>El equivalente en dólar blue es aproximado y se calcula con la cotización de venta disponible.</p>
+            <div className={styles.prizeActions}>
+              <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar por el premio</Link>
+              <Link href="/reglas" className={styles.btnLink}>Ver reglas del premio</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. DISTRIBUCIÓN DEL POZO */}
+      <section className={styles.prizeDistribution}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>DISTRIBUCIÓN DEL POZO ACUMULADO</p>
+          <h2>Premios Oficiales del Torneo</h2>
+          <p>Todo lo recaudado mediante las inscripciones se acumula en un pozo común que se repartirá de la siguiente manera al finalizar la competencia:</p>
+        </div>
+        <div className={styles.distributionGrid}>
+          <div className={styles.distributionCard}>
+            <h3>Ranking general</h3>
+            <strong>70%</strong>
+            <span>Del pozo total</span>
+          </div>
+          <div className={styles.distributionCard}>
+            <h3>Campeón del Mundial</h3>
+            <strong>15%</strong>
+            <span>Del pozo total</span>
+          </div>
+          <div className={styles.distributionCard}>
+            <h3>Goleador del torneo</h3>
+            <strong>15%</strong>
+            <span>Del pozo total</span>
+          </div>
+        </div>
+        <p className={styles.distributionNote}>Campeón y goleador se habilitarán en segunda etapa y no suman puntos al ranking general. Participan por premios separados.</p>
+      </section>
+
+      {/* 5. PUNTUACIÓN Y REGLAS */}
+      <section className={styles.scoringRules}>
+        <div className={styles.scoringCard}>
+          <p className={styles.sectionEyebrow}>SISTEMA DE PUNTUACIÓN</p>
+          <h2>¿Cómo sumás puntos?</h2>
+          <div className={styles.scoreList}>
+            <div className={styles.scoreItem}>
+              <strong>5</strong>
+              <div>
+                <h3>Marcador Exacto</h3>
+                <p>Acertás el ganador/empate y la cantidad exacta de goles de ambos equipos. Ejemplo: pronóstico 2-1, resultado 2-1.</p>
+              </div>
+            </div>
+            <div className={styles.scoreItem}>
+              <strong>4</strong>
+              <div>
+                <h3>Tendencia + diferencia</h3>
+                <p>Acertás el ganador o empate y además acertás la diferencia exacta de goles. Ejemplo: pronóstico 3-1, resultado 2-0.</p>
+              </div>
+            </div>
+            <div className={styles.scoreItem}>
+              <strong>3</strong>
+              <div>
+                <h3>Solo tendencia</h3>
+                <p>Acertás únicamente si el partido termina en victoria local, visitante o empate. Ejemplo: pronóstico 2-1, resultado 1-0.</p>
+              </div>
+            </div>
+            <div className={styles.scoreItem}>
+              <strong>0</strong>
+              <div>
+                <h3>Incorrecto</h3>
+                <p>No acertás ni el resultado ni la tendencia del encuentro.</p>
+              </div>
+            </div>
+          </div>
+          <div className={styles.specialNote}>
+            <h3>Pronósticos Especiales</h3>
+            <p>Campeón y goleador no suman puntos al ranking general. Participan por premios separados y se habilitarán en segunda etapa.</p>
+          </div>
+        </div>
+
+        <div className={styles.rulesCard}>
+          <p className={styles.sectionEyebrow}>REGLAMENTO OFICIAL</p>
+          <h2>Reglas por Fase y Desempates</h2>
+          <div className={styles.ruleBlock}>
+            <h3>Fase de Grupos (Sin penales)</h3>
+            <p>Los encuentros de fase de grupos pueden terminar en empate tras los 90 minutos reglamentarios. El pronóstico es el resultado de los 90 minutos reglamentarios. No se consideran penales.</p>
+          </div>
+          <div className={styles.ruleBlock}>
+            <h3>Playoffs (Eliminatorias)</h3>
+            <p>Se habilitan en la segunda etapa.</p>
+          </div>
+          <div className={styles.ruleBlock}>
+            <h3>Jerarquía de desempate en ranking</h3>
+            <ol className={styles.tieList}>
+              <li>Mayor cantidad de marcadores exactos acertados (predicciones de 5 puntos).</li>
+              <li>Mayor cantidad de diferencias de gol correctas (predicciones de 4 puntos).</li>
+              <li>Fecha y hora de activación del pago de participación (quien pagó primero).</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CÓMO PARTICIPAR */}
       <section className={styles.howItWorks} id="como-funciona">
         <div className={styles.howItWorksHeader}>
           <h2 className={styles.howItWorksTitle}>Cómo funciona.</h2>
@@ -150,7 +267,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 3. QUÉ SE PREDICE */}
+      {/* 7. QUÉ SE PREDICE */}
       <section className={styles.predictionScope}>
         <div className={styles.predictionHeader}>
           <h2 className={styles.predictionTitle}>Tu predicción, etapa por etapa.</h2>
@@ -179,81 +296,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 4. PREMIO ACUMULADO */}
-      <section className={styles.prizeAccumulated}>
-        <div className={styles.prizeAccumulatedInner}>
-          <div className={styles.prizeAccumulatedContent}>
-            <h2>El premio crece con cada participación.</h2>
-            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} al pozo oficial.</p>
-            <div className={styles.poolMetrics} aria-label="Contador del premio acumulado">
-              <div>
-                <span>Participantes</span>
-                <strong>{prizePool.participants}</strong>
-              </div>
-              <div>
-                <span>Pozo acumulado</span>
-                <strong>{formatARS(prizePool.poolARS)}</strong>
-              </div>
-              <div>
-                <span>Suma por participante</span>
-                <strong>{formatARS(prizePool.entryAmountARS)}</strong>
-              </div>
-            </div>
-            <ul className={styles.prizeBullets}>
-              <li><span className="material-symbols-outlined">check_circle</span> Participás del premio general.</li>
-              <li><span className="material-symbols-outlined">check_circle</span> Tu predicción queda asociada a tu perfil.</li>
-              <li><span className="material-symbols-outlined">check_circle</span> Competís en el ranking global.</li>
-              <li><span className="material-symbols-outlined">check_circle</span> Por ahora sumás con la fase de grupos.</li>
-              <li><span className="material-symbols-outlined">check_circle</span> Campeón y goleador se habilitarán en segunda etapa.</li>
-            </ul>
-            <p className={styles.poolNote}>El equivalente en dólar blue es aproximado y se calcula con la cotización de venta disponible.</p>
-            <div className={styles.prizeActions}>
-              <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar por el premio</Link>
-              <Link href="/reglas" className={styles.btnLink}>Ver reglas del premio</Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. PERFIL Y CUENTA */}
-      <section className={styles.profileSection}>
-        <div className={styles.profileHeader}>
-          <h2>Tu perfil de jugador.</h2>
-          <p>Tu cuenta identifica tu participación y guarda tu progreso oficial cuando activás el acceso al pozo.</p>
-        </div>
-        <div className={styles.profileMockup}>
-          <div className={styles.mockupHeader}>
-            <div className={styles.mockupAvatar}></div>
-            <div className={styles.mockupInfo}>
-              <div className={styles.mockupName}>Nombre de usuario</div>
-              <div className={styles.mockupStatus}>Participación Activa</div>
-            </div>
-          </div>
-          <div className={styles.mockupGrid}>
-            <div className={styles.mockupStat}>
-              <span>Predicción</span>
-              <strong>Fase 1</strong>
-            </div>
-            <div className={styles.mockupStat}>
-              <span>Partidos</span>
-              <strong>72</strong>
-            </div>
-            <div className={styles.mockupStat}>
-              <span>Ranking global</span>
-              <strong>Activo</strong>
-            </div>
-            <div className={styles.mockupStat}>
-              <span>Próxima etapa</span>
-              <strong>Especiales</strong>
-            </div>
-          </div>
-          <div className={styles.mockupAction}>
-            <Link href="/mi-prediccion" className={styles.btnPrimary}>Crear mi predicción</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. GRUPOS PRIVADOS */}
+      {/* 8. GRUPOS PRIVADOS */}
       <section className={styles.privateGroups}>
         <div className={styles.groupsHeader}>
           <div className={styles.comingSoonBadge}>Próximamente</div>
@@ -282,7 +325,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 7. CTA FINAL */}
+      {/* 9. CTA FINAL */}
       <section className={styles.finalCtaSection}>
         <div className={styles.finalCtaContent}>
           <h2 className={styles.finalCtaTitle}>Tu Mundial empieza con una predicción.</h2>

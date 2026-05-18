@@ -18,7 +18,7 @@ export default async function PrediccionPage({ searchParams }: PrediccionPagePro
       <PageHero 
         eyebrow="Mi predicción"
         title="Armá tu Mundial."
-        description="Cargá tus resultados, seguí cada grupo y guardá tu camino al campeón."
+        description="Cargá tus resultados, seguí cada grupo y completá tu fase de grupos."
       />
       <PageSection>
         <PredictionScreen debugPrediction={debugPrediction} />

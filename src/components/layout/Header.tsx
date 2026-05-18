@@ -84,24 +84,24 @@ export function Header() {
           menuOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
         )}
       >
-        <div className="flex flex-col px-5 py-5 gap-1">
-          <Link href="/" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Inicio</Link>
-          <Link href="/equipos" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Equipos</Link>
-          <Link href="/ranking" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ranking</Link>
-          <Link href="/premios" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Premios</Link>
-          <Link href="/reglas" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Reglas</Link>
-          <Link href="/mi-prediccion" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
+        <div className="flex flex-col px-4 py-4 gap-1">
+          <Link href="/" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Inicio</Link>
+          <Link href="/equipos" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Equipos</Link>
+          <Link href="/ranking" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ranking</Link>
+          <Link href="/premios" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Premios</Link>
+          <Link href="/reglas" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Reglas</Link>
+          <Link href="/mi-prediccion" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
         
           <div className="mt-3 pt-4 border-t border-black/10 flex flex-col gap-3">
             {user ? (
-              <Link href="/cuenta" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+              <Link href="/cuenta" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
                 <div className="w-8 h-8 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[14px] uppercase">
                   {user.email?.charAt(0) || 'U'}
                 </div>
                 Cuenta
               </Link>
             ) : (
-              <Link href="/login" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ingresar</Link>
+              <Link href="/login" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ingresar</Link>
             )}
             <Link 
               href="/mi-prediccion" 
