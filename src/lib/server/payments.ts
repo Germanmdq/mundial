@@ -189,7 +189,11 @@ export async function activateUserParticipationFromPayment({ userId, provider, p
 
 export async function markParticipationPendingPayment(userId: string, provider: PaymentProvider, paymentId: PaymentId) {
   const supabase = getServiceSupabase();
-  await ensureUserParticipation(userId);
+  const participation = await ensureUserParticipation(userId);
+
+  if (isParticipationActive(participation)) {
+    return participation;
+  }
 
   const { data, error } = await supabase
     .from("user_participation")
@@ -207,6 +211,27 @@ export async function markParticipationPendingPayment(userId: string, provider: 
 
   if (error) throw error;
   return data;
+}
+
+export function isParticipationActive(participation: {
+  status?: string | null;
+  paid?: boolean | null;
+  payment_status?: string | null;
+} | null | undefined) {
+  return Boolean(
+    participation
+      && participation.status === "active"
+      && participation.paid === true
+      && participation.payment_status === "approved",
+  );
+}
+
+export function canStartPaymentFromParticipation(participation: {
+  status?: string | null;
+  paid?: boolean | null;
+  payment_status?: string | null;
+} | null | undefined) {
+  return !isParticipationActive(participation);
 }
 
 export async function getPaymentById(paymentId: PaymentId) {
@@ -263,10 +288,5 @@ export async function getParticipationForUser(userId: string) {
 export async function isUserParticipationActive(userId: string) {
   const participation = await getParticipationForUser(userId);
 
-  return Boolean(
-    participation
-      && participation.status === "active"
-      && participation.paid === true
-      && participation.payment_status === "approved",
-  );
+  return isParticipationActive(participation);
 }

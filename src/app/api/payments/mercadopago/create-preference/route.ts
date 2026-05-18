@@ -4,6 +4,7 @@ import { createMercadoPagoPreference } from "@/lib/server/mercadopago";
 import {
   createInternalPendingPayment,
   ensureUserParticipation,
+  isParticipationActive,
   markInternalPaymentPending,
   markParticipationPendingPayment,
   PRIZE_PRODUCT_CODE,
@@ -13,7 +14,15 @@ export async function POST(request: Request) {
   try {
     const user = await getAuthenticatedUser(request, "mercadopago");
 
-    await ensureUserParticipation(user.id);
+    const participation = await ensureUserParticipation(user.id);
+    const isActive = isParticipationActive(participation);
+
+    if (isActive) {
+      return NextResponse.json({
+        alreadyActive: true,
+        message: "Tu participación ya está activa.",
+      });
+    }
 
     const payment = await createInternalPendingPayment({
       userId: user.id,

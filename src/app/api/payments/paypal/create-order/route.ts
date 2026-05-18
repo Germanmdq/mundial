@@ -4,6 +4,8 @@ import { createPayPalOrder, PayPalApiError } from "@/lib/server/paypal";
 import {
   createInternalPendingPayment,
   ensureUserParticipation,
+  isParticipationActive,
+  canStartPaymentFromParticipation,
   markInternalPaymentPending,
   markParticipationPendingPayment,
   PRIZE_PRODUCT_CODE,
@@ -36,6 +38,8 @@ export async function POST(request: Request) {
     });
 
     const participation = await ensureUserParticipation(user.id);
+    const isActive = isParticipationActive(participation);
+    const canStartPayment = canStartPaymentFromParticipation(participation);
 
     console.info("[paypal:create-order:participation]", {
       requestId,
@@ -43,7 +47,17 @@ export async function POST(request: Request) {
       status: participation?.status ?? null,
       paid: participation?.paid ?? null,
       paymentStatus: participation?.payment_status ?? null,
+      isActive,
+      canStartPayment,
     });
+
+    if (isActive) {
+      return NextResponse.json({
+        alreadyActive: true,
+        message: "Tu participación ya está activa.",
+        requestId,
+      });
+    }
 
     const payment = await createInternalPendingPayment({
       userId: user.id,
