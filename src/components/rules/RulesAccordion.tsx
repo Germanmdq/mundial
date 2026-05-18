@@ -6,31 +6,39 @@ import { cn } from "@/lib/utils";
 const RULES_SECTIONS = [
   {
     title: "Naturaleza de la competencia",
-    content: "Mi Predicción Mundial 2026 es una competencia de habilidad basada en la predicción de resultados deportivos de la Copa Mundial de la FIFA 2026. No constituye un juego de azar ni apuestas."
+    content: "Mundial entre Amigos es una competencia de habilidad basada en la predicción de resultados deportivos de la Copa Mundial de la FIFA 2026. No constituye un juego de azar ni apuestas."
   },
   {
     title: "Participación",
-    content: "Podrá participar cualquier persona física que cumpla con los requisitos de edad mínima y abone la entrada única."
+    content: "Podrá participar cualquier persona física que cumpla con los requisitos de edad mínima y active su inscripción mediante el pago de participación oficial."
   },
   {
     title: "Edad mínima",
     content: "La participación está limitada a mayores de 18 años o según la legislación local vigente."
   },
   {
-    title: "Entrada",
-    content: "La entrada única tiene un valor de $5.000 ARS y otorga acceso a todas las fases de la competencia."
-  },
-  {
     title: "Carga de predicciones",
-    content: "Las predicciones deben cargarse hasta 15 minutos antes del inicio de cada partido. Una vez iniciado el encuentro, no se podrán realizar cambios."
+    content: "Las predicciones pueden realizarse y modificarse hasta 15 minutos antes del inicio de cada partido oficial. Una vez iniciado el encuentro, el sistema bloquea los cambios automáticamente."
   },
   {
     title: "Sistema de puntos",
-    content: "10 pts por resultado exacto. 5 pts por ganador correcto. 2 pts por goles de un equipo. Los Golden Matches duplican el puntaje total obtenido en dicho partido."
+    content: "Se otorgan puntos en base a los aciertos del marcador de la siguiente manera:\n\n• 6 Puntos: Marcador Exacto (ej: pronóstico 2-1 y partido termina 2-1).\n• 3 Puntos: Acierto de ganador o empate con diferencia de goles correcta (ej: pronóstico 3-1 y partido termina 2-0).\n• 2 Puntos: Acierto simple de ganador o empate (ej: pronóstico 2-1 y partido termina 1-0).\n• 10 Puntos: Acierto de Campeón del Mundo y Goleador del torneo (pronósticos especiales).\n\n*Los partidos dorados (Golden Matches) duplican los puntos obtenidos en dicho partido.*"
   },
   {
-    title: "Gran Premio Fase de Grupos",
-    content: "Se entregará un premio especial al primer puesto del ranking una vez finalizada la fase de grupos."
+    title: "Fase de Grupos (Sin penales)",
+    content: "Durante la Fase de Grupos, los partidos pueden terminar en empate tras los 90 minutos reglamentarios. No existe definición por penales. El pronóstico debe reflejar el marcador oficial al final del tiempo regular."
+  },
+  {
+    title: "Fases Eliminatorias (Playoffs)",
+    content: "En las fases eliminatorias (desde 16avos de final en adelante), el pronóstico aplica al resultado al finalizar el tiempo regular o la prórroga (120 minutos). Los penales solo sirven como desempate de avance para definir qué equipo clasifica a la siguiente ronda del torneo, pero no agregan goles adicionales al marcador oficial ni suman puntos de predicción extra."
+  },
+  {
+    title: "Distribución de Premios",
+    content: "El pozo acumulado oficial (formado por $5.000 ARS por participante activo) se distribuirá entre los tres primeros puestos de la tabla de clasificación general una vez concluido el Mundial:\n\n• 1º Puesto: 70% del pozo acumulado.\n• 2º Puesto: 15% del pozo acumulado.\n• 3º Puesto: 15% del pozo acumulado."
+  },
+  {
+    title: "Criterios de desempate",
+    content: "En caso de que dos o más participantes igualen en la puntuación general al finalizar el torneo, el ganador del puesto correspondiente se determinará aplicando la siguiente jerarquía:\n\n1. Mayor cantidad de marcadores exactos acertados (predicciones de 6 puntos).\n2. Mayor cantidad de diferencias de gol correctas (predicciones de 3 puntos).\n3. Fecha y hora de activación del pago de la inscripción (el participante que abonó primero su entrada oficial)."
   }
 ];
 
