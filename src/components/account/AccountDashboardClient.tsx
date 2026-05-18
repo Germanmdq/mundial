@@ -39,9 +39,15 @@ interface AccountDashboardClientProps {
   initialUser: AccountUser | null;
   initialSession: AccountSession | null;
   initialRanking: AccountRanking | null;
+  completedMatchesCount?: number;
 }
 
-export function AccountDashboardClient({ initialUser, initialSession, initialRanking }: AccountDashboardClientProps) {
+export function AccountDashboardClient({ 
+  initialUser, 
+  initialSession, 
+  initialRanking,
+  completedMatchesCount = 0
+}: AccountDashboardClientProps) {
   const [hasMounted, setHasMounted] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<"borrador" | "pendiente" | "activo">("borrador");
   const [localDraft, setLocalDraft] = useState<LocalDraft | null>(null);
@@ -72,10 +78,39 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
         if (res.ok) return res.json();
         throw new Error();
       })
-      .then((data) => {
+      .then(async (data) => {
         const status = data.participation?.status || data.status;
         if (status === "active") {
           setPaymentStatus("activo");
+
+          // Sync local draft immediately since user is active
+          const raw = localStorage.getItem(PREDICTION_DRAFT_KEY);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (parsed && parsed.scores && Object.keys(parsed.scores).length > 0) {
+                const payload = Object.entries(parsed.scores).map(([matchId, score]: [string, unknown]) => {
+                  const s = score as { home?: number; away?: number };
+                  return {
+                    match_id: Number(matchId),
+                    home_goals: typeof s?.home === "number" ? s.home : 0,
+                    away_goals: typeof s?.away === "number" ? s.away : 0
+                  };
+                });
+
+                if (payload.length > 0) {
+                  const { saveUserPredictions } = await import("@/app/actions/predictions");
+                  const res = await saveUserPredictions(payload);
+                  if (res.success) {
+                    localStorage.removeItem(PREDICTION_DRAFT_KEY);
+                    window.location.reload();
+                  }
+                }
+              }
+            } catch (e) {
+              console.error("Error auto-syncing draft on /cuenta mount", e);
+            }
+          }
         } else if (status === "pending" || status === "pending_payment") {
           setPaymentStatus("pendiente");
         } else {
@@ -160,7 +195,7 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
 
   // Logged in
   const isActive = paymentStatus === "activo";
-  const completedMatches = isActive ? (initialSession?.completed_matches || 0) : 0;
+  const completedMatches = isActive ? completedMatchesCount : 0;
   const remainingMatches = 104 - completedMatches;
   
   // Custom stats
@@ -335,7 +370,7 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
                   </Link>
                 </div>
                 <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-                  Elegí a tu goleador del torneo y la selección campeona del mundo. Estos pronósticos otorgan puntos especiales en la tabla global.
+                  Elegí a tu goleador del torneo y la selección campeona del mundo. Estos pronósticos participan por premios especiales separados: campeón del Mundial y goleador del torneo.
                 </p>
               </PremiumCard>
 
@@ -348,7 +383,7 @@ export function AccountDashboardClient({ initialUser, initialSession, initialRan
                   </Link>
                 </div>
                 <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-                  El premio acumulado crece con cada nuevo participante oficial. Se distribuyen premios al finalizar la fase de grupos y la final del torneo.
+                  El premio acumulado crece con cada nuevo participante oficial. Se distribuyen premios al 1º, 2º y 3º puesto al finalizar la competencia.
                 </p>
               </PremiumCard>
 

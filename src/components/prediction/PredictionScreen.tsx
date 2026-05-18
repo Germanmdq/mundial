@@ -13,7 +13,7 @@ export async function PredictionScreen() {
   if (user) {
     const supabase = await createClient();
     const { data: predictions } = await supabase
-      .from('predictions')
+      .from('prediction_match_scores')
       .select('match_id, home_goals, away_goals')
       .eq('user_id', user.id);
       
