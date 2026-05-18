@@ -5,10 +5,21 @@ import { getUser } from "@/lib/auth/getUser";
 import { PredictionForm } from "./PredictionForm";
 import { createClient } from "@/lib/supabase/server";
 
-export async function PredictionScreen() {
+type PredictionScreenProps = {
+  debugPrediction?: boolean;
+};
+
+export async function PredictionScreen({ debugPrediction = false }: PredictionScreenProps) {
   const user = await getUser();
-  const allMatches = await getMatches();
-  const matches = allMatches.filter(m => m.stage === 'GROUP');
+  const matches = await getMatches();
+
+  if (debugPrediction || process.env.NODE_ENV !== "production") {
+    console.info("[mi-prediccion:page]", {
+      matchesLength: matches.length,
+      firstMatch: matches[0]?.home_team ?? null,
+      lastMatch: matches[matches.length - 1]?.away_team ?? null,
+    });
+  }
 
   const initialScores: Record<number, { home: number; away: number }> = {};
   if (user) {

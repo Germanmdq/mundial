@@ -29,7 +29,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-[100] h-[56px] bg-white/90 backdrop-blur-xl border-b border-black/5">
       <nav 
-        className="max-w-[1100px] h-[56px] mx-auto px-6 grid items-center box-border"
+        className="max-w-[1100px] h-[56px] mx-auto px-4 md:px-6 flex items-center justify-between md:grid box-border"
         style={{ gridTemplateColumns: "auto 1fr auto", columnGap: "34px" }}
         aria-label="Menú principal"
       >
@@ -65,7 +65,7 @@ export function Header() {
         </div>
 
         <button
-          className="md:hidden flex flex-col justify-center items-center w-6 h-6 gap-[5px] relative"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] rounded-full hover:bg-black/[0.04] relative"
           type="button"
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
@@ -80,35 +80,37 @@ export function Header() {
       {/* Mobile Menu Overlay */}
       <div 
         className={cn(
-          "md:hidden fixed inset-x-0 bottom-0 bg-white z-[90] flex flex-col px-[40px] pt-[20px] pb-[40px] gap-[18px] overflow-y-auto transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          menuOpen ? "top-[56px] opacity-100 pointer-events-auto translate-y-0" : "top-[56px] opacity-0 pointer-events-none -translate-y-4"
+          "md:hidden fixed left-0 right-0 top-[56px] z-[90] bg-white border-b border-black/10 shadow-xl transition-all duration-200",
+          menuOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
         )}
       >
-        <Link href="/" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Inicio</Link>
-        <Link href="/equipos" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Equipos</Link>
-        <Link href="/ranking" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Ranking</Link>
-        <Link href="/premios" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Premios</Link>
-        <Link href="/reglas" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Reglas</Link>
-        <Link href="/mi-prediccion" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
+        <div className="flex flex-col px-5 py-5 gap-1">
+          <Link href="/" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Inicio</Link>
+          <Link href="/equipos" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Equipos</Link>
+          <Link href="/ranking" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ranking</Link>
+          <Link href="/premios" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Premios</Link>
+          <Link href="/reglas" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Reglas</Link>
+          <Link href="/mi-prediccion" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
         
-        <div className="mt-4 pt-4 border-t border-black/10 flex flex-col gap-4">
-          {user ? (
-            <Link href="/cuenta" className="text-[#1d1d1f] text-[20px] font-bold leading-none tracking-[-0.015em] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-              <div className="w-8 h-8 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[14px] uppercase">
-                {user.email?.charAt(0) || 'U'}
-              </div>
-              Mi Cuenta
+          <div className="mt-3 pt-4 border-t border-black/10 flex flex-col gap-3">
+            {user ? (
+              <Link href="/cuenta" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+                <div className="w-8 h-8 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[14px] uppercase">
+                  {user.email?.charAt(0) || 'U'}
+                </div>
+                Cuenta
+              </Link>
+            ) : (
+              <Link href="/login" className="w-full rounded-2xl px-4 py-3 text-[17px] font-semibold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ingresar</Link>
+            )}
+            <Link 
+              href="/mi-prediccion" 
+              className="mt-3 w-full h-12 rounded-full bg-[#0071e3] text-white text-[16px] font-bold flex items-center justify-center" 
+              onClick={() => setMenuOpen(false)}
+            >
+              Crear mi predicción
             </Link>
-          ) : (
-            <Link href="/login" className="text-[#1d1d1f] text-[20px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Ingresar</Link>
-          )}
-          <Link 
-            href="/mi-prediccion" 
-            className="mt-2 h-[44px] w-fit px-[18px] inline-flex items-center justify-center rounded-full bg-[#0071e3] text-white text-[15px] font-bold tracking-tight" 
-            onClick={() => setMenuOpen(false)}
-          >
-            Crear mi predicción
-          </Link>
+          </div>
         </div>
       </div>
     </header>
