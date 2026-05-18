@@ -119,26 +119,29 @@ export function PremiosClient({ initialPrizes, isLoggedIn }: PremiosClientProps 
                   Premios Oficiales del Torneo
                 </h3>
                 <p className="text-[#8e8e93] text-[15px] leading-relaxed mb-10">
-                  Todo lo recaudado mediante las inscripciones se acumula en un pozo común que se repartirá de la siguiente manera al finalizar la competencia:
+                  En esta primera etapa se compite con los 72 partidos de la fase de grupos. El ranking de fase de grupos define el 70% del pozo acumulado. Campeón del Mundial y goleador se habilitarán en segunda etapa y repartirán el 15% cada uno.
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-center">
                   <div className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 flex flex-col items-center justify-center">
-                    <span className="text-[#c9a227] text-[10px] font-black uppercase tracking-wider mb-2 block">Ranking General</span>
+                    <span className="text-[#c9a227] text-[10px] font-black uppercase tracking-wider mb-2 block">Ranking fase de grupos</span>
                     <span className="text-white font-display font-black text-5xl leading-none block mb-2">70%</span>
                     <span className="text-[12px] text-[#8e8e93]">Del pozo total</span>
                   </div>
                   <div className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 flex flex-col items-center justify-center">
                     <span className="text-white/60 text-[10px] font-black uppercase tracking-wider mb-2 block">Campeón del Mundial</span>
                     <span className="text-white font-display font-black text-5xl leading-none block mb-2">15%</span>
-                    <span className="text-[12px] text-[#8e8e93]">Del pozo total</span>
+                    <span className="text-[12px] text-[#8e8e93]">Se habilita en segunda etapa</span>
                   </div>
                   <div className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 flex flex-col items-center justify-center">
                     <span className="text-white/60 text-[10px] font-black uppercase tracking-wider mb-2 block">Goleador del torneo</span>
                     <span className="text-white font-display font-black text-5xl leading-none block mb-2">15%</span>
-                    <span className="text-[12px] text-[#8e8e93]">Del pozo total</span>
+                    <span className="text-[12px] text-[#8e8e93]">Se habilita en segunda etapa</span>
                   </div>
                 </div>
+                <p className="text-[#8e8e93] text-[12px] leading-relaxed mt-8 max-w-xl">
+                  La primera etapa se cierra con la fase de grupos. Las eliminatorias, campeón y goleador se habilitarán más adelante para que todos puedan elegir con más información.
+                </p>
               </div>
             </PremiumCard>
           </div>
@@ -188,7 +191,7 @@ export function PremiosClient({ initialPrizes, isLoggedIn }: PremiosClientProps 
                   <div className="w-8 h-8 rounded-full bg-amber-50 text-amber-600 font-bold text-sm flex items-center justify-center shrink-0">💡</div>
                   <div>
                     <h4 className="font-bold text-[#1d1d1f] text-[15px] mb-0.5">Pronósticos Especiales</h4>
-                    <p className="text-[13px] text-[#6e6e73] leading-relaxed">Campeón y goleador no suman puntos al ranking general. Participan por premios separados y se habilitarán en la segunda etapa.</p>
+                    <p className="text-[13px] text-[#6e6e73] leading-relaxed">Campeón y goleador no suman puntos al ranking de fase de grupos. Participan por premios separados y se habilitarán en segunda etapa.</p>
                   </div>
                 </div>
               </div>
@@ -210,7 +213,7 @@ export function PremiosClient({ initialPrizes, isLoggedIn }: PremiosClientProps 
                 <div>
                   <h4 className="font-bold text-[#1d1d1f] text-[15px] mb-1.5">Playoffs (Eliminatorias)</h4>
                   <p className="text-[13px] text-[#6e6e73] leading-relaxed">
-                    Se habilitan en la segunda etapa.
+                    Se habilitan en segunda etapa. No forman parte de la carga inicial.
                   </p>
                 </div>
 

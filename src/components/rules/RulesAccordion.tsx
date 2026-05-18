@@ -34,7 +34,7 @@ const RULES_SECTIONS = [
   },
   {
     title: "Distribución de Premios",
-    content: "El pozo acumulado oficial (formado por $5.000 ARS por participante activo) se distribuirá de la siguiente manera:\n\n• Ranking general: 70% del pozo acumulado.\n• Campeón del Mundial: 15% del pozo acumulado.\n• Goleador del torneo: 15% del pozo acumulado.\n\nCampeón y goleador no suman puntos al ranking general. Participan por premios separados y se habilitarán en la segunda etapa."
+    content: "En esta primera etapa se compite con los 72 partidos de la fase de grupos. El pozo acumulado oficial (formado por $5.000 ARS por participante activo) se distribuirá de la siguiente manera:\n\n• Ranking fase de grupos: 70% del pozo acumulado.\n• Campeón del Mundial: 15% del pozo acumulado, se habilita en segunda etapa.\n• Goleador del torneo: 15% del pozo acumulado, se habilita en segunda etapa.\n\nCampeón y goleador no suman puntos al ranking de fase de grupos. Participan por premios separados y se habilitarán en segunda etapa."
   },
   {
     title: "Criterios de desempate",

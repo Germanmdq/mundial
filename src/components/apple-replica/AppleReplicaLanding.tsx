@@ -128,7 +128,7 @@ export function AppleReplicaLanding() {
             <p className={styles.blueRateLine}>Dólar blue venta: {formatARS(prizePool.usdBlueRate)}</p>
             <p className={styles.poolNote}>El equivalente en dólares se calcula sobre el pozo en pesos usando la cotización de venta del dólar blue. El precio internacional de participación es {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
             <div className={styles.prizeActions}>
-              <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar por el premio</Link>
+              <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar en la fase de grupos</Link>
               <Link href="/reglas" className={styles.btnLink}>Ver reglas del premio</Link>
             </div>
           </div>
@@ -140,26 +140,26 @@ export function AppleReplicaLanding() {
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>DISTRIBUCIÓN DEL POZO ACUMULADO</p>
           <h2>Premios Oficiales del Torneo</h2>
-          <p>Todo lo recaudado mediante las inscripciones se acumula en un pozo común que se repartirá de la siguiente manera al finalizar la competencia:</p>
+          <p>En esta primera etapa se compite con los 72 partidos de la fase de grupos. El ranking de fase de grupos define el 70% del pozo acumulado. Campeón del Mundial y goleador se habilitarán en segunda etapa y repartirán el 15% cada uno.</p>
         </div>
         <div className={styles.distributionGrid}>
           <div className={styles.distributionCard}>
-            <h3>Ranking general</h3>
+            <h3>Ranking fase de grupos</h3>
             <strong>70%</strong>
             <span>Del pozo total</span>
           </div>
           <div className={styles.distributionCard}>
             <h3>Campeón del Mundial</h3>
             <strong>15%</strong>
-            <span>Del pozo total</span>
+            <span>Se habilita en segunda etapa</span>
           </div>
           <div className={styles.distributionCard}>
             <h3>Goleador del torneo</h3>
             <strong>15%</strong>
-            <span>Del pozo total</span>
+            <span>Se habilita en segunda etapa</span>
           </div>
         </div>
-        <p className={styles.distributionNote}>Campeón y goleador se habilitarán en segunda etapa y no suman puntos al ranking general. Participan por premios separados.</p>
+        <p className={styles.distributionNote}>La primera etapa se cierra con la fase de grupos. Las eliminatorias, campeón y goleador se habilitarán más adelante para que todos puedan elegir con más información.</p>
       </section>
 
       {/* 5. PUNTUACIÓN Y REGLAS */}
@@ -199,7 +199,7 @@ export function AppleReplicaLanding() {
           </div>
           <div className={styles.specialNote}>
             <h3>Pronósticos Especiales</h3>
-            <p>Campeón y goleador no suman puntos al ranking general. Participan por premios separados y se habilitarán en segunda etapa.</p>
+            <p>Campeón y goleador no suman puntos al ranking de fase de grupos. Participan por premios separados y se habilitarán en segunda etapa.</p>
           </div>
         </div>
 
@@ -212,7 +212,7 @@ export function AppleReplicaLanding() {
           </div>
           <div className={styles.ruleBlock}>
             <h3>Playoffs (Eliminatorias)</h3>
-            <p>Se habilitan en la segunda etapa.</p>
+            <p>Se habilitan en segunda etapa. No forman parte de la carga inicial.</p>
           </div>
           <div className={styles.ruleBlock}>
             <h3>Jerarquía de desempate en ranking</h3>
