@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createPayPalOrder } from "@/lib/server/paypal";
+import { createPayPalOrder, PayPalApiError } from "@/lib/server/paypal";
 import {
   createInternalPendingPayment,
   ensureUserParticipation,
@@ -8,6 +8,11 @@ import {
   markParticipationPendingPayment,
   PRIZE_PRODUCT_CODE,
 } from "@/lib/server/payments";
+
+type PayPalOrderResponse = {
+  id?: string;
+  links?: Array<{ rel: string; href: string }>;
+};
 
 export async function POST() {
   try {
@@ -31,9 +36,23 @@ export async function POST() {
     const order = await createPayPalOrder({
       userId: user.id,
       paymentId: payment.id,
-    });
+    }) as PayPalOrderResponse;
 
     const approveUrl = order.links?.find((link: { rel: string; href: string }) => link.rel === "approve")?.href;
+
+    if (!order.id || !approveUrl) {
+      return NextResponse.json(
+        {
+          error: "paypal_create_order_failed",
+          message: "PayPal did not return an approval URL.",
+          details: {
+            orderId: order.id ?? null,
+            links: order.links?.map((link) => ({ rel: link.rel, href: link.href })) ?? [],
+          },
+        },
+        { status: 502 },
+      );
+    }
 
     await markInternalPaymentPending(payment.id, {
       provider_order_id: order.id,
@@ -47,6 +66,26 @@ export async function POST() {
     });
   } catch (error) {
     console.error("[payments:paypal:create-order]", error);
-    return NextResponse.json({ error: "Could not create PayPal order" }, { status: 500 });
+
+    if (error instanceof PayPalApiError) {
+      return NextResponse.json(
+        {
+          error: "paypal_create_order_failed",
+          message: error.message,
+          details: error.details,
+        },
+        { status: error.status >= 400 && error.status < 600 ? error.status : 502 },
+      );
+    }
+
+    const message = error instanceof Error ? error.message : "Could not create PayPal order";
+    return NextResponse.json(
+      {
+        error: "paypal_create_order_failed",
+        message,
+        details: null,
+      },
+      { status: 500 },
+    );
   }
 }
