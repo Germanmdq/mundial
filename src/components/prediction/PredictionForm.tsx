@@ -813,7 +813,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                   </span>
                   <h2 className="text-3xl font-display font-extrabold text-[#1d1d1f] mb-4">¡Fase de grupos completada!</h2>
                   <p className="text-[#6e6e73] text-[16px] leading-relaxed mb-8 max-w-lg mx-auto">
-                    Ya cargaste tu predicción de la fase de grupos. Por ahora, completás los partidos de esta fase. Las eliminatorias, el campeón y el goleador se habilitarán en una segunda etapa.
+                    Ya cargaste tu predicción de la fase de grupos. Por ahora, completás los partidos de esta fase. Las etapas siguientes se habilitarán más adelante.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     {paymentStatus === "activo" ? (
@@ -1035,7 +1035,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           </div>
         )}
 
-        {/* Goleador tab removed */}
+        {/* Special predictions tab removed */}
 
       </div>
 
@@ -1610,7 +1610,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               <span className="text-white">{firstIncompleteIndex}</span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-[#aeaeb2]">Has Goleador Tab:</span>
+              <span className="text-[#aeaeb2]">Has Special Tab:</span>
               <span className="text-rose-400 font-bold">false</span>
             </div>
           </div>
