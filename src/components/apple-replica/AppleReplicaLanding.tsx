@@ -12,6 +12,8 @@ type PrizePoolState = {
   entryAmountUSD: number;
   usdBlueRate: number;
   poolUSDApproxBlue: number;
+  updatedAt: string | null;
+  updateMode: "daily";
 };
 
 const fallbackPrizePool: PrizePoolState = {
@@ -21,6 +23,8 @@ const fallbackPrizePool: PrizePoolState = {
   entryAmountUSD: 5,
   usdBlueRate: 1415,
   poolUSDApproxBlue: 235000 / 1415,
+  updatedAt: null,
+  updateMode: "daily",
 };
 
 const formatARS = (value: number) => `$${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
@@ -30,6 +34,17 @@ const formatUSD = (value: number) =>
     maximumFractionDigits: 2,
   })}`;
 const formatUSDPrice = (value: number) => `USD ${value.toLocaleString("es-AR", { maximumFractionDigits: 0 })}`;
+const formatDate = (value: string | null) => {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "America/Argentina/Buenos_Aires",
+  }).format(date);
+};
 
 // HOME PRINCIPAL REAL.
 // src/app/page.tsx renderiza este componente.
@@ -54,6 +69,8 @@ export function AppleReplicaLanding() {
           entryAmountUSD: Number(data.entryAmountUSD) || fallbackPrizePool.entryAmountUSD,
           usdBlueRate: Number(data.usdBlueRate ?? data.blueRate) || fallbackPrizePool.usdBlueRate,
           poolUSDApproxBlue: Number(data.poolUSDApproxBlue) || fallbackPrizePool.poolUSDApproxBlue,
+          updatedAt: typeof data.updatedAt === "string" ? data.updatedAt : fallbackPrizePool.updatedAt,
+          updateMode: "daily",
         });
       })
       .catch(() => {
@@ -108,14 +125,14 @@ export function AppleReplicaLanding() {
         <div className={styles.prizeAccumulatedInner}>
           <div className={styles.prizeAccumulatedContent}>
             <h2>El premio crece con cada participación.</h2>
-            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} ARS al pozo oficial. Desde el exterior, la participación es de {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
+            <p>Ya somos {prizePool.participants} participantes confirmados al último corte. El pozo se actualiza diariamente con las nuevas participaciones activas. En Argentina la participación es de {formatARS(prizePool.entryAmountARS)} ARS y desde el exterior es de {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
             <div className={styles.poolMetrics} aria-label="Contador del premio acumulado">
               <div>
-                <span>Participantes</span>
+                <span>Participantes confirmados</span>
                 <strong>{prizePool.participants}</strong>
               </div>
               <div>
-                <span>Pozo acumulado</span>
+                <span>Pozo acumulado al último corte</span>
                 <strong>{formatARS(prizePool.poolARS)} ARS</strong>
                 <small>Equivalente dólar blue: {formatUSD(prizePool.poolUSDApproxBlue)}</small>
               </div>
@@ -126,6 +143,10 @@ export function AppleReplicaLanding() {
               </div>
             </div>
             <p className={styles.blueRateLine}>Dólar blue venta: {formatARS(prizePool.usdBlueRate)}</p>
+            <p className={styles.poolUpdateLine}>
+              Actualización diaria. Las participaciones nuevas se reflejan en el próximo corte.
+              {formatDate(prizePool.updatedAt) ? ` Última actualización: ${formatDate(prizePool.updatedAt)}.` : ""}
+            </p>
             <p className={styles.poolNote}>El equivalente en dólares se calcula sobre el pozo en pesos usando la cotización de venta del dólar blue. El precio internacional de participación es {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
             <div className={styles.prizeActions}>
               <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar en la fase de grupos</Link>

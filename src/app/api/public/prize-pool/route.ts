@@ -36,6 +36,7 @@ export async function GET() {
       usdBlueRate,
       source,
       updatedAt: blueRate?.fechaActualizacion ?? new Date().toISOString(),
+      updateMode: "daily",
       blueRate: pool.blueRate,
       blueRateUpdatedAt: blueRate?.fechaActualizacion ?? null,
     });
@@ -52,6 +53,7 @@ export async function GET() {
       usdBlueRate: FALLBACK_DOLAR_BLUE_VENTA,
       source: "fallback",
       updatedAt: new Date().toISOString(),
+      updateMode: "daily",
       blueRate: FALLBACK_DOLAR_BLUE_VENTA,
       blueRateUpdatedAt: null,
     });

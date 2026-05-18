@@ -1170,11 +1170,20 @@
 
 .blueRateLine {
   max-width: none !important;
-  margin: -14px 0 28px !important;
+  margin: -14px 0 10px !important;
   color: rgba(255, 255, 255, 0.78) !important;
   font-size: 15px !important;
   line-height: 1.35 !important;
   font-weight: 800 !important;
+}
+
+.poolUpdateLine {
+  max-width: 680px !important;
+  margin: 0 0 28px !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  font-weight: 750 !important;
 }
 
 .prizeBullets {

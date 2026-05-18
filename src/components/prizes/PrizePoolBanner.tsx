@@ -85,14 +85,14 @@ export function PrizePoolBanner() {
     <div className="prizePoolBanner">
       <div className="bannerHeader text-center mb-8">
         <span className="bannerBadge">Premio Acumulado</span>
-        <h2 className="bannerTitle">Cada nueva participación suma al pozo oficial</h2>
-        <p className="bannerSub">Sumate hoy y competí por el gran acumulado del torneo.</p>
+        <h2 className="bannerTitle">Pozo actualizado al último corte</h2>
+        <p className="bannerSub">Actualización diaria. Las participaciones nuevas se reflejan en el próximo corte.</p>
       </div>
 
       <div className="metricsGrid">
         {/* Metric 1: Participants */}
         <div className="metricCard">
-          <span className="metricLabel">Participantes</span>
+          <span className="metricLabel">Participantes confirmados</span>
           <span className="metricValue text-[#0071e3]">
             {loading ? "--" : stats.participants}
           </span>
@@ -103,7 +103,7 @@ export function PrizePoolBanner() {
 
         {/* Metric 2: Pool ARS */}
         <div className="metricCard highlight">
-          <span className="metricLabel">Pozo acumulado</span>
+          <span className="metricLabel">Pozo acumulado al último corte</span>
           <span className="metricValue text-white">
             {formatARS(stats.poolARS)}
           </span>
@@ -137,6 +137,8 @@ export function PrizePoolBanner() {
 
       <div className="bannerFooter">
         <p className="footerText">
+          Actualización diaria. Las participaciones nuevas se reflejan en el próximo corte.
+          <br />
           * El equivalente en dólares se calcula sobre el pozo en pesos usando la cotización de venta del dólar blue. El precio internacional de participación es {formatUSDPrice(stats.entryAmountUSD)}.
         </p>
       </div>
