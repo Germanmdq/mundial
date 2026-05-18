@@ -58,6 +58,8 @@ export const TEAM_DISPLAY_NAMES_ES: Record<string, string> = {
   "Venezuela": "Venezuela",
   "Bosnia-Herzegovina": "Bosnia y Herzegovina",
   "Bosnia and Herzegovina": "Bosnia y Herzegovina",
+  "Norway": "Noruega",
+  "Wales": "Gales",
 };
 
 export const TEAM_FLAGS: Record<string, string> = {
@@ -70,8 +72,9 @@ export const TEAM_FLAGS: Record<string, string> = {
   "USA": "🇺🇸",
   "Canada": "🇨🇦",
   "Germany": "🇩🇪",
-  "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "England": "🏴",
+  "Scotland": "🏴",
+  "Wales": "🏴",
   "Türkiye": "🇹🇷",
   "Turkey": "🇹🇷",
   "Japan": "🇯🇵",
@@ -120,11 +123,21 @@ export const TEAM_FLAGS: Record<string, string> = {
   "Venezuela": "🇻🇪",
   "Bosnia-Herzegovina": "🇧🇦",
   "Bosnia and Herzegovina": "🇧🇦",
+  "Norway": "🇳🇴",
 };
 
 export function getTeamDisplayName(name?: string | null): string {
   if (!name) return "Equipo por definir";
-  return TEAM_DISPLAY_NAMES_ES[name] ?? name;
+  
+  const exactMatch = TEAM_DISPLAY_NAMES_ES[name];
+  if (exactMatch) return exactMatch;
+
+  const lowerName = name.toLowerCase().trim();
+  for (const [key, value] of Object.entries(TEAM_DISPLAY_NAMES_ES)) {
+    if (key.toLowerCase() === lowerName) return value;
+  }
+
+  return name;
 }
 
 export function getTeamDisplayCode(code?: string | null, name?: string | null) {
@@ -140,7 +153,16 @@ export function getTeamDisplayCode(code?: string | null, name?: string | null) {
 
 export function getTeamFlag(name: string | null): string | null {
   if (!name) return null;
-  return TEAM_FLAGS[name] || null;
+  
+  const exactMatch = TEAM_FLAGS[name];
+  if (exactMatch) return exactMatch;
+
+  const lowerName = name.toLowerCase().trim();
+  for (const [key, value] of Object.entries(TEAM_FLAGS)) {
+    if (key.toLowerCase() === lowerName) return value;
+  }
+
+  return null;
 }
 
 export function getTeamCode(name: string | null): string {

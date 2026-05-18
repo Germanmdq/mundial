@@ -33,12 +33,13 @@ export type Match = {
   sort_order: number | null
 }
 
-/** Read all matches ordered by kickoff. Never writes. */
+/** Read matches enabled for the current prediction phase. Never writes. */
 export async function getMatches(): Promise<Match[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('matches')
     .select('*')
+    .eq('stage', 'GROUP')
     .order('match_number', { ascending: true, nullsFirst: false })
     .order('sort_order', { ascending: true })
 
