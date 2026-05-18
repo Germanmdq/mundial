@@ -51,6 +51,7 @@ export function PrizePoolBanner() {
       maximumFractionDigits: 2,
     }).format(amount);
   };
+  const formatUSDPrice = (amount: number) => `USD ${amount.toLocaleString("es-AR", { maximumFractionDigits: 0 })}`;
 
   const stats = calculatePrizePool({
     activeParticipants: activeCount,
@@ -107,27 +108,25 @@ export function PrizePoolBanner() {
             {formatARS(stats.poolARS)}
           </span>
           <span className="metricDesc">
-            {stats.poolUSDBlue !== null
-              ? `USD aprox. ${formatUSD(stats.poolUSDBlue)}`
+            {stats.poolUSDApproxBlue !== null
+              ? `Equivalente dólar blue: USD aprox. ${formatUSD(stats.poolUSDApproxBlue)}`
               : "USD blue en actualización"}
           </span>
         </div>
 
         {/* Metric 3: USD Blue Equivalent */}
         <div className="metricCard">
-          <span className="metricLabel">Suma por persona</span>
+          <span className="metricLabel">Valor por participación</span>
           <span className="metricValue text-[#30d158]">
             {loading ? (
               <span className="text-sm font-semibold opacity-70">Cargando...</span>
-            ) : stats.entryAmountUSDApprox !== null ? (
+            ) : (
               <>
-                {formatARS(stats.entryAmountARS)}
+                Argentina: {formatARS(stats.entryAmountARS)}
                 <small className="block text-sm font-bold text-[#8e8e93] mt-1">
-                  USD aprox. {formatUSD(stats.entryAmountUSDApprox)}
+                  Exterior: {formatUSDPrice(stats.entryAmountUSD)}
                 </small>
               </>
-            ) : (
-              <span className="text-sm font-semibold opacity-70 text-amber-500">Cargando...</span>
             )}
           </span>
           <span className="metricDesc text-[#8e8e93]">
@@ -138,7 +137,7 @@ export function PrizePoolBanner() {
 
       <div className="bannerFooter">
         <p className="footerText">
-          * Calculado con la cotización de venta del dólar blue del día provista por DolarAPI. El valor reflejado en dólares es de carácter informativo y aproximado.
+          * El equivalente en dólares se calcula sobre el pozo en pesos usando la cotización de venta del dólar blue. El precio internacional de participación es {formatUSDPrice(stats.entryAmountUSD)}.
         </p>
       </div>
 

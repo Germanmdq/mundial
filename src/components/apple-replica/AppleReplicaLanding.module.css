@@ -177,19 +177,22 @@
 }
 
 .heroContentRight {
-  width: 300px;
-  height: 76px;
+  width: auto;
+  min-width: 0;
+  height: auto;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px 12px 26px;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
   margin-bottom: 10px;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .priceCopy {
@@ -672,7 +675,7 @@
   }
 
   .heroContentRight {
-    width: 290px;
+    width: auto;
   }
 
   .howItWorksGrid {
@@ -696,7 +699,7 @@
   }
 
   .heroContentRight {
-    width: 280px;
+    width: auto;
   }
 
   .prizeCard {
@@ -957,7 +960,8 @@
 
 .heroBtnPrimary {
   height: 48px;
-  padding: 0 24px;
+  padding: 0 22px;
+  min-width: max-content;
   border-radius: 999px;
   background: #0071e3;
   color: #ffffff;
@@ -977,7 +981,8 @@
 
 .heroBtnSecondary {
   height: 48px;
-  padding: 0 24px;
+  padding: 0 22px;
+  min-width: max-content;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
@@ -1715,6 +1720,9 @@
   }
   
   .heroContentRight {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
     flex-direction: column;
     height: auto !important;
     gap: 12px;

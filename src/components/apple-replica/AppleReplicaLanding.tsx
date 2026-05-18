@@ -9,18 +9,18 @@ type PrizePoolState = {
   participants: number;
   poolARS: number;
   entryAmountARS: number;
+  entryAmountUSD: number;
   usdBlueRate: number;
-  poolUSDApprox: number;
-  entryAmountUSDApprox: number;
+  poolUSDApproxBlue: number;
 };
 
 const fallbackPrizePool: PrizePoolState = {
   participants: 47,
   poolARS: 235000,
   entryAmountARS: 5000,
+  entryAmountUSD: 5,
   usdBlueRate: 1415,
-  poolUSDApprox: 235000 / 1415,
-  entryAmountUSDApprox: 5000 / 1415,
+  poolUSDApproxBlue: 235000 / 1415,
 };
 
 const formatARS = (value: number) => `$${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
@@ -29,6 +29,7 @@ const formatUSD = (value: number) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+const formatUSDPrice = (value: number) => `USD ${value.toLocaleString("es-AR", { maximumFractionDigits: 0 })}`;
 
 // HOME PRINCIPAL REAL.
 // src/app/page.tsx renderiza este componente.
@@ -50,9 +51,9 @@ export function AppleReplicaLanding() {
           participants: Number(data.participants) || fallbackPrizePool.participants,
           poolARS: Number(data.poolARS) || fallbackPrizePool.poolARS,
           entryAmountARS: Number(data.entryAmountARS) || fallbackPrizePool.entryAmountARS,
+          entryAmountUSD: Number(data.entryAmountUSD) || fallbackPrizePool.entryAmountUSD,
           usdBlueRate: Number(data.usdBlueRate ?? data.blueRate) || fallbackPrizePool.usdBlueRate,
-          poolUSDApprox: Number(data.poolUSDApprox ?? data.poolUSDBlue) || fallbackPrizePool.poolUSDApprox,
-          entryAmountUSDApprox: Number(data.entryAmountUSDApprox) || fallbackPrizePool.entryAmountUSDApprox,
+          poolUSDApproxBlue: Number(data.poolUSDApproxBlue) || fallbackPrizePool.poolUSDApproxBlue,
         });
       })
       .catch(() => {
@@ -107,7 +108,7 @@ export function AppleReplicaLanding() {
         <div className={styles.prizeAccumulatedInner}>
           <div className={styles.prizeAccumulatedContent}>
             <h2>El premio crece con cada participación.</h2>
-            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} al pozo oficial.</p>
+            <p>Ya somos {prizePool.participants} participantes. Cada nueva participación activa suma {formatARS(prizePool.entryAmountARS)} ARS al pozo oficial. Desde el exterior, la participación es de {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
             <div className={styles.poolMetrics} aria-label="Contador del premio acumulado">
               <div>
                 <span>Participantes</span>
@@ -116,16 +117,16 @@ export function AppleReplicaLanding() {
               <div>
                 <span>Pozo acumulado</span>
                 <strong>{formatARS(prizePool.poolARS)} ARS</strong>
-                <small>{formatUSD(prizePool.poolUSDApprox)}</small>
+                <small>Equivalente dólar blue: {formatUSD(prizePool.poolUSDApproxBlue)}</small>
               </div>
               <div>
-                <span>Suma por participante</span>
-                <strong>{formatARS(prizePool.entryAmountARS)} ARS</strong>
-                <small>{formatUSD(prizePool.entryAmountUSDApprox)}</small>
+                <span>Valor por participación</span>
+                <strong>Argentina: {formatARS(prizePool.entryAmountARS)} ARS</strong>
+                <small>Exterior: {formatUSDPrice(prizePool.entryAmountUSD)}</small>
               </div>
             </div>
             <p className={styles.blueRateLine}>Dólar blue venta: {formatARS(prizePool.usdBlueRate)}</p>
-            <p className={styles.poolNote}>El equivalente en dólar blue es aproximado y se calcula con la cotización de venta disponible.</p>
+            <p className={styles.poolNote}>El equivalente en dólares se calcula sobre el pozo en pesos usando la cotización de venta del dólar blue. El precio internacional de participación es {formatUSDPrice(prizePool.entryAmountUSD)}.</p>
             <div className={styles.prizeActions}>
               <Link href="/mi-prediccion" className={styles.btnPrimary}>Participar por el premio</Link>
               <Link href="/reglas" className={styles.btnLink}>Ver reglas del premio</Link>

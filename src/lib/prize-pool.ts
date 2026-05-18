@@ -26,26 +26,21 @@ export function calculatePrizePool({
   const championPrizeARS = poolARS * (PRIZE_DISTRIBUTION.champion / 100);
   const topScorerPrizeARS = poolARS * (PRIZE_DISTRIBUTION.topScorer / 100);
 
-  const poolUSDBlue =
+  const poolUSDApproxBlue =
     dolarBlueVenta && dolarBlueVenta > 0
       ? poolARS / dolarBlueVenta
-      : null;
-  const entryAmountUSDApprox =
-    dolarBlueVenta && dolarBlueVenta > 0
-      ? ENTRY_AMOUNT_ARS / dolarBlueVenta
       : null;
 
   return {
     participants,
     poolARS,
-    poolUSDBlue,
-    poolUSDApprox: poolUSDBlue,
-    entryAmountUSDApprox,
+    poolUSDApproxBlue,
     blueRate: dolarBlueVenta ?? null,
     rankingPrizeARS,
     championPrizeARS,
     topScorerPrizeARS,
     entryAmountARS: ENTRY_AMOUNT_ARS,
+    entryAmountUSD: ENTRY_AMOUNT_USD,
     distribution: PRIZE_DISTRIBUTION,
   };
 }
