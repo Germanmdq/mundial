@@ -225,7 +225,42 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 6. CÓMO PARTICIPAR */}
+      {/* 6. NATURALEZA DEL JUEGO */}
+      <section className={styles.socialGame}>
+        <div className={styles.socialGameHeader}>
+          <h2>Un juego entre amigos para vivir el Mundial distinto.</h2>
+          <p>
+            Mundial entre Amigos no es una plataforma de apuestas. Es una competencia social de predicciones: cargás tus resultados, seguís la fase de grupos, comparás tu ranking con otros participantes y competís por el pozo acumulado.
+          </p>
+          <p>
+            La idea es simple: divertirse, discutir resultados, sufrir cada gol y tener un premio real para hacerlo más emocionante.
+          </p>
+        </div>
+        <div className={styles.socialGameGrid}>
+          <div className={styles.socialGameCard}>
+            <span className="material-symbols-outlined">groups</span>
+            <h3>Jugás con amigos</h3>
+            <p>Compartís la emoción del Mundial en una competencia simple y social.</p>
+          </div>
+          <div className={styles.socialGameCard}>
+            <span className="material-symbols-outlined">psychology_alt</span>
+            <h3>No es azar</h3>
+            <p>Ganás puntos por tus predicciones, no por una ruleta ni por una apuesta contra la casa.</p>
+          </div>
+          <div className={styles.socialGameCard}>
+            <span className="material-symbols-outlined">savings</span>
+            <h3>Hay premio acumulado</h3>
+            <p>Cada participación activa suma al pozo oficial.</p>
+          </div>
+          <div className={styles.socialGameCard}>
+            <span className="material-symbols-outlined">flag</span>
+            <h3>Primera etapa</h3>
+            <p>Ahora se juega la fase de grupos. Después se habilitan eliminatorias, campeón y goleador.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CÓMO PARTICIPAR */}
       <section className={styles.howItWorks} id="como-funciona">
         <div className={styles.howItWorksHeader}>
           <h2 className={styles.howItWorksTitle}>Cómo funciona.</h2>
@@ -285,7 +320,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 7. QUÉ SE PREDICE */}
+      {/* 8. QUÉ SE PREDICE */}
       <section className={styles.predictionScope}>
         <div className={styles.predictionHeader}>
           <h2 className={styles.predictionTitle}>Tu predicción, etapa por etapa.</h2>
@@ -314,7 +349,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 8. GRUPOS PRIVADOS */}
+      {/* 9. GRUPOS PRIVADOS */}
       <section className={styles.privateGroups}>
         <div className={styles.groupsHeader}>
           <div className={styles.comingSoonBadge}>Próximamente</div>
@@ -343,7 +378,7 @@ export function AppleReplicaLanding() {
         </div>
       </section>
 
-      {/* 9. CTA FINAL */}
+      {/* 10. CTA FINAL */}
       <section className={styles.finalCtaSection}>
         <div className={styles.finalCtaContent}>
           <h2 className={styles.finalCtaTitle}>Tu Mundial empieza con una predicción.</h2>

@@ -42,6 +42,9 @@ export function PrizePaymentOptions({ compact = false, source: _source = "predic
           <p className="text-[#6e6e73] text-[13px] leading-relaxed max-w-sm mx-auto">
             Guardá tu predicción oficial y competí por el premio acumulado.
           </p>
+          <p className="mt-3 text-[#6e6e73] text-[12px] leading-relaxed max-w-md mx-auto">
+            Activar tu participación te permite guardar tu predicción oficial, completar la fase de grupos y competir por el pozo acumulado. Es un juego social de predicciones entre amigos.
+          </p>
         </div>
 
         {error && (

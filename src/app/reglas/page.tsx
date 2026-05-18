@@ -13,7 +13,23 @@ export default function ReglasPage() {
         description="Conocé cómo se suman los puntos, cómo se definen los empates y cómo se otorgan los premios."
       />
       <PageSection>
-        <div className="max-w-[720px] mx-auto">
+        <div className="max-w-[760px] mx-auto">
+          <PremiumCard className="mb-6">
+            <div className="space-y-4">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#0071e3]">
+                Naturaleza del juego
+              </p>
+              <h2 className="font-display text-[28px] font-extrabold leading-tight tracking-tight text-[#1d1d1f]">
+                Una competencia recreativa de predicciones deportivas.
+              </h2>
+              <p className="text-[15px] font-semibold leading-7 text-[#5f6065]">
+                Mundial entre Amigos es una competencia recreativa de predicciones deportivas entre participantes. El resultado depende de los pronósticos cargados por cada usuario y del sistema de puntuación publicado.
+              </p>
+              <p className="text-[15px] font-semibold leading-7 text-[#5f6065]">
+                No se trata de una apuesta contra la plataforma. La plataforma organiza el juego, registra las predicciones, calcula el ranking y administra el pozo acumulado según las reglas informadas.
+              </p>
+            </div>
+          </PremiumCard>
           <PremiumCard noPadding>
             <RulesAccordion />
           </PremiumCard>

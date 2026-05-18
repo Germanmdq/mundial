@@ -1405,6 +1405,81 @@
   margin-top: 8px;
 }
 
+/* 6. Social Game */
+.socialGame {
+  width: 100%;
+  background: #ffffff;
+  padding: 100px 24px;
+  box-sizing: border-box;
+}
+
+.socialGameHeader {
+  max-width: 920px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.socialGameHeader h2 {
+  margin: 0 0 18px;
+  color: #1d1d1f;
+  font-size: clamp(34px, 4.5vw, 56px);
+  line-height: 1.08;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.socialGameHeader p {
+  margin: 0 auto;
+  max-width: 780px;
+  color: #5f6065;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 560;
+}
+
+.socialGameHeader p + p {
+  margin-top: 14px;
+}
+
+.socialGameGrid {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.socialGameCard {
+  min-width: 0;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 28px;
+  background: #f5f5f7;
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+.socialGameCard span {
+  color: #0071e3;
+  font-size: 34px;
+  margin-bottom: 18px;
+}
+
+.socialGameCard h3 {
+  margin: 0 0 10px;
+  color: #1d1d1f;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 850;
+}
+
+.socialGameCard p {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 560;
+}
+
 .btnPrimary {
   height: 48px;
   padding: 0 28px;
@@ -1681,7 +1756,7 @@
 }
 
 @media (max-width: 1068px) {
-  .howItWorksGrid3, .predictionGrid, .groupsGrid {
+  .howItWorksGrid3, .predictionGrid, .groupsGrid, .socialGameGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1697,7 +1772,7 @@
 }
 
 @media (max-width: 734px) {
-  .howItWorksGrid3, .predictionGrid, .groupsGrid, .mockupGrid, .distributionGrid {
+  .howItWorksGrid3, .predictionGrid, .groupsGrid, .mockupGrid, .distributionGrid, .socialGameGrid {
     grid-template-columns: 1fr;
   }
 
@@ -1706,7 +1781,8 @@
   .profileSection,
   .privateGroups,
   .prizeDistribution,
-  .scoringRules {
+  .scoringRules,
+  .socialGame {
     padding: 72px 0;
   }
 
@@ -1714,9 +1790,18 @@
   .predictionGrid,
   .groupsGrid,
   .distributionGrid,
-  .scoringRules {
+  .scoringRules,
+  .socialGame {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .socialGameHeader {
+    text-align: left;
+  }
+
+  .socialGameHeader p {
+    margin-left: 0;
   }
   
   .heroContentRight {
@@ -1763,7 +1848,8 @@
 
   .distributionCard,
   .scoringCard,
-  .rulesCard {
+  .rulesCard,
+  .socialGameCard {
     border-radius: 24px;
     padding: 24px;
   }
