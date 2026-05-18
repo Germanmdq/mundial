@@ -3,16 +3,16 @@ import React from "react";
 
 const STEPS = [
   { num:"01", icon:"edit_note",   title:"Creás tu predicción gratis",       desc:"Probás 6 partidos gratis para sentir la experiencia sin pagar." },
-  { num:"02", icon:"sports_soccer", title:"Cargás resultados y clasificados", desc:"Partido a partido, grupo a grupo, armás tu llave completa." },
-  { num:"03", icon:"emoji_events", title:"Finalizás tu Mundial",             desc:"Elegís tu campeón, tu goleador y confirmás tu predicción." },
+  { num:"02", icon:"sports_soccer", title:"Cargás resultados", desc:"Partido a partido, grupo a grupo, completás tu fixture." },
+  { num:"03", icon:"emoji_events", title:"Finalizás tu fase de grupos",      desc:"Completás los 72 partidos y confirmás tu predicción." },
   { num:"04", icon:"stars",        title:"Activás tu participación oficial", desc:"Un solo pago. Entrás al ranking real y competís por premios." },
   { num:"05", icon:"leaderboard",  title:"Competís y ganás",                desc:"Cada acierto suma puntos. Los mejores de cada fase ganan." },
 ];
 
 const POINTS = [
-  { label:"Resultado Exacto", desc:"Acertás el marcador final (ej: 2-1)", pts:"10 pts" },
-  { label:"Ganador / Empate", desc:"Acertás quién gana pero no los goles", pts:"5 pts" },
-  { label:"Clasificado",      desc:"Acertás el equipo que pasa de ronda",  pts:"3 pts" },
+  { label:"Marcador Exacto", desc:"Acertás el resultado exacto (ej: 2-1)", pts:"5 pts" },
+  { label:"Diferencia de Goles", desc:"Acertás tendencia y diferencia (ej: 2-1 y sale 1-0)", pts:"4 pts" },
+  { label:"Solo Tendencia",      desc:"Acertás ganador o empate (ej: 2-1 y sale 3-0)",  pts:"3 pts" },
   { label:"Golden Match",     desc:"Puntos dobles en partidos seleccionados", pts:"×2 Bonus" },
 ];
 
@@ -27,7 +27,7 @@ export function HowItWorks() {
               { icon:"edit_note",   bg:"#e8f4e8", ic:"#34a853", title:"Primero probás tu Mundial",
                 text:"Probá 6 partidos gratis. Experimentá cargar tus resultados de forma local antes de activar tu participación." },
               { icon:"emoji_events", bg:"#e8f0fd", ic:"#0071e3", title:"Después activás tu participación",
-                text:"Para completar los 104 partidos, guardar tu predicción oficial y competir por el premio acumulado, activá tu participación." },
+                text:"Para completar la fase de grupos, guardar tu predicción oficial y competir por el premio acumulado, activá tu participación." },
             ].map((c) => (
               <div key={c.title} className="bg-white rounded-3xl p-8 border border-[#e5e5e7] shadow-sm">
                 <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-5" style={{ background:c.bg }}>

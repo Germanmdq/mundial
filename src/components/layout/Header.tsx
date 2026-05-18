@@ -84,6 +84,7 @@ export function Header() {
           menuOpen ? "top-[56px] opacity-100 pointer-events-auto translate-y-0" : "top-[56px] opacity-0 pointer-events-none -translate-y-4"
         )}
       >
+        <Link href="/" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Inicio</Link>
         <Link href="/#como-funciona" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Cómo funciona</Link>
         <Link href="/equipos" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Equipos</Link>
         <Link href="/ranking" className="text-[#1d1d1f] text-[24px] font-bold leading-none tracking-[-0.015em]" onClick={() => setMenuOpen(false)}>Ranking</Link>

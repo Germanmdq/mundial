@@ -101,7 +101,7 @@ export function PrizePoolBanner() {
             {loading ? "--" : stats.participants}
           </span>
           <span className="metricDesc">
-            {stats.participants === 47 ? "Base inicial" : "Participaciones confirmadas"}
+            Participaciones confirmadas
           </span>
         </div>
 

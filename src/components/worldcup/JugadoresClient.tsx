@@ -198,8 +198,8 @@ export function JugadoresClient({ teams, players, queryTeamId }: JugadoresClient
             <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Grupos</span>
           </div>
           <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
-            <span className="text-[32px] font-black text-[#0071e3] block leading-none">104</span>
-            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Partidos</span>
+            <span className="text-[32px] font-black text-[#0071e3] block leading-none">72</span>
+            <span className="text-[12px] font-bold text-[#8e8e93] mt-2 block uppercase tracking-wider">Partidos (Grupos)</span>
           </div>
           <div className="statCard bg-white border border-[rgba(0,0,0,0.06)] rounded-[24px] p-5 shadow-sm">
             <span className="text-[32px] font-black text-[#0071e3] block leading-none">32</span>

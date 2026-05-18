@@ -97,3 +97,17 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Responsive mobile adjustments to prevent horizontal overflow and guarantee symmetric padding */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 90px; /* Space for the bottom MobileNav */
+  }
+  
+  .max-w-\[1040px\], .max-w-\[820px\], .max-w-\[640px\], .max-w-\[980px\], .max-w-\[1100px\] {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+}

@@ -159,7 +159,7 @@ export function AccountDashboardClient({
   // Not logged in
   if (!initialUser) {
     const localCompleted = localDraft?.completedMatchIds?.length || 0;
-    const localRemaining = 104 - localCompleted;
+    const localRemaining = 72 - localCompleted;
 
     return (
       <div className="max-w-[820px] mx-auto px-5 md:px-6 py-10 md:py-16 space-y-8">
@@ -167,7 +167,7 @@ export function AccountDashboardClient({
         <div className="text-center mb-10">
           <h1 className="font-display font-extrabold text-[#1d1d1f] text-[32px] tracking-tight mb-2">Mi cuenta</h1>
           <p className="text-[#6e6e73] text-[15px] max-w-sm mx-auto leading-relaxed">
-            Iniciá sesión para guardar tu predicción, elegir goleador y campeón, y competir por el premio acumulado.
+            Iniciá sesión para guardar tu predicción y competir por el premio acumulado.
           </p>
         </div>
 
@@ -184,7 +184,7 @@ export function AccountDashboardClient({
               <div className="space-y-4">
                 <div>
                   <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block">Partidos cargados</span>
-                  <span className="font-display font-bold text-2xl text-[#1d1d1f]">{localCompleted} / 104</span>
+                  <span className="font-display font-bold text-2xl text-[#1d1d1f]">{localCompleted} / 72</span>
                 </div>
                 <div>
                   <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block">Faltantes</span>
@@ -198,7 +198,7 @@ export function AccountDashboardClient({
             <PremiumCard className="space-y-4">
               <h2 className="font-display font-extrabold text-[#1d1d1f] text-lg">Tu predicción</h2>
               <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-                Probá 6 partidos gratis. Para guardar tu predicción oficial y completar los 104 partidos, activá tu participación.
+                Probá 6 partidos gratis. Para guardar tu predicción oficial y completar la fase de grupos, activá tu participación.
               </p>
               <div className="flex gap-3">
                 <Link href="/mi-prediccion" className="h-11 px-6 rounded-full bg-[#0071e3] text-white font-bold text-[13px] flex items-center justify-center hover:bg-[#0066cc] transition-colors">
@@ -247,10 +247,10 @@ export function AccountDashboardClient({
   }
 
   const completedMatches = isActive ? dbCompletedMatches : 0;
-  const remainingMatches = 104 - completedMatches;
+  const remainingMatches = 72 - completedMatches;
   
   // Custom stats
-  const calculatedGroups = Math.floor(completedMatches / 8); // approximate calculation helper
+  const calculatedGroups = Math.floor(completedMatches / 6); // 6 matches per group in 2026 (12 groups total)
   const topScorerChosen = isActive && initialSession?.top_scorer ? "Elegido" : "Pendiente";
   const championChosen = isActive && initialSession?.champion ? "Elegido" : "Pendiente";
 
@@ -304,7 +304,7 @@ export function AccountDashboardClient({
               <div className="grid grid-cols-2 gap-3 animate-fadeIn">
                 <PremiumCard className="!p-4 text-center">
                   <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Partidos</span>
-                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{completedMatches} / 104</span>
+                  <span className="font-display font-bold text-xl text-[#1d1d1f]">{completedMatches} / 72</span>
                 </PremiumCard>
                 <PremiumCard className="!p-4 text-center">
                   <span className="text-[10px] text-[#aeaeb2] uppercase font-bold tracking-wider block mb-1">Faltan</span>
@@ -324,11 +324,11 @@ export function AccountDashboardClient({
                 <h3 className="font-bold text-[14px] text-[#1d1d1f] uppercase tracking-wider">Pronósticos Especiales</h3>
                 <div className="flex justify-between items-center py-2 border-b border-[rgba(0,0,0,0.04)]">
                   <span className="text-[13px] text-[#6e6e73]">Goleador del torneo</span>
-                  <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.top_scorer ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{topScorerChosen}</span>
+                  <span className="text-[12px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-[#8e8e93]">Próximamente</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-[13px] text-[#6e6e73]">Campeón del Mundo</span>
-                  <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${initialSession?.champion ? "bg-blue-50 text-[#0071e3]" : "bg-gray-50 text-[#6e6e73]"}`}>{championChosen}</span>
+                  <span className="text-[12px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-[#8e8e93]">Próximamente</span>
                 </div>
               </PremiumCard>
             </>
@@ -382,14 +382,14 @@ export function AccountDashboardClient({
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-display font-extrabold text-[#1d1d1f] text-lg">A. Mi predicción</h3>
                   <Link href="/mi-prediccion" className="text-[13px] text-[#0071e3] font-semibold hover:underline">
-                    {completedMatches === 104 ? "Ver resumen" : "Continuar cargando"}
+                    {completedMatches === 72 ? "Ver resumen" : "Continuar cargando"}
                   </Link>
                 </div>
                 <p className="text-[#6e6e73] text-[13px] leading-relaxed mb-4">
-                  Tu predicción oficial está guardada. Llevas cargados {completedMatches} de los 104 partidos del fixture.
+                  Tu predicción oficial está guardada. Llevas cargados {completedMatches} de los 72 partidos de la fase de grupos.
                 </p>
                 <div className="w-full bg-[#f5f5f7] rounded-full h-2 overflow-hidden">
-                  <div className="bg-[#0071e3] h-full rounded-full transition-all duration-500" style={{ width: `${(completedMatches / 104) * 100}%` }}></div>
+                  <div className="bg-[#0071e3] h-full rounded-full transition-all duration-500" style={{ width: `${(completedMatches / 72) * 100}%` }}></div>
                 </div>
               </PremiumCard>
 

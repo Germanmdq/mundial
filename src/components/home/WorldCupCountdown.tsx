@@ -114,7 +114,7 @@ export function WorldCupCountdown() {
         </div>
 
         <p className="countdownSubtext">
-          El Mundial más grande de la historia: 48 selecciones, 12 grupos y 104 partidos.
+          El Mundial más grande de la historia: 48 selecciones, 12 grupos y 72 partidos de fase de grupos.
         </p>
       </div>
 

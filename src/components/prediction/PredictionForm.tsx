@@ -27,7 +27,7 @@ interface PredictionFormProps {
   initialScores?: Record<number, { home: number; away: number }>;
 }
 
-const TABS = ["Partidos", "Grupos", "Goleador"] as const;
+const TABS = ["Partidos", "Grupos"] as const;
 type TabOption = typeof TABS[number];
 
 const getStatusColor = (status: string) => {
@@ -363,7 +363,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
 
   // Progress Panel Data
-  const totalMatches = matches.length || 104;
+  const totalMatches = matches.length || 72;
   const completedMatches = completedMatchIds.size;
 
   const groupStats = useMemo(() => {
@@ -774,7 +774,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                   Ya probaste tu Mundial.
                 </h2>
                 <p className="text-[rgba(255,255,255,0.72)] text-[16px] md:text-[18px] mb-8 leading-relaxed">
-                  Para completar los 104 partidos, guardar tu predicción oficial y participar por el premio acumulado, activá tu participación.
+                  Para completar la fase de grupos, guardar tu predicción oficial y participar por el premio acumulado, activá tu participación.
                 </p>
                 
                 <div className="flex flex-col gap-3 max-w-sm mx-auto">
@@ -807,23 +807,27 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
               /* ZONA DE GRUPOS COMPLETADA CARD */
               <div className="max-w-2xl mx-auto">
                 <div className="bg-white rounded-[34px] border border-[rgba(0,0,0,0.08)] p-8 md:p-12 text-center shadow-lg">
-                  <span className="material-symbols-outlined text-[64px] text-[#0071e3] mb-6" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  <span className="material-symbols-outlined text-[64px] text-[#34a853] mb-6" style={{ fontVariationSettings: "'FILL' 1" }}>
                     task_alt
                   </span>
-                  <h2 className="text-3xl font-display font-extrabold text-[#1d1d1f] mb-4">Zona de grupos completada.</h2>
+                  <h2 className="text-3xl font-display font-extrabold text-[#1d1d1f] mb-4">¡Fase de grupos completada!</h2>
                   <p className="text-[#6e6e73] text-[16px] leading-relaxed mb-8 max-w-lg mx-auto">
-                    Ya cargaste la primera parte de tu Mundial. Ahora podés activar tu participación por el premio acumulado, elegir goleador y campeón, y competir en el ranking general.
+                    Ya cargaste tu predicción de la fase de grupos. Por ahora, completás los partidos de esta fase. Las eliminatorias, el campeón y el goleador se habilitarán en una segunda etapa.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/premios" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all justify-center items-center flex">
-                      Participar por el premio
-                    </Link>
-                    <button onClick={() => handleTabChange("Goleador")} className="bg-white text-[#1d1d1f] border border-[rgba(0,0,0,0.15)] px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#f5f5f7] transition-all">
-                      Elegir goleador
-                    </button>
-                    <button onClick={() => handleTabChange("Goleador")} className="bg-white text-[#1d1d1f] border border-[rgba(0,0,0,0.15)] px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#f5f5f7] transition-all">
-                      Elegir campeón
-                    </button>
+                    {paymentStatus === "activo" ? (
+                      <Link href="/cuenta" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all justify-center items-center flex">
+                        Ir a mi cuenta
+                      </Link>
+                    ) : (
+                      <Link 
+                        href={isLoggedIn ? "/activar-participacion" : "/login?redirect=/activar-participacion"}
+                        onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
+                        className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[15px] font-bold hover:bg-[#0077ed] transition-all justify-center items-center flex"
+                      >
+                        Activar mi participación
+                      </Link>
+                    )}
                   </div>
                   <div className="mt-8 pt-6 border-t border-[rgba(0,0,0,0.06)]">
                     <button onClick={handlePrev} className="text-[#0071e3] text-[14px] font-bold hover:underline">

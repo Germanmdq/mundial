@@ -53,7 +53,7 @@ export async function AccountDashboard() {
   const STATS = [
     { label: "Puntos totales", value: ranking?.total_points?.toLocaleString() || "0", icon: "stars", color: "#0071e3", bg: "#e8f0fd" },
     { label: "Posición global", value: ranking?.rank ? `#${ranking.rank}` : "-", icon: "leaderboard", color: "#0071e3", bg: "#e8f0fd" },
-    { label: "Partidos", value: session.completed_matches || "0/104", icon: "sports_soccer", color: "#0071e3", bg: "#e8f0fd" },
+    { label: "Partidos", value: typeof session.completed_matches === 'number' ? `${session.completed_matches}/72` : (session.completed_matches ? String(session.completed_matches).replace("104", "72") : "0/72"), icon: "sports_soccer", color: "#0071e3", bg: "#e8f0fd" },
     { label: "Progreso", value: `${session.progress_percent || 0}%`, icon: "data_usage", color: "#0071e3", bg: "#e8f0fd" },
   ];
 

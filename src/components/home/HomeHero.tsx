@@ -31,10 +31,10 @@ export async function HomeHero() {
             </h1>
 
             <p className="text-[#6e6e73] text-[17px] md:text-[19px] leading-relaxed mb-3 max-w-[480px] mx-auto md:mx-0">
-              Armá tu Mundial. Predecí cada partido. Elegí tu campeón.
+              Armá tu Mundial. Predecí cada partido de la fase de grupos.
             </p>
             <p className="text-[#6e6e73] text-[15px] mb-9 max-w-[440px] mx-auto md:mx-0">
-              Probá 6 partidos gratis. Para completar los 104 y guardar tu predicción oficial, activá tu participación.
+              Probá 6 partidos gratis. Para completar la fase de grupos y guardar tu predicción oficial, activá tu participación.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">

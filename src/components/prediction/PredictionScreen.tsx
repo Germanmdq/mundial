@@ -7,7 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function PredictionScreen() {
   const user = await getUser();
-  const matches = await getMatches();
+  const allMatches = await getMatches();
+  const matches = allMatches.filter(m => m.stage === 'GROUP');
 
   const initialScores: Record<number, { home: number; away: number }> = {};
   if (user) {

@@ -22,23 +22,23 @@ const RULES_SECTIONS = [
   },
   {
     title: "Sistema de puntos",
-    content: "Se otorgan puntos en base a los aciertos del marcador de la siguiente manera:\n\n• 6 Puntos: Marcador Exacto (ej: pronóstico 2-1 y partido termina 2-1).\n• 3 Puntos: Acierto de ganador o empate con diferencia de goles correcta (ej: pronóstico 3-1 y partido termina 2-0).\n• 2 Puntos: Acierto simple de ganador o empate (ej: pronóstico 2-1 y partido termina 1-0).\n• 10 Puntos: Acierto de Campeón del Mundo y Goleador del torneo (pronósticos especiales).\n\n*Los partidos dorados (Golden Matches) duplican los puntos obtenidos en dicho partido.*"
+    content: "Se otorgan puntos en base a los aciertos del marcador de la siguiente manera:\n\n• 5 Puntos: Marcador Exacto (ej: pronóstico 2-1 y partido termina 2-1).\n• 4 Puntos: Tendencia + diferencia de goles (ej: pronóstico 3-1 y partido termina 2-0).\n• 3 Puntos: Solo tendencia (ej: pronóstico 2-1 y partido termina 1-0).\n• 0 Puntos: Incorrecto.\n\n*Los partidos dorados (Golden Matches) duplican los puntos obtenidos en dicho partido.*"
   },
   {
     title: "Fase de Grupos (Sin penales)",
-    content: "Durante la Fase de Grupos, los partidos pueden terminar en empate tras los 90 minutos reglamentarios. No existe definición por penales. El pronóstico debe reflejar el marcador oficial al final del tiempo regular."
+    content: "Durante la Fase de Grupos, los partidos pueden terminar en empate tras los 90 minutos reglamentarios. No existe definición por penales. El pronóstico es el resultado de los 90 minutos reglamentarios."
   },
   {
     title: "Fases Eliminatorias (Playoffs)",
-    content: "En las fases eliminatorias (desde 16avos de final en adelante), el pronóstico aplica al resultado al finalizar el tiempo regular o la prórroga (120 minutos). Los penales solo sirven como desempate de avance para definir qué equipo clasifica a la siguiente ronda del torneo, pero no agregan goles adicionales al marcador oficial ni suman puntos de predicción extra."
+    content: "Las fases eliminatorias se habilitarán en la segunda etapa. El pronóstico aplicará al resultado al finalizar el tiempo regular o prórroga (120 minutos). Los penales solo sirven como desempate de clasificación para definir qué equipo clasifica, pero no agregan goles adicionales al marcador ni otorgan puntos extra."
   },
   {
     title: "Distribución de Premios",
-    content: "El pozo acumulado oficial (formado por $5.000 ARS por participante activo) se distribuirá entre los tres primeros puestos de la tabla de clasificación general una vez concluido el Mundial:\n\n• 1º Puesto: 70% del pozo acumulado.\n• 2º Puesto: 15% del pozo acumulado.\n• 3º Puesto: 15% del pozo acumulado."
+    content: "El pozo acumulado oficial (formado por $5.000 ARS por participante activo) se distribuirá de la siguiente manera:\n\n• Ranking general: 70% del pozo acumulado.\n• Campeón del Mundial: 15% del pozo acumulado.\n• Goleador del torneo: 15% del pozo acumulado.\n\nCampeón y goleador no suman puntos al ranking general. Participan por premios separados y se habilitarán en la segunda etapa."
   },
   {
     title: "Criterios de desempate",
-    content: "En caso de que dos o más participantes igualen en la puntuación general al finalizar el torneo, el ganador del puesto correspondiente se determinará aplicando la siguiente jerarquía:\n\n1. Mayor cantidad de marcadores exactos acertados (predicciones de 6 puntos).\n2. Mayor cantidad de diferencias de gol correctas (predicciones de 3 puntos).\n3. Fecha y hora de activación del pago de la inscripción (el participante que abonó primero su entrada oficial)."
+    content: "En caso de que dos o más participantes igualen en la puntuación general al finalizar el torneo, el ganador del puesto correspondiente se determinará aplicando la siguiente jerarquía:\n\n1. Mayor cantidad de marcadores exactos acertados (predicciones de 5 puntos).\n2. Mayor cantidad de diferencias de gol correctas (predicciones de 4 puntos).\n3. Fecha y hora de activación del pago de la inscripción (el participante que abonó primero su entrada oficial)."
   }
 ];
 

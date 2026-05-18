@@ -38,7 +38,7 @@ function ActivarParticipacionClient() {
     // Retrieve local draft count
     if (typeof window !== "undefined") {
       try {
-        const rawDraft = localStorage.getItem("prediction_draft_wc2026");
+        const rawDraft = localStorage.getItem("worldcup_prediction_draft");
         if (rawDraft) {
           const parsed = JSON.parse(rawDraft);
           if (parsed && parsed.completedMatchIds) {
@@ -167,12 +167,12 @@ function ActivarParticipacionClient() {
               Activá tu participación
             </h1>
             <p className="text-[#6e6e73] text-[15px] leading-relaxed max-w-md mx-auto">
-              Para guardar tu predicción oficial, completar los 104 partidos y competir por el premio acumulado, activá tu participación.
+              Para guardar tu predicción oficial, completar la fase de grupos y competir por el premio acumulado, activá tu participación.
             </p>
           </div>
 
           {/* Pending notification block */}
-          {isPending && (
+          {isPending && debugPayments && (
             <div className="bg-[#fffbeb] border border-[#fde8c3] rounded-[20px] p-4 text-left shadow-sm mb-6 flex gap-3 items-start animate-pulse">
               <span className="material-symbols-outlined text-[#d97706] shrink-0 mt-0.5">warning</span>
               <div>
