@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { GroupsPanel } from "@/components/groups/GroupsPanel";
-import { getMyGroups } from "@/app/actions/groups";
+import { getMyGroups, type PrivateGroup } from "@/app/actions/groups";
 import { getUser } from "@/lib/auth/getUser";
 
 type PageProps = {
@@ -11,7 +11,16 @@ type PageProps = {
 export default async function GruposPage({ searchParams }: PageProps) {
   const user = await getUser();
   const resolvedSearchParams = await searchParams;
-  const groups = user ? await getMyGroups() : [];
+  
+  let isActive = false;
+  let groups: PrivateGroup[] = [];
+  
+  if (user) {
+    const { getParticipationForUser } = await import("@/lib/server/payments");
+    const participation = await getParticipationForUser(user.id);
+    isActive = !!(participation && participation.status === "active" && participation.paid === true && participation.payment_status === "approved");
+    groups = await getMyGroups();
+  }
 
   return (
     <AppShell>
@@ -43,7 +52,7 @@ export default async function GruposPage({ searchParams }: PageProps) {
               </Link>
             </div>
           ) : (
-            <GroupsPanel groups={groups} initialInviteCode={resolvedSearchParams.codigo ?? ""} />
+            <GroupsPanel groups={groups} initialInviteCode={resolvedSearchParams.codigo ?? ""} isActive={isActive} />
           )}
         </div>
       </main>

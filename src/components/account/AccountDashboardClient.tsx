@@ -127,6 +127,27 @@ export function AccountDashboardClient({
       });
   }, [initialUser, initialSession]);
 
+  const [dbCompletedMatches, setDbCompletedMatches] = useState<number>(completedMatchesCount);
+
+  // Fetch official prediction count if active
+  useEffect(() => {
+    if (paymentStatus === "activo") {
+      fetch("/api/predictions/me")
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error();
+        })
+        .then((data) => {
+          if (data.success && Array.isArray(data.predictions)) {
+            setDbCompletedMatches(data.predictions.length);
+          }
+        })
+        .catch((err) => {
+          console.error("Error loading official completed count on dashboard", err);
+        });
+    }
+  }, [paymentStatus]);
+
   if (!hasMounted) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-12 text-center text-[#6e6e73]">
@@ -193,9 +214,8 @@ export function AccountDashboardClient({
     );
   }
 
-  // Logged in
   const isActive = paymentStatus === "activo";
-  const completedMatches = isActive ? completedMatchesCount : 0;
+  const completedMatches = isActive ? dbCompletedMatches : 0;
   const remainingMatches = 104 - completedMatches;
   
   // Custom stats

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getOfficialPredictionSummary } from '@/lib/server/predictions'
 
 export async function getAccountDashboard(userId: string) {
   const supabase = await createClient()
@@ -27,19 +28,14 @@ export async function getAccountDashboard(userId: string) {
     console.warn(`[account] Error fetching ranking for user ${userId}:`, rankingError.message)
   }
 
-  // 3. Fetch official predictions count from prediction_match_scores table
-  const { count: completedMatchesCount, error: countError } = await supabase
-    .from('prediction_match_scores')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId);
-
-  if (countError) {
-    console.warn(`[account] Error counting prediction scores for user ${userId}:`, countError.message)
-  }
+  const summary = await getOfficialPredictionSummary(userId).catch((error) => {
+    console.warn(`[account] Error loading official prediction summary for user ${userId}:`, error.message)
+    return { completedMatches: 0 }
+  })
   
   return {
     session: session || null,
     ranking: ranking || null,
-    completedMatchesCount: completedMatchesCount || 0
+    completedMatchesCount: summary.completedMatches || 0
   }
 }

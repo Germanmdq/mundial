@@ -8,9 +8,10 @@ import { createGroup, joinGroup, type PrivateGroup } from "@/app/actions/groups"
 type GroupsPanelProps = {
   groups: PrivateGroup[];
   initialInviteCode?: string;
+  isActive?: boolean;
 };
 
-export function GroupsPanel({ groups, initialInviteCode = "" }: GroupsPanelProps) {
+export function GroupsPanel({ groups, initialInviteCode = "", isActive = false }: GroupsPanelProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [createName, setCreateName] = useState("");
@@ -65,25 +66,40 @@ export function GroupsPanel({ groups, initialInviteCode = "" }: GroupsPanelProps
   return (
     <div className="grid gap-8 lg:grid-cols-[360px_1fr]">
       <aside className="space-y-4">
-        <form onSubmit={handleCreate} className="rounded-[28px] border border-[#e5e5e7] bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-extrabold tracking-tight text-[#1d1d1f]">Crear grupo</h2>
-          <p className="mt-2 text-[14px] leading-6 text-[#6e6e73]">
-            Armá una tabla privada para competir con amigos.
-          </p>
-          <input
-            value={createName}
-            onChange={(event) => setCreateName(event.target.value)}
-            placeholder="Nombre del grupo"
-            className="mt-5 w-full rounded-2xl border border-[#d2d2d7] bg-white px-4 py-3 text-[14px] font-semibold text-[#1d1d1f] outline-none transition focus:border-[#0071e3]"
-          />
-          <button
-            type="submit"
-            disabled={isPending}
-            className="mt-4 w-full rounded-full bg-[#1d1d1f] px-5 py-3 text-[14px] font-bold text-white transition hover:bg-[#0071e3] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Crear grupo
-          </button>
-        </form>
+        {isActive ? (
+          <form onSubmit={handleCreate} className="rounded-[28px] border border-[#e5e5e7] bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-extrabold tracking-tight text-[#1d1d1f]">Crear grupo</h2>
+            <p className="mt-2 text-[14px] leading-6 text-[#6e6e73]">
+              Armá una tabla privada para competir con amigos.
+            </p>
+            <input
+              value={createName}
+              onChange={(event) => setCreateName(event.target.value)}
+              placeholder="Nombre del grupo"
+              className="mt-5 w-full rounded-2xl border border-[#d2d2d7] bg-white px-4 py-3 text-[14px] font-semibold text-[#1d1d1f] outline-none transition focus:border-[#0071e3]"
+            />
+            <button
+              type="submit"
+              disabled={isPending}
+              className="mt-4 w-full rounded-full bg-[#1d1d1f] px-5 py-3 text-[14px] font-bold text-white transition hover:bg-[#0071e3] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Crear grupo
+            </button>
+          </form>
+        ) : (
+          <div className="rounded-[28px] border border-[#e5e5e7] bg-white p-6 shadow-sm space-y-4">
+            <h2 className="text-xl font-extrabold tracking-tight text-[#1d1d1f]">Grupos privados</h2>
+            <p className="text-[14px] leading-6 text-[#6e6e73]">
+              Activá tu participación para crear grupos privados y competir con amigos.
+            </p>
+            <Link
+              href="/cuenta"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#ff9f0a] px-5 py-3 text-[14px] font-bold text-white transition hover:bg-[#e08905]"
+            >
+              Activar participación
+            </Link>
+          </div>
+        )}
 
         <form onSubmit={handleJoin} className="rounded-[28px] border border-[#e5e5e7] bg-white p-6 shadow-sm">
           <h2 className="text-xl font-extrabold tracking-tight text-[#1d1d1f]">Unirme con código</h2>

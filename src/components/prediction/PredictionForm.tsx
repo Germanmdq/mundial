@@ -2,14 +2,12 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { saveUserPredictions } from "@/app/actions/predictions";
 import type { Match } from "@/lib/worldcup/matches";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { getTeamDisplayName, getTeamCode, getTeamFlag } from "@/lib/worldcup/team-display-names";
 import { formatMatchDate } from "@/lib/worldcup/match-date";
 import { PrizePaymentOptions } from "@/components/payments/PrizePaymentOptions";
 
-const SHOULD_GATE_AFTER_SIX_MATCHES = false;
 const PREDICTION_DRAFT_KEY = "worldcup_prediction_draft";
 const PREDICTION_RETURN_PATH_KEY = "worldcup_prediction_return_path";
 
@@ -138,27 +136,7 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const [ctaModalOpen, setCtaModalOpen] = useState<boolean>(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
-  // Sync guest draft to Supabase if they login and have active payment
-  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
-    if (!isLoggedIn) return;
-    const payload = draftItems
-      .map(item => ({
-        match_id: item.matchId,
-        home_goals: item.homeScore,
-        away_goals: item.awayScore
-      }));
 
-    if (payload.length > 0) {
-      setSaveStatus("Guardando...");
-      const result = await saveUserPredictions(payload);
-      if (result.success) {
-        setSaveStatus("Participación activa");
-        localStorage.removeItem("worldcup_prediction_draft");
-      } else {
-        setSaveStatus("Error al guardar");
-      }
-    }
-  };
 
   const persistDraft = (
     nextScores = scores,
@@ -184,10 +162,80 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     localStorage.setItem(PREDICTION_RETURN_PATH_KEY, "/mi-prediccion");
   };
 
+  const loadOfficialPredictions = async (allMatches: Match[]) => {
+    try {
+      const res = await fetch("/api/predictions/me");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.predictions)) {
+          const officialScores: Record<number, LocalScore> = {};
+          const officialCompletedIds = new Set<number>();
+          
+          data.predictions.forEach((p: { match_id: number; home_goals: number; away_goals: number }) => {
+            officialScores[p.match_id] = {
+              home: p.home_goals,
+              away: p.away_goals
+            };
+            officialCompletedIds.add(p.match_id);
+          });
+          
+          setScores(prev => ({
+            ...prev,
+            ...officialScores
+          }));
+          setCompletedMatchIds(prev => {
+            const next = new Set(prev);
+            officialCompletedIds.forEach(id => next.add(id));
+            return next;
+          });
+          
+          // Find first incomplete match index
+          const firstIncompleteIdx = allMatches.findIndex(m => !officialCompletedIds.has(m.id));
+          if (firstIncompleteIdx !== -1) {
+            setCurrentMatchIndex(firstIncompleteIdx);
+          } else {
+            setCurrentMatchIndex(allMatches.length - 1);
+            setShowCompletionCard(true);
+          }
+          return officialCompletedIds;
+        }
+      }
+    } catch (e) {
+      console.error("Error loading official predictions", e);
+    }
+    return null;
+  };
+
+  const syncDraftToSupabase = async (draftItems: { matchId: number; homeScore: number; awayScore: number; }[]) => {
+    if (!isLoggedIn) return;
+    try {
+      setSaveStatus("Guardando...");
+      const res = await fetch("/api/predictions/sync-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(draftItems)
+      });
+      if (res.ok) {
+        localStorage.removeItem(PREDICTION_DRAFT_KEY);
+        setSaveStatus("Participación activa");
+        await loadOfficialPredictions(matches);
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        console.error("[api:predictions:sync-draft] failed:", res.status, errJson);
+        setSaveStatus("Error al guardar");
+      }
+    } catch (e) {
+      console.error("Error syncing draft", e);
+      setSaveStatus("Error al guardar");
+    }
+  };
+
   useEffect(() => {
     const mountTimer = window.setTimeout(() => {
       setHasMounted(true);
-      setSaveStatus(isLoggedIn ? "Cargando estado..." : "Borrador temporal");
+      if (!isLoggedIn) {
+        setSaveStatus("Borrador temporal");
+      }
     }, 0);
 
     if (isLoggedIn) {
@@ -196,27 +244,37 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
           if (res.ok) return res.json();
           throw new Error();
         })
-        .then((data) => {
-          const status = data.participation?.status || data.status;
-          if (status === "active") {
+        .then(async (data) => {
+          const part = data.participation;
+          const isActive = part && part.status === "active" && part.paid === true && part.payment_status === "approved";
+          
+          if (isActive) {
             setPaymentStatus("activo");
             setSaveStatus("Participación activa");
             
             // Sync local draft immediately since user is active
             const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
             const parsedDraft = parseDraft(rawDraft);
+            
             if (parsedDraft) {
               const draftItems = buildDraftItems(parsedDraft);
               if (draftItems.length > 0) {
-                syncDraftToSupabase(draftItems);
+                await syncDraftToSupabase(draftItems);
+              } else {
+                await loadOfficialPredictions(matches);
               }
+            } else {
+              await loadOfficialPredictions(matches);
             }
-          } else if (status === "pending" || status === "pending_payment") {
-            setPaymentStatus("pendiente");
-            setSaveStatus("Borrador temporal");
           } else {
-            setPaymentStatus("borrador");
-            setSaveStatus("Borrador temporal");
+            const status = part?.status || data.status;
+            if (status === "pending" || status === "pending_payment") {
+              setPaymentStatus("pendiente");
+              setSaveStatus("Borrador temporal");
+            } else {
+              setPaymentStatus("borrador");
+              setSaveStatus("Borrador temporal");
+            }
           }
         })
         .catch(() => {
@@ -226,11 +284,12 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     }
 
     return () => window.clearTimeout(mountTimer);
-  }, [isLoggedIn]);
+  }, [isLoggedIn, matches]);
 
   // Load localStorage draft after mount only, so hydration starts from deterministic server markup.
   useEffect(() => {
     if (!hasMounted) return;
+    if (isLoggedIn && paymentStatus === "activo") return; // active user uses official database
 
     if (typeof window !== "undefined") {
       const rawDraft = localStorage.getItem(PREDICTION_DRAFT_KEY);
@@ -264,16 +323,13 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
             setSelectedFilter(parsedDraft.selectedGroup || "Todos");
             setCurrentMatchIndex(Math.max(0, parsedDraft.currentMatchIndex || 0));
-
-            // Sync draft is now gated and only triggered in mount/status effects when active!
           } catch {
             console.error("Error loading draft");
           }
         }, 0);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMounted, isLoggedIn]);
+  }, [hasMounted, isLoggedIn, paymentStatus]);
 
 
   // Progress Panel Data
@@ -448,8 +504,14 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
   const handleNext = async () => {
     if (!activeMatch) return;
 
-    const homeScore = getScoreValue(scores[activeMatch.id]?.home);
-    const awayScore = getScoreValue(scores[activeMatch.id]?.away);
+    const matchScore = scores[activeMatch.id];
+    const homeScore = matchScore ? matchScore.home : 0;
+    const awayScore = matchScore ? matchScore.away : 0;
+
+    if (!Number.isInteger(homeScore) || !Number.isInteger(awayScore) || homeScore < 0 || awayScore < 0) {
+      setValidationMessage("Por favor, ingresá goles válidos.");
+      return;
+    }
 
     setValidationMessage(null);
     setCompletedMatchIds(prev => {
@@ -468,18 +530,30 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
     // Save Prediction
     if (isLoggedIn && paymentStatus === "activo") {
       setSaveStatus("Guardando...");
-      const payload = [{
-        match_id: activeMatch.id,
-        home_goals: homeScore,
-        away_goals: awayScore
-      }];
+      try {
+        const res = await fetch("/api/predictions/save-match", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            matchId: activeMatch.id,
+            homeScore,
+            awayScore
+          })
+        });
 
-      const result = await saveUserPredictions(payload);
-      if (result.success) {
-        setSaveStatus("Participación activa");
-      } else {
+        if (res.ok) {
+          setSaveStatus("Participación activa");
+        } else {
+          const errJson = await res.json().catch(() => ({}));
+          console.error("[api:predictions:save-match] failed:", res.status, errJson);
+          setSaveStatus("Error al guardar");
+          setValidationMessage("No pudimos guardar tu predicción. Probá de nuevo.");
+          return; // Halt navigation
+        }
+      } catch (e) {
+        console.error("Exception during save-match", e);
         setSaveStatus("Error al guardar");
-        alert("No se pudo guardar este partido. Probá de nuevo.");
+        setValidationMessage("No pudimos guardar tu predicción. Probá de nuevo.");
         return; // Halt navigation
       }
     } else {
@@ -488,15 +562,14 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
       persistDraft(nextScores, nextCompletedMatchIds);
     }
 
-    // CTA Check at 6th completed match - shown to unpaid users (anónimo or registered non-active)
-    const completedCount = nextCompletedMatchIds.size;
-    const ctaShown = localStorage.getItem("worldcup_prediction_cta_shown") === "true";
-    const nextMatchIndex = currentMatchIndex < filteredMatches.length - 1 ? currentMatchIndex + 1 : currentMatchIndex;
-
-    if (paymentStatus !== "activo" && completedCount >= 6 && !ctaShown) {
-      persistDraft(nextScores, nextCompletedMatchIds, nextMatchIndex);
-      setCtaModalOpen(true);
-      return;
+    // Gating non-active users strictly at 6 matches
+    if (paymentStatus !== "activo") {
+      const completedCount = nextCompletedMatchIds.size;
+      if (completedCount >= 6) {
+        persistDraft(nextScores, nextCompletedMatchIds, currentMatchIndex);
+        setCtaModalOpen(true);
+        return;
+      }
     }
 
     // Navigate
@@ -696,19 +769,10 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                       </Link>
                       
                       <button 
-                        onClick={() => {
-                          localStorage.setItem("worldcup_prediction_cta_shown", "true");
-                          persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
-                          setCtaModalOpen(false);
-                          if (currentMatchIndex < filteredMatches.length - 1) {
-                            setCurrentMatchIndex(prev => prev + 1);
-                          } else {
-                            setShowCompletionCard(true);
-                          }
-                        }}
+                        onClick={() => setCtaModalOpen(false)}
                         className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
                       >
-                        Seguir probando
+                        Volver a revisar
                       </button>
                     </div>
                   </>
@@ -720,19 +784,10 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
 
                     <div className="flex flex-col gap-3">
                       <button 
-                        onClick={() => {
-                          localStorage.setItem("worldcup_prediction_cta_shown", "true");
-                          persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter);
-                          setCtaModalOpen(false);
-                          if (currentMatchIndex < filteredMatches.length - 1) {
-                            setCurrentMatchIndex(prev => prev + 1);
-                          } else {
-                            setShowCompletionCard(true);
-                          }
-                        }}
+                        onClick={() => setCtaModalOpen(false)}
                         className="flex items-center justify-center w-full h-[52px] bg-transparent hover:bg-[rgba(255,255,255,0.06)] text-white border border-[rgba(255,255,255,0.18)] font-bold rounded-full transition-all text-[15px]"
                       >
-                        Seguir probando
+                        Volver a revisar
                       </button>
                     </div>
                   </>

@@ -259,3 +259,14 @@ export async function getParticipationForUser(userId: string) {
   if (error) throw error;
   return data;
 }
+
+export async function isUserParticipationActive(userId: string) {
+  const participation = await getParticipationForUser(userId);
+
+  return Boolean(
+    participation
+      && participation.status === "active"
+      && participation.paid === true
+      && participation.payment_status === "approved",
+  );
+}
