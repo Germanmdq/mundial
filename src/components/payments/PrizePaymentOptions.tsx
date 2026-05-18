@@ -11,13 +11,22 @@ interface PrizePaymentOptionsProps {
 export function PrizePaymentOptions({ compact = false, source: _source = "prediction" }: PrizePaymentOptionsProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorProvider, setErrorProvider] = useState<"mercadopago" | "paypal" | null>(null);
 
   const handleMercadoPago = () => {
-    startMercadoPagoCheckout(setLoading, setError);
+    setErrorProvider(null);
+    startMercadoPagoCheckout(setLoading, (message) => {
+      setError(message);
+      setErrorProvider(message ? "mercadopago" : null);
+    });
   };
 
   const handlePayPal = () => {
-    startPayPalCheckout(setLoading, setError);
+    setErrorProvider(null);
+    startPayPalCheckout(setLoading, (message) => {
+      setError(message);
+      setErrorProvider(message ? "paypal" : null);
+    });
   };
 
   return (
@@ -36,8 +45,28 @@ export function PrizePaymentOptions({ compact = false, source: _source = "predic
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-[#fceced] border border-[rgba(255,59,48,0.12)] rounded-[12px] text-[#ff3b30] text-[13px] font-bold text-center">
-            {error}
+          <div className="mb-4 rounded-[16px] border border-[rgba(255,59,48,0.18)] bg-[#fff2f2] p-4 text-left text-[#b42318] shadow-sm">
+            <p className="text-[13px] font-black">
+              {errorProvider === "paypal" ? "No pudimos abrir PayPal." : "No pudimos iniciar el pago."}
+            </p>
+            <p className="mt-2 whitespace-pre-wrap break-words text-[12px] font-semibold leading-5">
+              {error}
+            </p>
+            {errorProvider === "paypal" ? (
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={handlePayPal}
+                  disabled={loading}
+                  className="rounded-full bg-[#1d1d1f] px-4 py-2 text-[12px] font-bold text-white transition hover:bg-[#0071e3] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Intentar nuevamente
+                </button>
+                <p className="self-center text-[12px] font-semibold text-[#6e6e73]">
+                  También podés pagar con Mercado Pago.
+                </p>
+              </div>
+            ) : null}
           </div>
         )}
 
