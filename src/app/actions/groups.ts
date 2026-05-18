@@ -7,27 +7,10 @@ import {
   getPrivateGroupForMember,
   getMyPrivateGroups,
   joinPrivateGroupByInviteCode,
-  type PrivateGroup,
 } from "@/lib/server/private-groups";
 import { getOfficialLeaderboard } from "@/lib/server/ranking";
 import { PaymentRequiredError } from "@/lib/server/predictions";
-
-export type { PrivateGroup };
-
-export type GroupRankingEntry = {
-  user_id: string;
-  display_name: string;
-  avatar_url: string | null;
-  total_points: number;
-  rank: number;
-};
-
-export type GroupRanking = {
-  group: PrivateGroup | null;
-  members_count: number;
-  ranking: GroupRankingEntry[];
-  error?: string;
-};
+import type { GroupRanking, PrivateGroup } from "@/lib/groups/types";
 
 export async function createGroup(name: string) {
   const user = await getUser();

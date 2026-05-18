@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState, useTransition } from "react";
-import { createGroup, joinGroup, type PrivateGroup } from "@/app/actions/groups";
+import { createGroup, joinGroup } from "@/app/actions/groups";
+import type { PrivateGroup } from "@/lib/groups/types";
 
 type GroupsPanelProps = {
   groups: PrivateGroup[];

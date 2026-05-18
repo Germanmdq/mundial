@@ -1,17 +1,7 @@
 import { getAppUrl } from "@/lib/server/payments";
 import { getServiceSupabase, isUserParticipationActive } from "@/lib/server/payments";
 import { PaymentRequiredError } from "@/lib/server/predictions";
-
-export type PrivateGroup = {
-  id: string;
-  name: string;
-  slug: string | null;
-  invite_code: string;
-  owner_id: string | null;
-  created_at: string;
-  updated_at?: string | null;
-  member_count?: number;
-};
+import type { PrivateGroup } from "@/lib/groups/types";
 
 function slugify(value: string) {
   return value

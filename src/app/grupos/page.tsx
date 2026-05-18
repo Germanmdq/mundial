@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { GroupsPanel } from "@/components/groups/GroupsPanel";
-import { getMyGroups, type PrivateGroup } from "@/app/actions/groups";
+import { getMyGroups } from "@/app/actions/groups";
 import { getUser } from "@/lib/auth/getUser";
+import type { PrivateGroup } from "@/lib/groups/types";
 
 type PageProps = {
   searchParams: Promise<{ codigo?: string }>;
