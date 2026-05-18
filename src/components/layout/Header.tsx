@@ -9,22 +9,37 @@ import type { User } from "@supabase/supabase-js";
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [authReady, setAuthReady] = useState(false);
   const path = usePathname();
   const supabase = createClient();
 
   useEffect(() => {
+    let mounted = true;
+
     supabase.auth.getUser().then(({ data }) => {
+      if (!mounted) return;
       setUser(data.user);
+      setAuthReady(true);
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user || null);
+      setAuthReady(true);
     });
 
     return () => {
+      mounted = false;
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase.auth]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setAuthReady(true);
+    setMenuOpen(false);
+    window.location.href = "/";
+  };
 
   return (
     <header className="sticky top-0 z-[100] h-[56px] bg-white/90 backdrop-blur-xl border-b border-black/5">
@@ -46,13 +61,24 @@ export function Header() {
         </div>
 
         <div className="hidden md:flex items-center gap-[14px]">
-          {user ? (
-            <Link href="/cuenta" className="text-[13px] font-medium text-black/75 hover:text-black whitespace-nowrap flex items-center gap-2">
-              <div className="w-5 h-5 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[9px] uppercase">
-                {user.email?.charAt(0) || 'U'}
-              </div>
-              Cuenta
-            </Link>
+          {!authReady ? (
+            <span className="h-[34px] w-[72px] rounded-full bg-black/[0.04]" aria-hidden="true" />
+          ) : user ? (
+            <>
+              <Link href="/cuenta" className="text-[13px] font-medium text-black/75 hover:text-black whitespace-nowrap flex items-center gap-2">
+                <div className="w-5 h-5 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[9px] uppercase">
+                  {user.email?.charAt(0) || 'U'}
+                </div>
+                Cuenta
+              </Link>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="text-[13px] font-medium text-black/55 hover:text-black whitespace-nowrap"
+              >
+                Cerrar sesión
+              </button>
+            </>
           ) : (
             <Link href="/login" className="text-[13px] font-medium text-black/75 hover:text-black whitespace-nowrap">Ingresar</Link>
           )}
@@ -93,13 +119,26 @@ export function Header() {
           <Link href="/mi-prediccion" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Mi predicción</Link>
         
           <div className="mt-3 pt-4 border-t border-black/10 flex flex-col gap-3">
-            {user ? (
-              <Link href="/cuenta" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-                <div className="w-8 h-8 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[14px] uppercase">
-                  {user.email?.charAt(0) || 'U'}
-                </div>
-                Cuenta
-              </Link>
+            {!authReady ? (
+              <div className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#6e6e73]">
+                Cargando sesión...
+              </div>
+            ) : user ? (
+              <>
+                <Link href="/cuenta" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04] flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+                  <div className="w-8 h-8 bg-[#e8f0fd] text-[#0071e3] flex items-center justify-center rounded-full font-bold text-[14px] uppercase">
+                    {user.email?.charAt(0) || 'U'}
+                  </div>
+                  Cuenta
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-red-600 hover:bg-black/[0.04]"
+                >
+                  Cerrar sesión
+                </button>
+              </>
             ) : (
               <Link href="/login" className="w-full rounded-[14px] px-4 py-[14px] text-left text-[17px] font-bold text-[#1d1d1f] hover:bg-black/[0.04]" onClick={() => setMenuOpen(false)}>Ingresar</Link>
             )}
