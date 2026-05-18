@@ -2,7 +2,7 @@
 import React from "react";
 
 const STEPS = [
-  { num:"01", icon:"edit_note",   title:"Creás tu predicción gratis",       desc:"Registrate y empezá a cargar tus resultados sin pagar nada." },
+  { num:"01", icon:"edit_note",   title:"Creás tu predicción gratis",       desc:"Probás 6 partidos gratis para sentir la experiencia sin pagar." },
   { num:"02", icon:"sports_soccer", title:"Cargás resultados y clasificados", desc:"Partido a partido, grupo a grupo, armás tu llave completa." },
   { num:"03", icon:"emoji_events", title:"Finalizás tu Mundial",             desc:"Elegís tu campeón, tu goleador y confirmás tu predicción." },
   { num:"04", icon:"stars",        title:"Activás tu participación oficial", desc:"Un solo pago. Entrás al ranking real y competís por premios." },
@@ -24,10 +24,10 @@ export function HowItWorks() {
         <div className="max-w-[980px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
-              { icon:"edit_note",   bg:"#e8f4e8", ic:"#34a853", title:"Primero armás tu Mundial",
-                text:"Cargá tus resultados, elegí clasificados, avanzá por eliminatorias y descubrí tu campeón. Sin pagar nada." },
-              { icon:"emoji_events", bg:"#e8f0fd", ic:"#0071e3", title:"Después decidís si competís por premios",
-                text:"Cuando terminés tu predicción, podés activar tu participación oficial para entrar al ranking real y competir por premios." },
+              { icon:"edit_note",   bg:"#e8f4e8", ic:"#34a853", title:"Primero probás tu Mundial",
+                text:"Probá 6 partidos gratis. Experimentá cargar tus resultados de forma local antes de activar tu participación." },
+              { icon:"emoji_events", bg:"#e8f0fd", ic:"#0071e3", title:"Después activás tu participación",
+                text:"Para completar los 104 partidos, guardar tu predicción oficial y competir por el premio acumulado, activá tu participación." },
             ].map((c) => (
               <div key={c.title} className="bg-white rounded-3xl p-8 border border-[#e5e5e7] shadow-sm">
                 <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-5" style={{ background:c.bg }}>

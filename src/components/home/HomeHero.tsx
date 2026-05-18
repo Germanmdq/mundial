@@ -34,13 +34,13 @@ export async function HomeHero() {
               Armá tu Mundial. Predecí cada partido. Elegí tu campeón.
             </p>
             <p className="text-[#6e6e73] text-[15px] mb-9 max-w-[440px] mx-auto md:mx-0">
-              Después decidís si querés participar por premios.
+              Probá 6 partidos gratis. Para completar los 104 y guardar tu predicción oficial, activá tu participación.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
               <Link href="/mi-prediccion"
                 className="bg-[#0071e3] text-white font-semibold text-[16px] px-7 py-3.5 rounded-full hover:bg-[#0066cc] transition-colors active:scale-95 text-center shadow-sm">
-                Crear mi predicción gratis
+                Crear mi predicción
               </Link>
               <Link href="/premios"
                 className="text-[#0071e3] font-semibold text-[16px] px-7 py-3.5 rounded-full border border-[#c8dcfa] hover:bg-[#e8f0fd] transition-colors text-center">
@@ -49,7 +49,7 @@ export async function HomeHero() {
             </div>
 
             <p className="text-[#aeaeb2] text-[13px] max-w-[420px] mx-auto md:mx-0">
-              Podés empezar gratis. Activás la participación por premios al finalizar.
+              La participación oficial requiere un pago único para activarse.
             </p>
 
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 mt-8 pt-8 border-t border-[#f0f0f2]">

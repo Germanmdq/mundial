@@ -202,5 +202,5 @@ async function getPaymentAuthHeaders() {
 }
 
 function redirectToLoginForPayment() {
-  window.location.href = `/login?mode=signup&redirect=${encodeURIComponent("/mi-prediccion")}`;
+  window.location.href = `/login?redirect=${encodeURIComponent("/activar-participacion")}`;
 }

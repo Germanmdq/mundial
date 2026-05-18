@@ -14,19 +14,19 @@ export function FinalCTA() {
             ¿Listo para demostrar que sos el que más sabe?
           </h2>
           <p className="text-[#6e6e73] text-[16px] mb-8 max-w-md mx-auto leading-relaxed">
-            Empezá gratis. Completá tu predicción. Si querés competir por premios, activás al final.
+            Probá 6 partidos gratis. Completá tu predicción oficial al activar tu participación.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/mi-prediccion"
               className="bg-[#0071e3] text-white font-semibold text-[16px] px-8 py-3.5 rounded-full hover:bg-[#0066cc] transition-colors active:scale-95 w-full sm:w-auto text-center shadow-sm">
-              Crear mi predicción gratis
+              Crear mi predicción
             </Link>
             <Link href="/reglas" className="text-[#6e6e73] hover:text-[#1d1d1f] text-[14px] font-medium transition-colors">
               Leer las reglas →
             </Link>
           </div>
           <p className="text-[#aeaeb2] text-[12px] mt-5">
-            Podés activar la participación por premios al finalizar · $5.000 ARS
+            Activá tu participación para competir · $5.000 ARS
           </p>
         </div>
       </div>

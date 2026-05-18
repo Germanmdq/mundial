@@ -777,18 +777,21 @@ export function PredictionForm({ matches, isLoggedIn, initialScores = {} }: Pred
                   Para completar los 104 partidos, guardar tu predicción oficial y participar por el premio acumulado, activá tu participación.
                 </p>
                 
-                <div className="mb-8 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-[24px] p-6 text-left">
-                  <PrizePaymentOptions compact />
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  {!isLoggedIn && (
+                <div className="flex flex-col gap-3 max-w-sm mx-auto">
+                  {isLoggedIn ? (
                     <Link 
-                      href="/login?mode=signup&redirect=/mi-prediccion"
+                      href="/activar-participacion"
+                      className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
+                    >
+                      Activar participación
+                    </Link>
+                  ) : (
+                    <Link 
+                      href="/login?redirect=/activar-participacion"
                       onClick={() => persistDraft(scores, completedMatchIds, currentMatchIndex, selectedFilter)}
                       className="flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px]"
                     >
-                      Iniciar sesión y participar
+                      Activar participación
                     </Link>
                   )}
                   

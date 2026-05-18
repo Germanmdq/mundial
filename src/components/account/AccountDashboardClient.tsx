@@ -198,7 +198,7 @@ export function AccountDashboardClient({
             <PremiumCard className="space-y-4">
               <h2 className="font-display font-extrabold text-[#1d1d1f] text-lg">Tu predicción</h2>
               <p className="text-[#6e6e73] text-[13px] leading-relaxed">
-                Tu predicción se guarda gratis de forma local en este dispositivo. Creá tu cuenta para asegurarla en la nube y competir.
+                Probá 6 partidos gratis. Para guardar tu predicción oficial y completar los 104 partidos, activá tu participación.
               </p>
               <div className="flex gap-3">
                 <Link href="/mi-prediccion" className="h-11 px-6 rounded-full bg-[#0071e3] text-white font-bold text-[13px] flex items-center justify-center hover:bg-[#0066cc] transition-colors">
@@ -215,6 +215,37 @@ export function AccountDashboardClient({
   }
 
   const isActive = paymentStatus === "activo";
+
+  if (initialUser && !isActive) {
+    return (
+      <div className="max-w-[640px] mx-auto px-4 py-12 md:py-20 text-center animate-fade-in">
+        <div className="bg-white border border-[rgba(0,0,0,0.08)] rounded-[32px] p-8 md:p-12 shadow-lg">
+          <span className="material-symbols-outlined text-[54px] text-[#ff9f0a] mb-6" style={{ fontVariationSettings: "'FILL' 1" }}>
+            warning
+          </span>
+          <h2 className="text-2xl font-display font-black text-[#1d1d1f] mb-4">
+            Participación no activada
+          </h2>
+          <p className="text-[#6e6e73] text-[15px] leading-relaxed mb-8 max-w-sm mx-auto">
+            Tu cuenta está lista, pero todavía no activaste tu participación. Para guardar tu predicción oficial y competir por el premio acumulado, elegí un medio de pago.
+          </p>
+          <div className="space-y-6">
+            <Link
+              href="/activar-participacion"
+              className="inline-flex items-center justify-center w-full h-[52px] bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-full transition-all active:scale-[0.98] text-[15px] shadow-sm"
+            >
+              Activar participación
+            </Link>
+            
+            <div className="border-t border-[rgba(0,0,0,0.06)] pt-6">
+              <LogoutButton />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const completedMatches = isActive ? dbCompletedMatches : 0;
   const remainingMatches = 104 - completedMatches;
   
