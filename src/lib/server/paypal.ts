@@ -63,10 +63,18 @@ function getPayPalErrorMessage(prefix: string, details: unknown) {
 }
 
 export async function getPayPalAccessToken() {
+  const baseUrl = getPayPalBaseUrl();
   const { clientId, clientSecret } = getPayPalCredentials();
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
-  const response = await fetch(`${getPayPalBaseUrl()}/v1/oauth2/token`, {
+  console.info("[paypal:token:start]", {
+    env: process.env.PAYPAL_ENV ?? null,
+    baseUrl,
+    hasClientId: Boolean(process.env.PAYPAL_CLIENT_ID),
+    hasClientSecret: Boolean(process.env.PAYPAL_CLIENT_SECRET),
+  });
+
+  const response = await fetch(`${baseUrl}/v1/oauth2/token`, {
     method: "POST",
     headers: {
       Authorization: `Basic ${credentials}`,
@@ -76,7 +84,17 @@ export async function getPayPalAccessToken() {
   });
 
   const data = await readPayPalResponse(response);
+  console.info("[paypal:token:response]", {
+    status: response.status,
+    ok: response.ok,
+  });
+
   if (!response.ok) {
+    console.error("[paypal:token:error]", {
+      status: response.status,
+      body: data,
+    });
+
     throw new PayPalApiError(
       getPayPalErrorMessage("PayPal token error", data),
       response.status,
@@ -88,16 +106,28 @@ export async function getPayPalAccessToken() {
     throw new PayPalApiError("PayPal token response did not include access_token", response.status, data);
   }
 
+  console.info("[paypal:token:success]", {
+    tokenReceived: Boolean(data.access_token),
+  });
+
   return data.access_token as string;
 }
 
 export async function createPayPalOrder({ userId, paymentId }: CreatePayPalOrderInput) {
+  const baseUrl = getPayPalBaseUrl();
   const appUrl = getAppUrl();
   const amount = Number(process.env.PRIZE_ENTRY_AMOUNT_USD || "5").toFixed(2);
   const currency = process.env.PRIZE_ENTRY_CURRENCY_USD || "USD";
   const accessToken = await getPayPalAccessToken();
 
-  const response = await fetch(`${getPayPalBaseUrl()}/v2/checkout/orders`, {
+  console.info("[paypal:order:start]", {
+    env: process.env.PAYPAL_ENV ?? null,
+    baseUrl,
+    amount,
+    currency,
+  });
+
+  const response = await fetch(`${baseUrl}/v2/checkout/orders`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -127,13 +157,39 @@ export async function createPayPalOrder({ userId, paymentId }: CreatePayPalOrder
   });
 
   const data = await readPayPalResponse(response);
+  console.info("[paypal:order:response]", {
+    status: response.status,
+    ok: response.ok,
+  });
+
   if (!response.ok) {
+    console.error("[paypal:order:error]", {
+      status: response.status,
+      body: data,
+    });
+
     throw new PayPalApiError(
       getPayPalErrorMessage("PayPal order error", data),
       response.status,
       data,
     );
   }
+
+  const approveUrl = data && typeof data === "object" && "links" in data && Array.isArray(data.links)
+    ? data.links.find((link: { rel?: string }) => link.rel === "approve")?.href
+    : null;
+
+  console.info("[paypal:order:links]", {
+    orderId: data && typeof data === "object" && "id" in data ? data.id : null,
+    links: data && typeof data === "object" && "links" in data && Array.isArray(data.links)
+      ? data.links.map((link: { rel?: string; method?: string; href?: string }) => ({
+          rel: link.rel,
+          method: link.method,
+          hrefHost: link.href ? new URL(link.href).host : null,
+        }))
+      : [],
+    hasApproveUrl: Boolean(approveUrl),
+  });
 
   return data;
 }

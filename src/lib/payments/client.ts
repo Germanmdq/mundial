@@ -8,7 +8,7 @@ export async function startMercadoPagoCheckout(
   if (setErrorState) setErrorState(null);
 
   try {
-    const headers = await getPaymentAuthHeaders();
+    const { headers } = await getPaymentAuthHeaders();
     if (!headers) {
       redirectToLoginForPayment();
       return;
@@ -48,7 +48,14 @@ export async function startPayPalCheckout(
   if (setErrorState) setErrorState(null);
 
   try {
-    const headers = await getPaymentAuthHeaders();
+    const { headers, session } = await getPaymentAuthHeaders();
+    console.info("[paypal:client:start]", {
+      hasSession: Boolean(session),
+      hasAccessToken: Boolean(session?.access_token),
+      userId: session?.user?.id ?? null,
+      email: session?.user?.email ?? null,
+    });
+
     if (!headers) {
       redirectToLoginForPayment();
       return;
@@ -60,6 +67,18 @@ export async function startPayPalCheckout(
     });
 
     const data = await res.json().catch(() => null);
+    console.info("[paypal:client:response]", {
+      status: res.status,
+      ok: res.ok,
+    });
+
+    console.info("[paypal:client:data]", {
+      error: data?.error ?? null,
+      message: data?.message ?? null,
+      requestId: data?.requestId ?? null,
+      hasApproveUrl: Boolean(data?.approve_url),
+      orderId: data?.orderId ?? data?.order_id ?? null,
+    });
 
     if (res.status === 401) {
       redirectToLoginForPayment();
@@ -67,7 +86,10 @@ export async function startPayPalCheckout(
     }
 
     if (!res.ok) {
-      console.error("PayPal checkout error", data);
+      console.error("[paypal:client:error]", {
+        status: res.status,
+        data,
+      });
       const details = formatPayPalDetails(data?.details);
       const message = data?.message || details || "No pudimos iniciar PayPal. Probá con Mercado Pago o intentá nuevamente.";
       const debugDetails = shouldShowPaymentDebug()
@@ -78,6 +100,7 @@ export async function startPayPalCheckout(
         setErrorState(
           [
             "No pudimos abrir PayPal.",
+            data?.requestId ? `Código de seguimiento: ${data.requestId}` : "",
             `Detalle: ${message}`,
             debugDetails,
             "También podés pagar con Mercado Pago.",
@@ -88,6 +111,9 @@ export async function startPayPalCheckout(
     }
 
     if (data.approve_url) {
+      console.info("[paypal:client:redirect]", {
+        approveHost: new URL(data.approve_url).host,
+      });
       window.location.href = data.approve_url;
     } else {
       console.error("PayPal approve_url missing", data);
@@ -99,6 +125,7 @@ export async function startPayPalCheckout(
         setErrorState(
           [
             "PayPal no devolvió un enlace de pago. Probá nuevamente.",
+            data?.requestId ? `Código de seguimiento: ${data.requestId}` : "",
             debugDetails,
           ].filter(Boolean).join("\n"),
         );
@@ -106,6 +133,10 @@ export async function startPayPalCheckout(
     }
   } catch (err) {
     console.error("PayPal checkout error:", err);
+    console.error("[paypal:client:error]", {
+      status: null,
+      data: err instanceof Error ? { message: err.message } : err,
+    });
     if (setErrorState) {
       setErrorState(
         [
@@ -158,12 +189,15 @@ async function getPaymentAuthHeaders() {
       // localStorage can be unavailable in private modes; login redirect still works.
     }
 
-    return null;
+    return { headers: null, session };
   }
 
   return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${session.access_token}`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    session,
   };
 }
 
